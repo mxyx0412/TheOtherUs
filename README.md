@@ -29,7 +29,7 @@ Even more roles are coming soon. :)
 | [Eraser](#eraser) | [Detective](#detective) | [Executioner](#executioner) | [Mini](#mini) |
 | [Trickster](#trickster) | [Time Master](#time-master) | [Amnesiac](#amnesiac) | [VIP](#vip) |
 | [Cleaner](#cleaner) | [Medic](#medic) | [Swooper](#swooper) | [Invert](#invert) |
-| [Warlock](#warlock) | [Werewolf](#werewolf) | [Swapper](#swapper) |
+| [Warlock](#warlock) | [Swapper](#swapper) | [Werewolf](#werewolf) |
 | [Bounty Hunter](#bounty-hunter) | [Seer](#seer) |  |
 | [Witch](#witch) | [Hacker](#hacker) |  |  |
 | [Ninja](#ninja) | [Tracker](#tracker) |  |  |

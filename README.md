@@ -832,7 +832,8 @@ If they try to kill a Crewmate, they die instead.\
 |----------|:-------------:|
 | Sheriff Spawn Chance | -
 | Sheriff Cooldown | -
-| Sheriff Can Kill Neutrals | -
+| Misfire Kills | - Sets what happens when the Sheriff misfires | "Self", "Target", "Both"
+| Sheriff Can Kill Neutrals | Enables options to choose specific Neutral roles that the Sheriff is able to kill
 | Sheriff Has A Deputy | Deputy can not be in game without Sheriff
 -----------------------
 
@@ -1142,33 +1143,28 @@ What is your killers role?
 | Medium Each Soul Can Only Be Questioned Once | If set to true, souls can only be questioned once and then disappear
 -----------------------
  
-## Guesser
+## Vigilante
 ### **Team: Crewmates or Impostors**
-The Guesser can be a Crewmate or an Impostor (depending on the settings).\
-The Guesser can shoot players during the meeting, by guessing its role. If the guess is wrong, the Guesser dies instead.\
+The Vigilante is a Crewmate who can shoot players during the meeting, by guessing its role. If the guess is wrong, the Vigilante dies instead.\
 You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
 The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
 You can only shoot during the voting time.\
-Depending on the options, the Guesser can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Guesser guessed).\
+Depending on the options, the Vigilante can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Vigilante guessed).\
 \
 **NOTE:**
 - If a player gets shot, you'll get back your votes
 - You can't guess the role **Nice Mini** for obvious reasons
 - You can't guess the role **Lover**, you'll have to guess the primary role of one of the Lovers, to kill both of them
-- Jester wins won't be triggered, if the Guesser shoots the Jester before the Jester gets voted out
+- Jester wins won't be triggered, if the Vigilante shoots the Jester before the Jester gets voted out
 
 ### Game Options
 | Name | Description |
 |----------|:-------------:|
-| Guesser Spawn Chance | -
-| Chance That The Guesser Is An Impostor | -
-| Guesser Number Of Shots Per Game | -
-| Guesser Can Shoot Multiple Times Per Meeting |  -
+| Vigilante Spawn Chance | -
+| Vigilante Number Of Shots Per Game | -
+| Vigilante Can Shoot Multiple Times Per Meeting |  -
 | Guesses Visible In Ghost Chat | -
 | Guesses Ignore The Medic Shield | -
-| Evil Guesser Can Guess The Spy | -
-| Both Guesser Spawn Rate | -
-| Guesser Can't Guess Snitch When Tasks Completed | -
 
 -----------------------
 
@@ -1176,6 +1172,35 @@ Depending on the options, the Guesser can't guess the shielded player and depend
 A modifier is an addition to your Impostor/Neutral/Crewmate role.
 Some modifiers can be ingame more than once (Quantity option).
 
+ ## Assassin
+### **Team: Crewmates or Impostors**
+The Assassin is a Modifier exclusive to Imposters.\
+The Assassin can shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
+You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
+The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
+You can only shoot during the voting time.\
+Depending on the options, the Assassin can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Assassin guessed).\
+You can select how many imposters have the ability to guess roles by changing the Assassin Quantity
+\
+**NOTE:**
+- If a player gets shot, you'll get back your votes
+- You can't guess the role **Nice Mini** for obvious reasons
+- You can't guess the role **Lover**, you'll have to guess the primary role of one of the Lovers, to kill both of them
+- Jester wins won't be triggered, if the Assassin shoots the Jester before the Jester gets voted out
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Assassin Spawn Chance | -
+| Assassin Quantity | -
+| Assassin Number Of Shots Per Game | -
+| Assassin Can Shoot Multiple Times Per Meeting |  -
+| Assassin Can Guess The Spy | -
+| Assassin Can't Guess Snitch When Tasks Completed | -
+| Guesses Ignore The Medic Shield | -
+
+-----------------------
+ 
 ## Bloody
 ### Bloody
 

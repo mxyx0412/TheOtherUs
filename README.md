@@ -27,18 +27,20 @@ Even more roles are coming soon. :)
 | [Camouflager](#camouflager) | [Deputy](#deputy) | [Vulture](#vulture) | [Lovers](#lovers) |
 | [Vampire](#vampire) | [Lighter](#lighter) | [Lawyer](#lawyer) | [Sunglasses](#sunglasses) |
 | [Eraser](#eraser) | [Detective](#detective) | [Executioner](#executioner) | [Mini](#mini) |
-| [Trickster](#trickster) | [Time Master](#time-master) | [Amnesiac](#amnesiac) | [VIP](#vip) |
+| [Trickster](#trickster) | [Time Master](#time-master) | [Amnesiac](#amnesiac) |[VIP](#vip) |
 | [Cleaner](#cleaner) | [Medic](#medic) | [Swooper](#swooper) | [Invert](#invert) |
-| [Warlock](#warlock) | [Swapper](#swapper) | [Werewolf](#werewolf) |
-| [Bounty Hunter](#bounty-hunter) | [Seer](#seer) |  |
-| [Witch](#witch) | [Hacker](#hacker) |  |  |
-| [Ninja](#ninja) | [Tracker](#tracker) |  |  |
+| [Warlock](#warlock) | [Swapper](#swapper) | [Werewolf](#werewolf) | [Assassin](#assassin) |
+| [Bounty Hunter](#bounty-hunter) | [Seer](#seer) |  | [Indomitable](#indomitable) |
+| [Witch](#witch) | [Hacker](#hacker) |  | [Blind](#blind) |
+| [Ninja](#ninja) | [Tracker](#tracker) |  | [Sleuth](#sleuth) |
 | [Miner](#miner) | [Snitch](#snitch) |  |  |
 | [Blackmailer](#blackmailer) | [Spy](#spy) |  |  |
 | [Undertaker](#undertaker) | [Portalmaker](#portalmaker) |  |  |
 | [Bomber](#bomber) | [Security Guard](#security-guard) |  |  |
 |  | [Medium](#medium) |  |  |
-|  | [Nice Guesser](#guesser) |  |
+|  | [Vigilante](#vigilante) |  |
+ |  | [Veteran](#veteran) |  |
+ |  | [Bodyguard](#bodyguard) |  |
 
 The [Role Assignment](#role-assignment) sections explains how the roles are being distributed among the players.
 

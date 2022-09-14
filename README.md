@@ -1188,7 +1188,11 @@ When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they
   ## Bodyguard
 ### **Team: Crewmates**
 
-The Bodyguard is a crewmate who ca
+The Bodyguard is a crewmate who can guard someone, and if someone tries to kill the player who is guarded, you and the person who is attempting to kill the player you guarded will die.
+\
+**NOTE:**
+- This will only happen if the player attempting to kill the player you guarded would have actually killed the guarded player if they weren't guarded. So Sheriff attempting to kill a guarded crewmate would just make the Sheriff misfire and not result in both the Sheriff dying and the Bodygaurd dying. 
+- If someone attempts to kill the guarded player, and the guarded player has a medic shield, then the Bodyguard ability will not be triggered.
  
 ### Game Options
 | Name | Description

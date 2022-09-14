@@ -8,7 +8,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 <p align="center">
  The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.
   
- [![Discord](./Images/TOR_server.png)](https://discord.gg/77RkMJHWsM)
+![TOR_server](https://user-images.githubusercontent.com/113001912/190032086-dceec3e1-e5bc-4404-957b-03da49196cdd.png)](https://discord.gg/77RkMJHWsM)
 ![eisbison infographic](./Images/TOR_Roles.png)
 
 

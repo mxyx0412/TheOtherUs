@@ -1148,7 +1148,7 @@ What is your killers role?
 -----------------------
  
 ## Vigilante
-### **Team: Crewmates or Impostors**
+### **Team: Crewmates**
 The Vigilante is a Crewmate who can shoot players during the meeting, by guessing its role. If the guess is wrong, the Vigilante dies instead.\
 You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
 The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
@@ -1203,7 +1203,7 @@ A modifier is an addition to your Impostor/Neutral/Crewmate role.
 Some modifiers can be ingame more than once (Quantity option).
 
  ## Assassin
-### **Team: Crewmates or Impostors**
+### **Team: Impostors**
 The Assassin is a Modifier exclusive to Imposters.\
 The Assassin can shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
 You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\

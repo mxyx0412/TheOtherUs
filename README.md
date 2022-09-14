@@ -496,8 +496,8 @@ When performing a ninja ability kill, the ninja can be invisible for some second
 ## Miner
 ### **Team: Impostors**
 The Miner is an Impostor who has the ability to place new vents around the map.\
-Unlink the [Trickster](#trickster) the vents created by the Miner can be used by any venter.\
-\
+Unlike the [Trickster](#trickster), the vents created by the Miner can be used by any venter.\
+
 
 ### Game Options
 | Name | Description |
@@ -509,7 +509,7 @@ Unlink the [Trickster](#trickster) the vents created by the Miner can be used by
 ## Blackmailer
 ### **Team: Impostors**
 The Blackmailer is an Impostor who has the ability to silence someone during a meeting..\
-\
+
 **NOTE:**
 The Blackmailer has a special ability that allows them to see who they are targeting, even if lights are out, camo is active, etc. 
 
@@ -526,7 +526,7 @@ The Blackmailer has a special ability that allows them to see who they are targe
  ## Undertaker
 ### **Team: Impostors**
 The Undertaker is an Impostor that can drag and drop bodies...\
-\
+
 
 
 ### Game Options

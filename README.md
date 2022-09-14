@@ -639,3 +639,663 @@ Upon the death of the Jackal (depending on the options), they might get promoted
 | Sidekick gets promoted to Jackal on Jackal death |  Yes/No |
 | Sidekick can kill | Yes/No |
 | Sidekick can use vents | Yes/No |
+ 
+## Vulture
+### **Team: Neutral**
+
+The Vulture does not have any tasks, they have to win the game as a solo.\
+The Vulture is a neutral role that must eat a specified number of corpses (depending on the options) in order to win.\
+Depending on the options, when a player dies, the Vulture gets an arrow pointing to the corpse.\
+If there is a Vulture in the game, there can't be a Cleaner.
+
+**NOTE**
+- If the corpse is on a different floor on Submerged, the arrow will always point to the elevator
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Vulture Spawn Chance | -
+| Vulture Countdown | -
+| Number Of Corpses Needed To Be Eaten | Corpes needed to be eaten to win the game
+| Vulture Can Use Vents | -
+| Show Arrows Pointing Towards The Corpes | -
+-----------------------
+
+## Lawyer
+### **Team: Neutral**
+The Lawyer is a neutral role that has a client.\
+The client might be an Impostor or Jackal which is no Lover.\
+Depending on the options, the client can also be a Jester.\
+The Lawyer needs their client to win in order to win the game.\
+Their client doesn't know that it is their client.\
+If their client gets voted out, the Lawyer dies with the client.\
+If their client dies, the Lawyer changes their role and becomes the [Pursuer](#pursuer), which has a different goal to win the game.\
+\
+How the Lawyer wins:
+- Lawyer dead/alive, client alive and client wins: The Lawyer wins together with the team of the client.
+- If their client is Jester and the Jester gets voted out, the Lawyer wins together with the Jester.
+
+**NOTE:**
+- If the client disconnects, the Lawyer will also turn into the Pursuer
+- The Lawyer needs to figure out the role of their client depending on the options
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Lawyer Spawn Chance | -
+| Lawyer Target Can Be The Jester | -
+| Lawyer Wins After Meetings | If set to true, the Lawyer wins after a configurable amount of meetings (can't start meetings himself)
+| Lawyer Needed Meetings To Win | -
+| Lawyer Vision | Pursuer has normal vision
+| Lawyer Knows Target Role | -
+| Pursuer Blank Cooldown | -
+| Pursuer Number Of Blanks | -
+-----------------------
+
+## Pursuer
+### **Team: Neutral**
+The Pursuer is still a neutral role, but has a different goal to win the game; they have to be alive when the game ends and the Crew wins.\
+In order to achieve this goal, the Pursuer has an ability called "Blank", where they can fill a killers (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their cooldowns will be triggered as usual.\
+If the killer fires the "Blank", shields (e.g. Medic shield or Time Master shield) will not be triggered.\
+The Pursuer has tasks (which can already be done while being a Lawyer), that count towards the task win for the Crewmates. If the Pursuer dies, their tasks won't be counted anymore.
+
+## Prosecutor
+### **Team: Neutral**
+The Prosecutor is still a neutral role, but has a different goal to win the game; they have to vote out a specific player.\
+In order to achieve this goal, they will always be able to see their targets name, even when names are hidden. They will also see the skin of their target on their intro screen.\
+There are a few things to note about how the Prosecutors role can change.\
+If the target is killed: Prosecutor -> [Pursuer](#pursuer)\
+If the taget disconnects: Prosecutor -> [Pursuer](#pursuer)\
+If the target is sidekicked: Prosecutor -> [Lawyer](#Lawyer) (Client: Target)\
+\
+The target of a Prosecutor cannot be the following: Impostor, [Jackal](#jackal), [Mayor](#mayor), [Sheriff](#sheriff), [Spy](#spy), [Swapper](#swapper), or a [Lover](#lovers)
+
+## Amnesiac
+### **Team: Neutral**
+The Amesiac has no win condition and cannot win the game as Amnesiac.\
+In order to gain a win condition, they must take a role from a dead body.\
+There are a few things to note about how the Amnesiacs role can change.\
+If the target is Bounty Hunter: Amnesiac -> Impostor (Red flash to signafy this)\
+If the taget is Arsonist: Red Flash; Arsonist cannot be taken\
+If the target body was on a team with Jackal or Impostor, that player will still be on that team.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Amnesiac Spawn Chance | -
+| Show arrows to dead bodies | If set to true, the Amnesiac will get arrows to dead bodies when they die.
+| Reset role when taken | If set to true, the role that is taken will be fully reset, allowing the abilities to be reused. Note: Weird stuff might happen with this setting off.
+
+## Swooper
+### **Team: Neutral**
+The Swooper is a solo nuetral killer with the option to replace the Jackal.\
+
+If it is not an Alternate Jackal, it is on it's own team, and must eliminate all opposing factions.
+The Swooper uses the [Jackal](#jackal) kill cooldown.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Swooper Spawn Chance | -
+| Spawn as Alternate Jackal | false
+| Swoop Cooldown | -
+| Swoop Duration | -
+| Has Impostor Vision | true
+
+-----------------------
+
+-----------------------
+
+## Shifter
+### **Team: Crewmates**
+The Shifter can take over the role of another Crewmate, the other player will transform into a Crewmate.\
+The Shift will always be performed at the end of the next meeting right before a player is exiled. The target needs to be chosen during the round.\
+Even if the Shifter or the target dies before the meeting, the Shift will still be performed.\
+Swapping roles with an Impostor or Neutral fails and the Shifter commits suicide after the next meeting (there won't be any body).\
+The Shifter aims to save roles from leaving the game, by e.g. taking over a Sheriff or Medic that is known to the Impostors.\
+This works especially well against the Eraser, but also gives the Eraser the possibility to act like a Shifter.\
+The **special interactions** with the Shifter are noted in the chapters of the respective roles.\
+\
+**NOTE:**
+- The Shifter shift will always be triggered before the Erase (hence either the new role of the Shifter will be erased or the Shifter saves the role of their target, depending on whom the Eraser erased)
+- If the Shifter takes over a role, their new cooldowns will start at the maximum cooldown of the ability
+- One time use abilities (e.g. shielding a player or Engineer sabotage fix) can only used by one player in the game (i.e. the Shifter
+can only use them, if the previous player did not use them before)
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Shifter Spawn Chance | -
+| Shifter Shifts Modifiers | Sets if Lovers and/or Medic Shield will be shifted
+-----------------------
+
+## Mayor
+### **Team: Crewmates**
+The Mayor leads the Crewmates by having a vote that counts twice.\
+The Mayor can always use their meeting, even if the maximum number of meetings was reached.\
+The Mayor has a portable Meeting Button, depending on the options.\
+The Mayor can see the vote colors after completing a configurable amount of tasks, depending on the options.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Mayor Spawn Chance | -
+| Mayor Can See Vote Colors | -
+| Completed Tasks Needed To See Vote Colors | -
+| Mobile Emergency Button | -
+-----------------------
+
+## Engineer
+### **Team: Crewmates**
+The Engineer (if alive) can fix a certain amount of sabotages per game from anywhere on the map.\
+The Engineer can use vents.\
+If the Engineer is inside a vent, depending on the options the members of the team Jackal/Impostors will see a blue outline around all vents on the map (in order to warn them).\
+Because of the vents the Engineer might not be able to start some tasks using the "Use" button, you can double-click on the tasks instead.
+
+**NOTE:**
+- The kill button of Impostors activates if they stand next to a vent where the Engineer is. They can also kill them there. No other action (e.g. Morphling sample, Shifter shift, ...) can affect players inside vents.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Engineer Spawn Chance | -
+| Number Of Sabotage Fixes| -
+| Impostors See Vents Highlighted | -
+| Jackal and Sidekick See Vents Highlighted | -
+-----------------------
+
+## Sheriff
+### **Team: Crewmates**
+The Sheriff has the ability to kill Impostors.\
+If they try to kill a Crewmate, they die instead.\
+\
+**NOTE:**
+- If the Sheriff shoots the person the Medic shielded, the Sheriff and the shielded person **both remain unharmed**.
+- If the Sheriff shoots a Mini Impostor, the Sheriff dies if the Mini is still growing up. If it's 18, the Mini Impostor dies.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Sheriff Spawn Chance | -
+| Sheriff Cooldown | -
+| Sheriff Can Kill Neutrals | -
+| Sheriff Has A Deputy | Deputy can not be in game without Sheriff
+-----------------------
+
+## Deputy
+### **Team: Crewmates**
+The Deputy has the ability to handcuff player.\
+Handcuffs will be hidden until the handcuffed player try to use a disabled button/hotkey.\
+Handcuffs disable:
+- Kill
+- Abilities
+- Vent
+- Report\
+\
+**NOTE:**
+- Duration starts after the handcuffs become visible.
+- Deputy can not be in game without Sheriff.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Deputy Number Of Handcuffs | -
+| Handcuff Cooldown| -
+| Handcuff Duration | -
+| Sheriff And Deputy Know Each Other | -
+| Deputy Gets Promoted To Sheriff | "Off", "On (Immediately)" or "On (After Meeting)"
+| Deputy Keeps Handcuffs When Promoted |-
+-----------------------
+
+## Lighter
+### **Team: Crewmates**
+The Lighter can turn on their Lighter every now and then, which increases their vision by a customizable amount.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Lighter Spawn Chance | -
+| Lighter Mode Vision On Lights On | The vision the Lighter has when the lights are on and the Lighter mode is on
+| Lighter Mode Vision On Lights Off | The vision the Lighter has when the lights are down and the Lighter mode is on
+| Lighter Cooldown | -
+| Lighter Duration | -
+-----------------------
+
+## Detective
+### **Team: Crewmates**
+The Detective can see footprints that other players leave behind.\
+The Detective's other feature shows when they report a corpse: they receive clues about the killer's identity. The type of information they get is based on the time it took them to find the corpse.
+
+**NOTE:**
+- When people change their colors (because of a morph or camouflage), all the footprints also change their colors (also the ones that were already on the ground). If the effects are over, all footprints switch back to the original color.
+- The Detective does not see footprints of players that sit in vents
+- More information about the [colors](#colors)
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Detective Spawn Chance | -
+| Anonymous Footprints | If set to true, all footprints will have the same color. Otherwise they will have the color of the respective player.
+| Footprint Interval | The interval between two footprints
+| Footprint Duration | Sets how long the footprints remain visible.
+| Time Where Detective Reports Will Have Name | The amount of time that the Detective will have to report the body since death to get the killer's name.  |
+| Time Where Detective Reports Will Have Color Type| The amount of time that the Detective will have to report the body since death to get the killer's color type. |
+-----------------------
+
+## Time Master
+### **Team: Crewmates**
+The Time Master has a time shield which they can activate. The time shield remains active for a configurable amount of time.\
+If a player tries to kill the Time Master while the time shield is active, the kill won't happen and the
+time will rewind for a set amount of time.\
+The kill cooldown of the killer won't be reset, so the Time Master
+has to make sure that the game won't result in the same situation.\
+The Time Master won't be affected by the rewind.
+
+**NOTE:**
+- Only the movement is affected by the rewind.
+- A Vampire bite will trigger the rewind. If the Time Master misses shielding the bite, they can still shield the kill which happens a few seconds later.
+- If the Time Master was bitten and has their shield active before when a meeting is called, they survive but the time won't be rewound.
+- If the Time Master has a Medic shield, they won't rewind.
+- The shield itself ends immediately when triggered. So the Time Master can be attacked again as soon as the rewind ends.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Time Master Spawn Chance | - |
+| Time Master Cooldown | - |
+| Rewind Duration | How much time to rewind |
+| Time Master Shield Duration |
+-----------------------
+
+## Medic
+### **Team: Crewmates**
+The Medic can shield (highlighted by an outline around the player) one player per game, which makes the player unkillable.\
+The shielded player can still be voted out and might also be an Impostor.\
+If set in the options, the shielded player and/or the Medic will get a red flash on their screen if someone (Impostor, Sheriff, ...) tried to murder them.\
+If the Medic dies, the shield disappears with them.\
+The Sheriff will not die if they try to kill a shielded Crewmate and won't perform a kill if they try to kill a shielded Impostor.\
+Depending on the options, guesses from the Guesser will be blocked by the shield and the shielded player/medic might be notified.\
+The Medic's other feature shows when they report a corpse: they will see how long ago the player died.
+
+**NOTE:**
+- If the shielded player is a Lover and the other Lover dies, they nevertheless kill themselves.
+- If the Shifter has a shield or their target has a Shield, the shielded player switches.
+- Shields set after the next meeting, will be set before a possible shift is being performed.
+
+### Game Options
+| Name | Description | Options |
+|----------|:-------------:|:-------------:|
+| Medic Spawn Chance | - | -
+| Show Shielded Player | Sets who sees if a player has a shield | "Everyone", "Shielded + Medic", "Medic"
+| Shielded Player Sees Murder Attempt| Whether a shielded player sees if someone tries to kill them | True/false |
+| Shield Will Be Activated | Sets when the shield will be active | "Instantly", "Instantly, Visible After Meeting", "After Meeting"
+| Medic Sees Murder Attempt On Shielded Player | - | If anyone tries to harm the shielded player (Impostor, Sheriff, Guesser, ...), the Medic will see a red flash
+-----------------------
+
+## Swapper
+### **Team: Crewmates**
+During meetings the Swapper can exchange votes that two people get (i.e. all votes
+that player A got will be given to player B and vice versa).\
+Because of the Swapper's strength in meetings, they might not start emergency meetings and can't fix lights and comms.\
+The Swapper now has initial swap charges and can recharge those charges after completing a configurable amount of tasks.\
+\
+**NOTE:**
+- The remaining charges will be displayed in brackets next to the players role while not in a meeting
+- In a meeting the charges will appear next to the Confirm Swap button
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Swapper Spawn Chance | -
+| Swapper can call emergency meeting | Option to disable the emergency button for the Swapper
+| Swapper can only swap others | Sets whether the Swapper can swap themself or not
+| Initial Swap Charges | -
+| Number Of Tasks Needed For Recharging | -
+-----------------------
+
+## Seer
+### **Team: Crewmates**
+The Seer has two abilities (one can activate one of them or both in the options).\
+The Seer sees the souls of players that died a round earlier, the souls slowly fade away.\
+The Seer gets a blue flash on their screen, if a player dies somewhere on the map.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Seer Spawn Chance | -
+| Seer Mode | Options: Show death flash and souls, show death flash, show souls
+| Seer Limit Soul Duration | Toggle if souls should turn invisible after a while
+| Seer Soul Duration | Sets how long it will take the souls to turn invisible after a meeting
+-----------------------
+
+## Hacker
+### **Team: Crewmates**
+If the Hacker activates the "Hacker mode", the Hacker gets more information than others from the admin table and vitals for a set duration.\
+Otherwise they see the same information as everyone else.\
+**Admin table:** The Hacker can see the colors (or color types) of the players on the table.\
+**Vitals**: The Hacker can see how long dead players have been dead for.\
+The Hacker can access his mobile gadgets (vitals & admin table), with a maximum of charges (uses) and a configurable amount of tasks needed to recharge.\
+While accessing those mobile gadgets, the Hacker is not able to move.
+
+**NOTE:**
+- If the Morphling morphs or the Camouflager camouflages, the colors on the admin table change accordingly
+- More information about the [colors](#colors)
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Hacker Spawn Chance | -
+| Hacker Cooldown | -
+| Hacker Duration | Sets how long the "Hacker mode" remains active
+| Hacker Only Sees Color Type | Sets if the Hacker sees the player colors on the admin table or only white/gray (for Lighter and darker colors)
+| Max Mobile Gadget Charges | -
+| Number Of Tasks Needed For Recharging | Number of tasks to get a charge
+| Can't Move During Cam Duration | -
+-----------------------
+
+## Tracker
+### **Team: Crewmates**
+The Tracker can select one player to track. Depending on the options the Tracker can track a different person after each meeting or the Tracker tracks the same person for the whole game.\
+An arrow points to the last tracked position of the player.\
+The arrow updates its position every few seconds (configurable).\
+Depending on the options, the Tracker has another ability: They can track all corpses on the map for a set amount of time. They will keep tracking corpses, even if they were cleaned or eaten by the Vulture.
+
+**NOTE**
+- If the tracked player is on a different floor on Submerged, the arrow will always point to the elevator
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Tracker Spawn Chance | -
+| Tracker Update Interval | Sets how often the position is being updated
+| Tracker Reset Target After Meeting | -
+| Tracker Can Track Corpses | -
+| Corpses Tracking Cooldown | -
+| Corpses Tracking Duration | -
+-----------------------
+
+## Snitch
+### **Team: Crewmates**
+When the Snitch finishes all the tasks, arrows will appear (only visible to the Snitch) that point to the Impostors (depending on the options also to members of team Jackal).\
+When the Snitch has one task left (configurable) the Snitch will be revealed to the Impostors (depending on the options also to members of team Jackal) with an arrow pointing to the Snitch.
+
+**NOTE**
+- If the Impostor(s)/Jackal(s) is/are on a different floor on Submerged when the Snitch finished their tasks, the arrow will always point to the elevator
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Snitch Spawn Chance | -
+| Task Count Where The Snitch Will Be Revealed | -
+| Include Team Jackal | -
+| Use Different Arrow Color For Team Jackal | -
+| Snitch can't be guessed after finishing all their tasks | -
+-----------------------
+
+## Spy
+### **Team: Crewmates**
+The Spy is a Crewmate, which has no special abilities.\
+The Spy looks like an additional Impostor to the Impostors, they can't tell the difference.\
+There are two possibilities (depending on the set options):
+- The Impostors can't kill the Spy (because otherwise their kill button would reveal, who the Spy is)
+- The Impostors can kill the Spy but they can also kill their Impostor partner (if they mistake another Impostor for the Spy)
+You can set whether the Sheriff can kill the Spy or not (in order to keep the lie alive).
+
+**NOTE:**
+- If the Spy gets sidekicked, it still will appear red to the Impostors.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Spy Spawn Chance |
+| Spy Can Die To Sheriff |
+| Impostors Can Kill Anyone If There Is A Spy | This allows the Impostors to kill both the Spy and their Impostor partners
+| Spy Can Enter Vents | Allow the Spy to enter/exit vents (but not actually move to connected vents)
+| Spy Has Impostor Vision | Give the Spy the same vision as the Impostors have
+-----------------------
+
+## Portalmaker
+### **Team: Crewmates**
+The Portalmaker is a Crewmate that can place two portals on the map.\
+These two portals are connected to each other.\
+Those portals will be visible after the next meeting and can be used by everyone.\
+Additionally to that, the Portalmaker gets information about who used the portals and when in the chat during each meeting, depending on the options.
+
+**NOTE:**
+- The extra button to use a portal will appear after the Portalmaker set his portals and a meeting/body report was called.
+- While one player uses a portal, it is blocked for any other player until the player got teleported.
+- All ghosts can still use the portals, but won't block any living player from using it and the Portalmaker won't get any information about it in chat.
+- If a morphed person uses a portal it will show the morphed name/color depending on the options.
+- If a camouflaged person uses a portal it will show "A comouflaged person used the portal."
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Portalmaker Spawn Chance | -
+| Portalmaker Cooldown | -
+| Use Portal Cooldown | -
+| Portalmaker Log Only Shows Color Type | -
+| Log Shows Time | -
+-----------------------
+
+## Security Guard
+### **Team: Crewmates**
+The Security Guard is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras.\
+Placing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Security Guard has can also be configured.\
+The new camera will be visible after the next meeting and accessible by everyone.\
+The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still "move to them" underground.
+
+**NOTE:**
+
+- Trickster boxes can't be sealed
+- The Security Guard can't place cameras on MiraHQ
+- The remaining number of screws can be seen above their special button.
+- On Skeld the four cameras will be replaced every 3 seconds (with the next four cameras). You can also navigate manually using the arrow keys
+- Security Guard can access mobile cameras after placing all screws
+- While accessing the mobile cameras, the Security Guard is not able to move
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Security Guard Spawn Chance |
+| Security Guard Cooldown |
+| Security Guard Number Of Screws | The number of screws that a Security Guard can use in a game
+| Number Of Screws Per Cam | The number of screws it takes to place a camera
+| Number Of Screws Per Vent | The number of screws it takes to seal a vent
+| Security Guard Duration | -
+| Gadget Max Charges | -
+| Number Of Tasks Needed For Recharging | -
+| Can't Move During Cam Duration | -
+-----------------------
+
+## Medium
+### **Team: Crewmates**
+
+The medium is a crewmate who can ask the souls of dead players for information. Like the Seer, it sees the places where the players have died (after the next meeting) and can question them. It then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.\
+
+Questions:
+What is your Role?
+What is your killer's color type?
+When did you die?
+What is your killers role?
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Medium Spawn Chance | -
+| Medium Cooldown | -
+| Medium Duration | The time it takes to question a soul
+| Medium Each Soul Can Only Be Questioned Once | If set to true, souls can only be questioned once and then disappear
+-----------------------
+
+# Modifier
+A modifier is an addition to your Impostor/Neutral/Crewmate role.
+Some modifiers can be ingame more than once (Quantity option).
+
+## Bloody
+### Bloody
+
+If killed, the Bloody Modifier will leave a trail for x-seconds on their killer. The trail will have the color of the killed person. Impostor,
+Neutral or Crewmate roles can have this Modifier.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Bloody Spawn Chance | -
+| Bloody Quantity | -
+| Trail duration | -
+-----------------------
+
+## Anti Teleport
+
+The Anti Teleport Modifier prevents the player from getting teleported to the Meeting Table if a body gets reported or an Emergency Meeting is called.\
+The player will start the round where the previous one ended (Emergency Meeting Call/Body Report).
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Anti Teleport Spawn Chance | -
+| Anti Teleport Quantity | -
+-----------------------
+
+## Tie Breaker
+
+If the Voting ends in a tie, the Tie Breaker takes place and the player with the Tie Breaker Modifier gets an extra vote thats not visible to anyone.\
+Everyone will know if the Tie Breaker was involved in the Meeting or not.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Tie Breaker Spawn Chance | -
+-----------------------
+
+## Bait
+
+The Bait forces the killer to self report the body (you can configure a delay in the options).\
+There can be more than one Bait.
+
+**NOTE:**
+- If the Sheriff has the Bait modifier and dies while trying to kill a Crewmate, the Sheriff will *NOT* report themself.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Bait Spawn Chance | -
+| Bait Quantity | -
+| Bait Report Delay Min | -
+| Bait Report Delay Max | -
+| Warn The Killer With A Flash | -
+-----------------------
+
+## Lovers
+
+There are always two Lovers which are linked together.\
+Their primary goal is it to stay alive together until the end of the game.\
+If one Lover dies (and the option is activated), the other Lover suicides.\
+You can specify the chance of one Lover being an Impostor.\
+The Lovers never know the role of their partner, they only see who their partner is.\
+The Lovers win, if they are both alive when the game ends. They can also win with their original team (e.g. a dead Impostor Lover can win with the Impostors, an Arsonist Lover can still achieve an Arsonist win).\
+If one of the Lovers is a killer (i.e. Jackal/Sidekick/Impostor), they can achieve a "Lovers solo win" where only the Lovers win.\
+If there is no killer among the Lovers (e.g. an Arsonist Lover + Crewmate Lover) and they are both alive when the game ends, they win together with the Crewmates.\
+If there's an Impostor/Jackal + Crewmate Lover in the game, the tasks of a Crewmate Lover won't be counted (for a task win) as long as they're alive.\
+If the Lover dies, their tasks will also be counted.\
+You can enable an exclusive chat only for Lovers.
+
+**NOTE:**
+In a 2 Crewmates vs 2 Impostors (or 2 members of team Jackal) and the Lovers are not in the same team, the game is not automatically over since the Lovers can still achieve a solo win. E.g. if there are the following roles Impostor + ImpLover + Lover + Crewmate left, the game will not end and the next kill will decide if the Impostors or Lovers win.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Lovers Spawn Chance | -
+| Chance That One Lover Is Impostor | -
+| Both Lovers Die | Whether the second Lover suicides, if the first one dies
+| Enable Lover Chat | -
+-----------------------
+
+**NOTE:**
+- The role **Lover** can't be guessed, you'll have to guess the primary role of one of the Lovers, to kill both of them.
+
+## Sunglasses
+
+The Sunglasses will lower the Crewmate's vision by small percentage. The percentage is configurable in the options.\
+The vision will also be affected when lights out.
+
+**NOTE:**
+- Sunglasses only affects Crewmates.
+- If you have the Sunglasses modifier and get sidekicked, you lose the modifier.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Sunglasses Spawn Chance | -
+| Sunglasses Quantity | -
+| Vision with sunglasses | -
+-----------------------
+
+## Mini
+
+The Mini's character is smaller and hence visible to everyone in the game.\
+The Mini cannot be killed until it turns 18 years old, however it can be voted out.
+
+**Impostor/Jackal Mini:**
+- While growing up the kill cooldown is doubled. When it's fully grown up its kill cooldown is 2/3 of the default one.
+- If it gets thrown out of the ship, everything is fine.
+
+**Crewmate Mini:**
+- The Crewmate Mini aims to play out the strength its invincibility in the early game.
+- If it gets thrown out of the ship before it turns 18, everyone loses. So think twice before you vote out a Mini.
+
+**Neutral Mini:**
+- The cooldown is not effected, except for the Team Jackal/Sidekick.
+- If it gets thrown out of the ship, everything is fine except for the Jester.
+- If the Jester Mini gets voted out the game will end in a Jester win.
+
+**NOTE:**
+- If the Sheriff tries to kill the Mini before it's fully grown, nothing happens.
+- The Sheriff can kill the Impostor/Neutral Mini, but only if it's fully grown up.
+- If the Mini's primary role is guessed correctly, it dies like every other role and nothing further happens.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Mini Spawn Chance | -
+| Mini  | Mini Growing Up Duration
+-----------------------
+
+## VIP
+
+An Impostor, Jackal or Crewmate can be affected by the VIP (Very Important Player) Modifier.\
+The VIP will show everyone when he dies with a flash similar to the Seer Flash.\
+If the option Show Team Color is On, then everyone will get a flash in the color of the team the player was part of.
+
+Teams:
+- Impostor = Red
+- Neutral = Blue
+- Crewmate = White
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| VIP Spawn Chance | -
+| VIP Quantity | -
+| Show Team Color | -
+-----------------------
+
+## Invert
+
+The Invert Modifier inverts your controls (no matter if keyboard or mouse).\
+The Invert can affect all teams (Impostor, Neutral, Crewmate).
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Invert Spawn Chance | -
+| Invert Quantity | -
+-----------------------
+
+# Source code
+You can use parts of the code but don't copy paste the whole thing. Make sure you give credits to the other developers, because some parts of the code are based on theirs.
+
+# Bugs, suggestions and requests
+If you found any bugs, have an idea for a new role or any other request, join our [Discord server](https://discord.gg/77RkMJHWsM).

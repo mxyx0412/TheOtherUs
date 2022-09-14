@@ -35,8 +35,8 @@ Even more roles are coming soon. :)
 | [Ninja](#ninja) | [Tracker](#tracker) |  |  |
 | [Miner](#miner) | [Snitch](#snitch) |  |  |
 | [Blackmailer](#blackmailer) | [Spy](#spy) |  |  |
-| [Evil Guesser](#guesser) | [Portalmaker](#portalmaker) |  |  |
-|  | [Security Guard](#security-guard) |  |  |
+| [Undertaker](#undertaker) | [Portalmaker](#portalmaker) |  |  |
+| [Bomber](#bomber) | [Security Guard](#security-guard) |  |  |
 |  | [Medium](#medium) |  |  |
 |  | [Nice Guesser](#guesser) |  |
 

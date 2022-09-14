@@ -64,18 +64,18 @@ The [Role Assignment](#role-assignment) sections explains how the roles are bein
 - Mod option: Enable Sound Effects
 - Support for the Submerged map (https://github.com/SubmergedAmongUs/Submerged)
 - New Option Features:
- - Camoflouge Comms
- - Restrict Map Imformation (Restricts Admin Table use, Camera use, and Vitals use for a set amount of time per round or per game)
- - Show Button Target
- - Random Spawn Location
- - Allow Guessing Some Modifiers
- - Reset Spawn Cooldown
- - Option to Disable Garlic
- - Option for Swooper to Spawn as Alternate Jackal
- - Laywer Client Options (Non-Crew, Crew, or Any)
- - Sheriff Misfire Options (Misfire Kills Self, Target, or Both)
- - Added Options to choose specific Neutral roles that the Sheriff is able to kill
- - Assassin Modifier Quantity allows for more than one imposter to be able to guess roles
+  - Camoflouge Comms
+  - Restrict Map Imformation (Restricts Admin Table use, Camera use, and Vitals use for a set amount of time per round or per game)
+  - Show Button Target
+  - Random Spawn Location
+  - Allow Guessing Some Modifiers
+  - Reset Spawn Cooldown
+  - Option to Disable Garlic
+  - Option for Swooper to Spawn as Alternate Jackal
+  - Laywer Client Options (Non-Crew, Crew, or Any)
+  - Sheriff Misfire Options (Misfire Kills Self, Target, or Both)
+  - Added Options to choose specific Neutral roles that the Sheriff is able to kill
+  - Assassin Modifier Quantity allows for more than one imposter to be able to guess roles
 </details>
 
 # Installation

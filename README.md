@@ -64,7 +64,7 @@ The [Role Assignment](#role-assignment) sections explains how the roles are bein
 - Mod option: Enable Sound Effects
 - Support for the Submerged map (https://github.com/SubmergedAmongUs/Submerged)
 - New Option Features:
-  - Camoflouge Comms
+  - Camouflage Comms
   - Restrict Map Imformation (Restricts Admin Table use, Camera use, and Vitals use for a set amount of time per round or per game)
   - Show Button Target
   - Random Spawn Location

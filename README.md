@@ -1,4 +1,4 @@
-![Untitled-2](https://user-images.githubusercontent.com/113001912/190059933-62086dcd-e664-4384-9dd6-35bceee35140.png)
+![eisbison banner](./Images/TOR_logo.png)
 
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases"><img src="https://badgen.net/github/release/spexgh/theotherus"></a></p>
 

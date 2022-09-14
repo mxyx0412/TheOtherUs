@@ -1,4 +1,4 @@
-![Untitled-2](https://user-images.githubusercontent.com/113001912/190059209-035fb1d6-6fed-435f-974a-899c0e40b881.png)
+![Untitled-2](https://user-images.githubusercontent.com/113001912/190059933-62086dcd-e664-4384-9dd6-35bceee35140.png)
 
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases"><img src="https://badgen.net/github/release/spexgh/theotherus"></a></p>
 

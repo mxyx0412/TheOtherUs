@@ -7,13 +7,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.
 
-[![Discord]([./Images/TOR_server.png](https://github.com/TheOtherRolesAU/TheOtherRoles/blob/main/Images/TOR_Roles.png))](https://discord.gg/77RkMJHWsM)
-![eisbison infographic](./Images/TOR_Roles.png)
+# The Other Us
 
-
-# The Other Roles
-
-The **The Other Roles**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
+The **The Other Us**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
 Even more roles are coming soon. :)
 
 | Impostors | Crewmates | Neutral | Modifier |

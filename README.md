@@ -548,6 +548,7 @@ The Bomber is an Impostor that can give bombs to players.\
 | Bomber Spawn Chance | - 
 | Bomb Delay | - 
  | Bomb Timer | - 
+ 
 -----------------------
  
 ## Jester
@@ -746,9 +747,12 @@ The Swooper uses the [Jackal](#jackal) kill cooldown.
 
  ## Werewolf
 ### **Team: Neutral**
-The Werewolf is a solo nuetral killer, and must eliminate all opposing factions.
+The Werewolf is a solo nuetral killer with its own win condition.
 
-The Werewolf spawns with no kill button, and must use Rampage to enable their kill button for a short period of time, with a very short kill cooldown. When the ability runs out, the kill button goes away, and the werewolf must wait for the rampage cooldown to finish before being able to kill again.
+Although the Werwolf has a kill button, they can't use it unless they are Rampaged.
+Once the Werewolf rampages they gain Impostor vision and the ability to kill.
+However, unlike most killers their kill cooldown is really short.
+The Werewolf needs to be the last killer alive to win the game.
 
 ### Game Options
 | Name | Description |
@@ -1165,9 +1169,35 @@ Depending on the options, the Vigilante can't guess the shielded player and depe
 | Vigilante Can Shoot Multiple Times Per Meeting |  -
 | Guesses Visible In Ghost Chat | -
 | Guesses Ignore The Medic Shield | -
-
 -----------------------
 
+ ## Veteran
+### **Team: Crewmates**
+
+The Veteran is a Crewmate that can go on alert.
+When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they interact with the Veteran, they die.
+ 
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Veteran Spawn Chance | -
+| Alert Cooldown | -
+| Alert Duration | 
+-----------------------
+ 
+  ## Bodyguard
+### **Team: Crewmates**
+
+The Bodyguard is a crewmate who ca
+ 
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Bodyguard Spawn Chance | -
+| Reset Target After Meeting | -
+ 
+-----------------------
+ 
 # Modifier
 A modifier is an addition to your Impostor/Neutral/Crewmate role.
 Some modifiers can be ingame more than once (Quantity option).
@@ -1198,7 +1228,6 @@ You can select how many imposters have the ability to guess roles by changing th
 | Assassin Can Guess The Spy | -
 | Assassin Can't Guess Snitch When Tasks Completed | -
 | Guesses Ignore The Medic Shield | -
-
 -----------------------
  
 ## Bloody
@@ -1363,6 +1392,39 @@ The Invert can affect all teams (Impostor, Neutral, Crewmate).
 | Invert Quantity | -
 -----------------------
 
+ ## Indomitable
+
+The Indomitable Modifier inverts your controls (no matter if keyboard or mouse).\
+The Indomitable can affect all teams (Impostor, Neutral, Crewmate).
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Indomitable Spawn Chance | -
+-----------------------
+ 
+ ## Blind
+
+An Impostor, Jackal or Crewmate can be affected by the Blind Modifier.\
+The Blind Modifer makes it so that the player's report button does not light up.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Blind Spawn Chance | -
+-----------------------
+ 
+ ## Sleuth
+
+The Sleuth Modifier allows the player to gain knowledge from reporting dead bodies.
+During meetings the Sleuth can see the roles of all players in which they've reported.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Sleuth Spawn Chance | -
+-----------------------
+ 
 # Source code
 You can use parts of the code but don't copy paste the whole thing. Make sure you give credits to the other developers, because some parts of the code are based on theirs.
 

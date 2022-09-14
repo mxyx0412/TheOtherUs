@@ -508,10 +508,10 @@ Unlink the [Trickster](#trickster) the vents created by the Miner can be used by
 
 ## Blackmailer
 ### **Team: Impostors**
-The Miner is an Impostor who has the ability to silence someone during a meeting..\
+The Blackmailer is an Impostor who has the ability to silence someone during a meeting..\
 \
 **NOTE:**
-The blackmailer has a special ability that allows them to see who they are targeting, even if lights are out, camo is active, etc. 
+The Blackmailer has a special ability that allows them to see who they are targeting, even if lights are out, camo is active, etc. 
 
 **Intended Play:** If you are playing proxy, it is the intention of the developer that anyone who is blackmailed is blackmailed until the start of the next meeting. Essentially this means that the player who was blackmailed is not able to utilize proxy the next round.
 
@@ -523,6 +523,20 @@ The blackmailer has a special ability that allows them to see who they are targe
 | Blackmail Cooldown | - 
 -----------------------
 
+ ## Undertaker
+### **Team: Impostors**
+The Undertaker is an Impostor that can drag and drop bodies...\
+\
+
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Undertaker Spawn Chance | - 
+| Dragging Delay After Kill | - 
+ | Can Vent While Dragging | - 
+-----------------------
+ 
 ## Guesser
 ### **Team: Crewmates or Impostors**
 The Guesser can be a Crewmate or an Impostor (depending on the settings).\

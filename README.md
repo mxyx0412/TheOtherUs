@@ -8,8 +8,8 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 <p align="center">
  The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.
   
-[![Discord](https://user-images.githubusercontent.com/113001912/190032086-dceec3e1-e5bc-4404-957b-03da49196cdd.png)](https://discord.gg/77RkMJHWsM)
-![eisbison infographic](https://user-images.githubusercontent.com/113001912/190032505-f9a43a8f-b4c6-4ef5-a838-0f4a0f98aa78.png)
+[![Discord](./Images/TOR_server.png)](https://discord.gg/77RkMJHWsM)
+![eisbison infographic](./Images/TOR_Roles.png)
 
 
 
@@ -244,7 +244,7 @@ Here are a few instructions, on how to create a custom hat:
 - **Submission:** If you got a hat design, you can submit it on our [Discord server](https://discord.gg/77RkMJHWsM). We'll look at all the hats and add all the good ones to the game.
 
 # Colors
-![TOR_colors](https://user-images.githubusercontent.com/113001912/190032746-06cccc0d-13a5-4bb4-b506-89ae91464d6b.jpg)
+![TOR Colors](./Images/TOR_colors.jpg)
 
 # Roles
 

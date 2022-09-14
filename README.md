@@ -495,7 +495,7 @@ When performing a ninja ability kill, the ninja can be invisible for some second
 
 ## Miner
 ### **Team: Impostors**
-The Miner is an Impostor who has the ability to place new vents around the map.
+The Miner is an Impostor who has the ability to place new vents around the map.\
 Unlike the [Trickster](#trickster), the vents created by the Miner can be used by any venter.
 
 

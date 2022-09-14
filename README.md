@@ -508,7 +508,7 @@ Unlike the [Trickster](#trickster), the vents created by the Miner can be used b
 
 ## Blackmailer
 ### **Team: Impostors**
-The Blackmailer is an Impostor who has the ability to silence someone during a meeting..\
+The Blackmailer is an Impostor who has the ability to silence someone during a meeting..
 
 **NOTE:**
 The Blackmailer has a special ability that allows them to see who they are targeting, even if lights are out, camo is active, etc. 
@@ -525,8 +525,7 @@ The Blackmailer has a special ability that allows them to see who they are targe
 
  ## Undertaker
 ### **Team: Impostors**
-The Undertaker is an Impostor that can drag and drop bodies...\
-
+The Undertaker is an Impostor that can drag and drop bodies...
 
 
 ### Game Options

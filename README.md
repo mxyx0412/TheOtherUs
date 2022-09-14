@@ -45,7 +45,7 @@ The [Role Assignment](#role-assignment) sections explains how the roles are bein
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| 2022.3.29| v1.0.0| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.0/TheOtherUs.zip)
+| 2022.8.24| v1.0.0| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.0/TheOtherUs.zip)
 
 # Changelog
 <details>

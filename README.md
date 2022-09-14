@@ -31,7 +31,7 @@ Even more roles are coming soon. :)
 | [Cleaner](#cleaner) | [Medic](#medic) | [Swooper](#swooper) | [Invert](#invert) |
 | [Warlock](#warlock) | [Swapper](#swapper) |
 | [Bounty Hunter](#bounty-hunter) | [Seer](#seer) |  |
-| [Witch](#witch) | [Hacker](#hacker) |  |  |
+| [Witch](#witch) | [Hacker](#hacker) | [Werewolf](#werewolf) |  |
 | [Ninja](#ninja) | [Tracker](#tracker) |  |  |
 | [Miner](#miner) | [Snitch](#snitch) |  |  |
 | [Blackmailer](#blackmailer) | [Spy](#spy) |  |  |

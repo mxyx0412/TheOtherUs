@@ -550,36 +550,6 @@ The Bomber is an Impostor that can give bombs to players.\
  | Bomb Timer | - 
 -----------------------
  
-## Guesser
-### **Team: Crewmates or Impostors**
-The Guesser can be a Crewmate or an Impostor (depending on the settings).\
-The Guesser can shoot players during the meeting, by guessing its role. If the guess is wrong, the Guesser dies instead.\
-You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
-The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
-You can only shoot during the voting time.\
-Depending on the options, the Guesser can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Guesser guessed).\
-\
-**NOTE:**
-- If a player gets shot, you'll get back your votes
-- You can't guess the role **Nice Mini** for obvious reasons
-- You can't guess the role **Lover**, you'll have to guess the primary role of one of the Lovers, to kill both of them
-- Jester wins won't be triggered, if the Guesser shoots the Jester before the Jester gets voted out
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Guesser Spawn Chance | -
-| Chance That The Guesser Is An Impostor | -
-| Guesser Number Of Shots Per Game | -
-| Guesser Can Shoot Multiple Times Per Meeting |  -
-| Guesses Visible In Ghost Chat | -
-| Guesses Ignore The Medic Shield | -
-| Evil Guesser Can Guess The Spy | -
-| Both Guesser Spawn Rate | -
-| Guesser Can't Guess Snitch When Tasks Completed | -
-
------------------------
-
 ## Jester
 ### **Team: Neutral**
 The Jester does not have any tasks. They win the game as a solo, if they get voted out during a meeting.
@@ -694,7 +664,7 @@ If there is a Vulture in the game, there can't be a Cleaner.
 ### **Team: Neutral**
 The Lawyer is a neutral role that has a client.\
 The client might be an Impostor or Jackal which is no Lover.\
-Depending on the options, the client can also be a Jester.\
+Depending on the options, the client can also be a Jester or even any role.\
 The Lawyer needs their client to win in order to win the game.\
 Their client doesn't know that it is their client.\
 If their client gets voted out, the Lawyer dies with the client.\
@@ -712,6 +682,7 @@ How the Lawyer wins:
 | Name | Description |
 |----------|:-------------:|
 | Lawyer Spawn Chance | -
+| Lawyer Client | - Can be set to Crew, Non-Crew, or Anyone
 | Lawyer Target Can Be The Jester | -
 | Lawyer Wins After Meetings | If set to true, the Lawyer wins after a configurable amount of meetings (can't start meetings himself)
 | Lawyer Needed Meetings To Win | -
@@ -728,16 +699,16 @@ In order to achieve this goal, the Pursuer has an ability called "Blank", where 
 If the killer fires the "Blank", shields (e.g. Medic shield or Time Master shield) will not be triggered.\
 The Pursuer has tasks (which can already be done while being a Lawyer), that count towards the task win for the Crewmates. If the Pursuer dies, their tasks won't be counted anymore.
 
-## Prosecutor
+## Executioner
 ### **Team: Neutral**
-The Prosecutor is still a neutral role, but has a different goal to win the game; they have to vote out a specific player.\
+The Executioner is still a neutral role, but has a different goal to win the game; they have to vote out a specific player.\
 In order to achieve this goal, they will always be able to see their targets name, even when names are hidden. They will also see the skin of their target on their intro screen.\
-There are a few things to note about how the Prosecutors role can change.\
-If the target is killed: Prosecutor -> [Pursuer](#pursuer)\
-If the taget disconnects: Prosecutor -> [Pursuer](#pursuer)\
-If the target is sidekicked: Prosecutor -> [Lawyer](#Lawyer) (Client: Target)\
+There are a few things to note about how the Executioners role can change.\
+If the target is killed: Executioner -> [Pursuer](#pursuer)\
+If the taget disconnects: Executioner -> [Pursuer](#pursuer)\
+If the target is sidekicked: Executioner -> [Lawyer](#Lawyer) (Client: Target)\
 \
-The target of a Prosecutor cannot be the following: Impostor, [Jackal](#jackal), [Mayor](#mayor), [Sheriff](#sheriff), [Spy](#spy), [Swapper](#swapper), or a [Lover](#lovers)
+The target of a Executioner cannot be the following: Impostor, [Jackal](#jackal), [Mayor](#mayor), [Sheriff](#sheriff), [Spy](#spy), [Swapper](#swapper), or a [Lover](#lovers)
 
 ## Amnesiac
 ### **Team: Neutral**
@@ -757,7 +728,7 @@ If the target body was on a team with Jackal or Impostor, that player will still
 
 ## Swooper
 ### **Team: Neutral**
-The Swooper is a solo nuetral killer with the option to replace the Jackal.\
+The Swooper is a solo nuetral killer with the option to replace the Jackal.
 
 If it is not an Alternate Jackal, it is on it's own team, and must eliminate all opposing factions.
 The Swooper uses the [Jackal](#jackal) kill cooldown.
@@ -773,8 +744,22 @@ The Swooper uses the [Jackal](#jackal) kill cooldown.
 
 -----------------------
 
------------------------
+ ## Werewolf
+### **Team: Neutral**
+The Werewolf is a solo nuetral killer, and must eliminate all opposing factions.
 
+The Werewolf spawns with no kill button, and must use Rampage to enable their kill button for a short period of time, with a very short kill cooldown. When the ability runs out, the kill button goes away, and the werewolf must wait for the rampage cooldown to finish before being able to kill again.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Werewolf Spawn Chance | -
+| Rampage Cooldown | -
+| Rampage Duration | -
+| KillCooldown | 3
+
+-----------------------
+ 
 ## Shifter
 ### **Team: Crewmates**
 The Shifter can take over the role of another Crewmate, the other player will transform into a Crewmate.\
@@ -1155,6 +1140,36 @@ What is your killers role?
 | Medium Cooldown | -
 | Medium Duration | The time it takes to question a soul
 | Medium Each Soul Can Only Be Questioned Once | If set to true, souls can only be questioned once and then disappear
+-----------------------
+ 
+## Guesser
+### **Team: Crewmates or Impostors**
+The Guesser can be a Crewmate or an Impostor (depending on the settings).\
+The Guesser can shoot players during the meeting, by guessing its role. If the guess is wrong, the Guesser dies instead.\
+You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
+The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
+You can only shoot during the voting time.\
+Depending on the options, the Guesser can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Guesser guessed).\
+\
+**NOTE:**
+- If a player gets shot, you'll get back your votes
+- You can't guess the role **Nice Mini** for obvious reasons
+- You can't guess the role **Lover**, you'll have to guess the primary role of one of the Lovers, to kill both of them
+- Jester wins won't be triggered, if the Guesser shoots the Jester before the Jester gets voted out
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Guesser Spawn Chance | -
+| Chance That The Guesser Is An Impostor | -
+| Guesser Number Of Shots Per Game | -
+| Guesser Can Shoot Multiple Times Per Meeting |  -
+| Guesses Visible In Ghost Chat | -
+| Guesses Ignore The Medic Shield | -
+| Evil Guesser Can Guess The Spy | -
+| Both Guesser Spawn Rate | -
+| Guesser Can't Guess Snitch When Tasks Completed | -
+
 -----------------------
 
 # Modifier

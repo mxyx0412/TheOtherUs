@@ -26,7 +26,7 @@ Even more roles are coming soon. :)
 | [Morphling](#morphling) | [Sheriff](#sheriff) | [Sidekick](#sidekick) | [Bait](#bait) |
 | [Camouflager](#camouflager) | [Deputy](#deputy) | [Vulture](#vulture) | [Lovers](#lovers) |
 | [Vampire](#vampire) | [Lighter](#lighter) | [Lawyer](#lawyer) | [Sunglasses](#sunglasses) |
-| [Eraser](#eraser) | [Detective](#detective) | [Prosecutor](#prosecutor) | [Mini](#mini) |
+| [Eraser](#eraser) | [Detective](#detective) | [Executioner](#prosecutor) | [Mini](#mini) |
 | [Trickster](#trickster) | [Time Master](#time-master) | [Amnesiac](#amnesiac) | [VIP](#vip) |
 | [Cleaner](#cleaner) | [Medic](#medic) | [Swooper](#swooper) | [Invert](#invert) |
 | [Warlock](#warlock) | [Swapper](#swapper) |

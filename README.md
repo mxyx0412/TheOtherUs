@@ -536,6 +536,20 @@ The Undertaker is an Impostor that can drag and drop bodies.
  | Can Vent While Dragging | - 
 -----------------------
  
+ ## Bomber
+### **Team: Impostors**
+The Bomber is an Impostor that can give bombs to players.\
+ Players with a bomb will explode if their time runs out before giving the bomb to another player.
+
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Bomber Spawn Chance | - 
+| Bomb Delay | - 
+ | Bomb Timer | - 
+-----------------------
+ 
 ## Guesser
 ### **Team: Crewmates or Impostors**
 The Guesser can be a Crewmate or an Impostor (depending on the settings).\

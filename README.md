@@ -640,6 +640,7 @@ Upon the death of the Jackal (depending on the options), they might get promoted
 | Sidekick gets promoted to Jackal on Jackal death |  Yes/No |
 | Sidekick can kill | Yes/No |
 | Sidekick can use vents | Yes/No |
+-----------------------
  
 ## Vulture
 ### **Team: Neutral**
@@ -700,6 +701,7 @@ The Pursuer is still a neutral role, but has a different goal to win the game; t
 In order to achieve this goal, the Pursuer has an ability called "Blank", where they can fill a killers (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their cooldowns will be triggered as usual.\
 If the killer fires the "Blank", shields (e.g. Medic shield or Time Master shield) will not be triggered.\
 The Pursuer has tasks (which can already be done while being a Lawyer), that count towards the task win for the Crewmates. If the Pursuer dies, their tasks won't be counted anymore.
+-----------------------
 
 ## Executioner
 ### **Team: Neutral**
@@ -733,6 +735,7 @@ If the target body was on a team with Jackal or Impostor, that player will still
 | Amnesiac Spawn Chance | -
 | Show arrows to dead bodies | If set to true, the Amnesiac will get arrows to dead bodies when they die.
 | Reset role when taken | If set to true, the role that is taken will be fully reset, allowing the abilities to be reused. Note: Weird stuff might happen with this setting off.
+-----------------------
 
 ## Swooper
 ### **Team: Neutral**

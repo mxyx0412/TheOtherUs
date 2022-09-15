@@ -14,9 +14,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 
 
-# The Other Roles
+# The Other Us
 
-The **The Other Roles**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
+The **The Other Us**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
 Even more roles are coming soon. :)
 
 | Impostors | Crewmates | Neutral | Modifier |

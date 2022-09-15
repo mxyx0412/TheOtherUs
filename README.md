@@ -1399,7 +1399,7 @@ The Invert can affect all teams (Impostor, Neutral, Crewmate).
 
  ## Indomitable
 
-The Indomitable Modifier makes it so that you cannot be guessed in meetings.
+The Indomitable Modifier makes it so that you cannot be guessed in meetings.\
 When a Vigilante or an Assassin attempts to guess you, both their screen and your screen will flash purple, alerting you that someone is attempting to guess your role, and alerting the guesser that you are indomitable. 
 
 ### Game Options

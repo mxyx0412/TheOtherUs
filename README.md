@@ -712,6 +712,12 @@ If the target is sidekicked: Executioner -> [Lawyer](#Lawyer) (Client: Target)\
 \
 The target of a Executioner cannot be the following: Impostor, [Jackal](#jackal), [Mayor](#mayor), [Sheriff](#sheriff), [Spy](#spy), [Swapper](#swapper), or a [Lover](#lovers)
 
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Executioner Spawn Chance | -
+-----------------------
+
 ## Amnesiac
 ### **Team: Neutral**
 The Amesiac has no win condition and cannot win the game as Amnesiac.\
@@ -743,7 +749,6 @@ The Swooper uses the [Jackal](#jackal) kill cooldown.
 | Swoop Cooldown | -
 | Swoop Duration | -
 | Has Impostor Vision | true
-
 -----------------------
 
  ## Werewolf

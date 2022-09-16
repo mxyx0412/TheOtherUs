@@ -338,6 +338,7 @@ If a victim is near a garlic, the "Bite Button" turns into the default "Kill But
 | Vampire Spawn Chance | -
 | Vampire Kill Delay | -
 | Vampire Cooldown | Sets the kill/bite cooldown
+| Enable Garlic | On
 | Vampire Can Kill Near Garlics | The Vampire can never bite when their victim is near a garlic. If this option is set to true, they can still perform a normal kill there.
 -----------------------
 
@@ -561,6 +562,7 @@ The Jester does not have any tasks. They win the game as a solo, if they get vot
 |----------|:-------------:|
 | Jester Spawn Chance | -
 | Jester Can Call Emergency Meeting | Option to disable the emergency button for the Jester
+ | Jester Has Imposter Vision | -
 -----------------------
 
 ## Arsonist

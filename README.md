@@ -99,6 +99,14 @@ If you have problems with the AmongUsModUpdater, make sure to [contact us](https
 5. Run the game (the first launch might take a while)
 
 Not working? You might want to install the dependency [vc_redist](https://aka.ms/vs/16/release/vc_redist.x86.exe)
+ 
+## Windows Installation Epic
+1. Download the newest [release](https://github.com/Eisbison/TheOtherRoles/releases/latest)
+2. Find the folder of your game. Should be stored in "Epic/AmongUs" (wherever you installed Epic on your PC)
+3. Now unzip and drag or extract the files from the .zip into the original Epic Among Us game folder.
+4. Run the game by starting the game in your Epic Games launcher (the first launch might take a while).
+
+Not working? You might want to install the dependency [vc_redist](https://aka.ms/vs/16/release/vc_redist.x86.exe)
 
 ![Install](https://i.imgur.com/pvBAyZN.png)
 

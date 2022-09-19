@@ -60,7 +60,10 @@ namespace TheOtherRoles.Patches {
             if (Sunglasses.sunglasses.FindAll(x => x.PlayerId == player.PlayerId).Count > 0) // Sunglasses
                 __result *= 1f - Sunglasses.vision * 0.1f;
             if (Torch.torch.FindAll(x => x.PlayerId == player.PlayerId).Count > 0) // Torchtest
-                __result *= 1f + Torch.vision * 0.1f;
+                __result *= 1f + Torch.modifierTorchLightsOnVision * 1f;
+                __result *= 1f + Torch.modifierTorchLightsOffVision * 1f;
+                //float unlerped = Mathf.InverseLerp(__instance.MinLightRadius, __instance.MaxLightRadius, GetNeutralLightRadius(__instance, false));
+                //__result = Mathf.Lerp(__instance.MaxLightRadius * Torch.modifierTorchLightsOffVision, __instance.MaxLightRadius * Torch.modifierTorchLightsOnVision, unlerped);
 
             return false;
         }

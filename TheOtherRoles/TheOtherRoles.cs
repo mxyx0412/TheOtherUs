@@ -1986,11 +1986,13 @@ namespace TheOtherRoles
 
     public static class Torch {
         public static List<PlayerControl> torch = new List<PlayerControl>();
-        public static int vision = 1;
+        public static float modifierTorchLightsOnVision = 2f;
+        public static float modifierTorchLightsOffVision = 0.75f;
 
         public static void clearAndReload() {
             torch = new List<PlayerControl>();
-            vision = CustomOptionHolder.modifierSunglassesVision.getSelection() + 1; //leave it here because there shouldnt be any conflict torchtest
+            modifierTorchLightsOnVision = CustomOptionHolder.modifierTorchLightsOnVision.getFloat();
+            modifierTorchLightsOffVision = CustomOptionHolder.modifierTorchLightsOffVision.getFloat();
         }
     }
     public static class Mini {

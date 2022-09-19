@@ -312,6 +312,8 @@ namespace TheOtherRoles {
 
         public static CustomOption modifierTorch;
         public static CustomOption modifierTorchQuantity;
+        public static CustomOption modifierTorchLightsOnVision;
+        public static CustomOption modifierTorchLightsOffVision;
         
         public static CustomOption modifierMini;
         public static CustomOption modifierMiniGrowingUpDuration;
@@ -675,6 +677,8 @@ namespace TheOtherRoles {
 
             modifierTorch = CustomOption.Create(1053, Types.Modifier, cs(Color.yellow, "Torch"), rates, null, true);
             modifierTorchQuantity = CustomOption.Create(1054, Types.Modifier, cs(Color.yellow, "Torch Quantity"), ratesModifier, modifierTorch);
+            modifierTorchLightsOnVision = CustomOption.Create(1055, Types.Modifier, cs(Color.yellow, "Vision When Lights On"), 2f, 0.25f, 5f, 0.25f, modifierTorch);
+            modifierTorchLightsOffVision = CustomOption.Create(1056, Types.Modifier, cs(Color.yellow, "Vision When Lights Off"), 0.75f, 0.25f, 5f, 0.25f, modifierTorch);
 
             modifierMini = CustomOption.Create(1061, Types.Modifier, cs(Color.yellow, "Mini"), rates, null, true);
             modifierMiniGrowingUpDuration = CustomOption.Create(1062, Types.Modifier, "Mini Growing Up Duration", 400f, 100f, 1500f, 100f, modifierMini);

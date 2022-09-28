@@ -45,29 +45,42 @@ The [Role Assignment](#role-assignment) sections explains how the roles are bein
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| 2022.6.21| v4.1.6| [Download](https://github.com/Eisbison/TheOtherRoles/releases/download/v4.1.6/TheOtherRoles.zip)
+| 2022.8.24| v1.0.4| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.4/TheOtherUs.zip)
+| 2022.8.24| v1.0.3| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.3/TheOtherUs.zip)
+| 2022.8.24| v1.0.2| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.2/TheOtherUs.zip)
+| 2022.8.24| v1.0.1| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.1/TheOtherUs.zip)
+| 2022.8.24| v1.0.0| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.0/TheOtherUs.zip)
 
 # Changelog
 <details>
   <summary>Click to show the Changelog</summary>
   
 **Version 4.1.6**  
-- Added Sound Effects: Most buttons / role funcionalities now have a sound!
-- Added a mod option: Enable Sound Effects  
-- Added an option: Hide After Death Modifiers: Modifiers which will have an effect after your death will be hidden while the player is alive so they cant be claimed / called
-- Added lobby timer sync, so that each player can see when the lobby will close on Vanilla Servers
-- Added a credits screen to the main menu
-- Re-Added the player's last position to the map in meetings
-- Changed the custom region ui   
-- Fixed a bug where the Spy's Name appearing in white to the impostors in the intro cutscene
-- Fixed a bug where the zoom function for ghosts would zoom in too far
-- Fixed a bug where custom color names did not work (TOR is now compatible with colorblind mode)
-- Fixed a bug where the ninjas color name did not become invisible in colorblind mode
-- Fixed a bug where Morphling & Camouflager did not work correctly for skins with adaptive color
-- Fixed a bug where the first kill shield was given to the wrong lover
-- Fixed a bug where Pursuer appeared in the GuesserUI even when Lawyer was disabled
-- Fixed a bug where a guessed Guesser could still guess if they had the guesser ui open
-- Fixed a bug where the role assignment did not work properly (fingers crossed)
+- New Colors!
+- New Imposter Roles: Bomber, Undertaker, Blackmailer, Miner
+- New Neutral Roles: Executioner, Amnesiac, Swooper, Werewolf
+- New Crewmate Roles: Vigilante, Veteran, Bodyguard
+- New Modifiers: Assassin, Indomitable, Blind, Sleuth
+- Renamed Nice Guesser role to Vigilante
+- Renamed Evil Guesser role to Assassin and made it a Modifier
+- New Game Settings and Role & Modifier Settings
+- Sound Effects: Most buttons / role functionalities have a sound!
+- Mod option: Enable Sound Effects
+- Support for the Submerged map (https://github.com/SubmergedAmongUs/Submerged)
+- Games might not work properly unless the Submerged map is downloaded->Click the "Download Submerged" button in the bottom left of the main menu screen and then restart your game to fix this issue
+- New Option Features:
+- Camouflage Comms
+- Restrict Map Imformation (Restricts Admin Table use, Camera use, and Vitals use for a set amount of time per round or per game)
+- Show Button Target
+- Random Spawn Location
+- Allow Guessing Some Modifiers
+- Reset Spawn Cooldown
+- Option to Disable Garlic
+- Option for Swooper to Spawn as Alternate Jackal
+- Laywer Client Options (Non-Crew, Crew, or Any)
+- Sheriff Misfire Options (Misfire Kills Self, Target, or Both)
+- Added Options to choose specific Neutral roles that the Sheriff is able to kill
+- Assassin Modifier Quantity allows for more than one imposter to be able to guess roles
 </details>
 
 # Installation

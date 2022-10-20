@@ -303,9 +303,15 @@ namespace TheOtherRoles.Patches {
             if (roleInfo == null) return;
             if (roleInfo.isNeutral) {
                 var neutralColor = new Color32(76, 84, 78, 255);
-                __instance.BackgroundBar.material.color = roleInfo.color;
-                __instance.TeamTitle.text = roleInfo.name;
-                __instance.TeamTitle.color = roleInfo.color;
+
+        //        __instance.BackgroundBar.material.color = roleInfo.color;
+        //        __instance.TeamTitle.text = roleInfo.name;
+        //        __instance.TeamTitle.color = roleInfo.color;
+
+                __instance.BackgroundBar.material.color = neutralColor;
+                __instance.TeamTitle.text = "Neutral";
+                __instance.TeamTitle.color = neutralColor;
+
             } else {
                 bool isCrew = true;
                 if (roleInfo.color == Palette.ImpostorRed) isCrew = false;

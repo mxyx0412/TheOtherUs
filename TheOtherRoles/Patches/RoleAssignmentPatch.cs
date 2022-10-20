@@ -39,7 +39,7 @@ namespace TheOtherRoles.Patches {
             assignChanceRoles(data); // Assign roles that may or may not be in the game last
             assignModifiers();
             assignRoleTargets(data);
-            setRolesAgain(); //testing usually off
+          //  setRolesAgain(); 
         }
 
         public static RoleAssignmentData getRoleAssignmentData() {
@@ -115,7 +115,6 @@ namespace TheOtherRoles.Patches {
             crewSettings.Add((byte)RoleId.Medic, CustomOptionHolder.medicSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Shifter, CustomOptionHolder.shifterSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Swapper,CustomOptionHolder.swapperSpawnRate.getSelection());
-            crewSettings.Add((byte)RoleId.Transporter, CustomOptionHolder.transporterSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Seer, CustomOptionHolder.seerSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Hacker, CustomOptionHolder.hackerSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Tracker, CustomOptionHolder.trackerSpawnRate.getSelection());
@@ -687,10 +686,6 @@ namespace TheOtherRoles.Patches {
             switch (roleId) {
                 case RoleId.Lover:
                     selection = CustomOptionHolder.modifierLover.getSelection(); break;
-                case RoleId.EvilGuesser:
-                    selection = CustomOptionHolder.modifierAssassin.getSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
-                    break;
                 case RoleId.Tiebreaker:
                     selection = CustomOptionHolder.modifierTieBreaker.getSelection(); break;
                 case RoleId.Indomitable:
@@ -744,33 +739,33 @@ namespace TheOtherRoles.Patches {
                     selection = CustomOptionHolder.modifierInvert.getSelection();
                     if (multiplyQuantity) selection *= CustomOptionHolder.modifierInvertQuantity.getQuantity();
                     break;
-               // case RoleId.EvilGuesser: //moving to top
-               //     selection = CustomOptionHolder.modifierAssassin.getSelection();
-               //     if (multiplyQuantity) selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
-               //     break; 
+                case RoleId.EvilGuesser:
+                    selection = CustomOptionHolder.modifierAssassin.getSelection();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
+                    break; 
             }
                  
             return selection;
         }
 
-        private static void setRolesAgain() //testing usually off
-        {
-
-            while (playerRoleMap.Any())
-            {
-                byte amount = (byte)Math.Min(playerRoleMap.Count, 20);
-                var writer = AmongUsClient.Instance!.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.WorkaroundSetRoles, SendOption.Reliable, -1);
-                writer.Write(amount);
-                for (int i = 0; i < amount; i++)
-                {
-                    var option = playerRoleMap[0];
-                    playerRoleMap.RemoveAt(0);
-                    writer.WritePacked((uint)option.Item1);
-                    writer.WritePacked((uint)option.Item2);
-                }
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-            }
-        }
+    //    private static void setRolesAgain()
+  //      {
+//
+   //         while (playerRoleMap.Any())
+  //          {
+  //              byte amount = (byte)Math.Min(playerRoleMap.Count, 20);
+//              var writer = AmongUsClient.Instance!.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.WorkaroundSetRoles, SendOption.Reliable, -1);
+ //               writer.Write(amount);
+ //              for (int i = 0; i < amount; i++)
+  //              {
+  //                  var option = playerRoleMap[0];
+   //                 playerRoleMap.RemoveAt(0);
+   //                 writer.WritePacked((uint)option.Item1);
+  //                  writer.WritePacked((uint)option.Item2);
+  //              }
+  //              AmongUsClient.Instance.FinishRpcImmediately(writer);
+   //         }
+  //      }
 
 
         public class RoleAssignmentData {

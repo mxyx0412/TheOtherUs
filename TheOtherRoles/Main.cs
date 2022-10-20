@@ -107,7 +107,7 @@ namespace TheOtherRoles
             UpdateRegions();
 
             GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(3, 16).ToArray(); // Max Imp = Recommended Imp = 3 //regular and distributes imposter
-       //     GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(0, 16).ToArray(); // Max Imp = Recommended Imp = 3 //distributes neutral and crewmate
+         //   GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(0, 16).ToArray(); // Max Imp = Recommended Imp = 3 //distributes neutral and crewmate
             GameOptionsData.MinPlayers = Enumerable.Repeat(1, 15).ToArray(); // Min Players = 4
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", false);
@@ -161,7 +161,8 @@ namespace TheOtherRoles
 
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (!TheOtherRolesPlugin.DebugMode.Value) return;
+       //     if (!TheOtherRolesPlugin.DebugMode.Value) return;
+              if (CustomOptionHolder.debugMode.getBool()) {
 
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.F)) {
@@ -179,6 +180,7 @@ namespace TheOtherRoles
                 playerControl.SetColor((byte) random.Next(Palette.PlayerColors.Length));
                 GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
             }
+              }
 
             // Terminate round
             if(Input.GetKeyDown(KeyCode.L)) {

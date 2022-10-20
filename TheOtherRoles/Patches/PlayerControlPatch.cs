@@ -203,10 +203,6 @@ namespace TheOtherRoles.Patches {
             setPlayerOutline(Deputy.currentTarget, Deputy.color);
         }
 
-        public static void transporterStuff() {
-            if (Transporter.transporter == null || Transporter.transporter != CachedPlayer.LocalPlayer.PlayerControl || Transporter.transporter.Data.IsDead) return;
-        }
-
         public static void deputyCheckPromotion(bool isMeeting=false)
         {
             // If LocalPlayer is Deputy, the Sheriff is disconnected and Deputy promotion is enabled, then trigger promotion
@@ -1054,8 +1050,6 @@ namespace TheOtherRoles.Patches {
                 // SecurityGuard
                 securityGuardSetTarget();
                 securityGuardUpdate();
-                // Transporter
-                transporterStuff();
                 // Arsonist
                 arsonistSetTarget();
                 // Snitch
@@ -1296,10 +1290,6 @@ namespace TheOtherRoles.Patches {
                     HudManagerStartPatch.warlockCurseButton.Timer = Warlock.warlock.killTimer;
                 }
             }
-            // Transporter Button Sync
-             if (Transporter.transporter != null && CachedPlayer.LocalPlayer.PlayerControl == Transporter.transporter && __instance == Transporter.transporter && HudManagerStartPatch.transportButton != null)
-                HudManagerStartPatch.transportButton.Timer = HudManagerStartPatch.transportButton.MaxTimer;
-                
             // Ninja Button Sync
             if (Ninja.ninja != null && CachedPlayer.LocalPlayer.PlayerControl == Ninja.ninja && __instance == Ninja.ninja && HudManagerStartPatch.ninjaButton != null)
                 HudManagerStartPatch.ninjaButton.Timer = HudManagerStartPatch.ninjaButton.MaxTimer;

@@ -47,7 +47,6 @@ namespace TheOtherRoles
         public static RoleInfo camouflager = new RoleInfo("Camouflager", Camouflager.color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager);
         public static RoleInfo miner = new RoleInfo("Miner", Miner.color, "Make new Vents", "Create Vents", RoleId.Miner);
         public static RoleInfo vampire = new RoleInfo("Vampire", Vampire.color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire);
-        public static RoleInfo transporter = new RoleInfo("Transporter", Transporter.color, "Choose Two Players To Swap Locations", "Choose two players to swap locations", RoleId.Transporter);
         public static RoleInfo eraser = new RoleInfo("Eraser", Eraser.color, "Kill the Crewmates and erase their roles", "Erase the roles of your enemies", RoleId.Eraser);
         public static RoleInfo trickster = new RoleInfo("Trickster", Trickster.color, "Use your jack-in-the-boxes to surprise others", "Surprise your enemies", RoleId.Trickster);
         public static RoleInfo cleaner = new RoleInfo("Cleaner", Cleaner.color, "Kill everyone and leave no traces", "Clean up dead bodies", RoleId.Cleaner);
@@ -55,7 +54,7 @@ namespace TheOtherRoles
         public static RoleInfo warlock = new RoleInfo("Warlock", Warlock.color, "Curse other players and kill everyone", "Curse and kill everyone", RoleId.Warlock);
         public static RoleInfo bountyHunter = new RoleInfo("Bounty Hunter", BountyHunter.color, "Hunt your bounty down", "Hunt your bounty down", RoleId.BountyHunter);
         public static RoleInfo detective = new RoleInfo("Detective", Detective.color, "Find the <color=#FF1919FF>Impostors</color> by examining footprints", "Examine footprints", RoleId.Detective);
-         public static RoleInfo jumper = new RoleInfo("Jumper", Jumper.color, "Surprise the <color=#FF1919FF>Impostors</color>", "Surprise the Impostors", RoleId.Jumper);
+        public static RoleInfo jumper = new RoleInfo("Jumper", Jumper.color, "Surprise the <color=#FF1919FF>Impostors</color>", "Surprise the Impostors", RoleId.Jumper);
         public static RoleInfo timeMaster = new RoleInfo("Time Master", TimeMaster.color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster);
         public static RoleInfo veteren = new RoleInfo("Veteran", Veteren.color, "Protect yourself from other", "Protect yourself from others", RoleId.Veteren);
         public static RoleInfo medic = new RoleInfo("Medic", Medic.color, "Protect someone with your shield", "Protect other players", RoleId.Medic);
@@ -132,7 +131,6 @@ namespace TheOtherRoles
             ninja,
             bodyguard,
             blackmailer,
-            transporter,
             miner,
 			swooper,
             goodGuesser,
@@ -246,7 +244,6 @@ namespace TheOtherRoles
             if (p == Bomber.bomber) infos.Add(bomber);
             if (p == Warlock.warlock) infos.Add(warlock);
             if (p == Witch.witch) infos.Add(witch);
-            if (p == Transporter.transporter) infos.Add(transporter);
             if (p == Ninja.ninja) infos.Add(ninja);
             if (p == Blackmailer.blackmailer) infos.Add(blackmailer);
             if (p == Detective.detective) infos.Add(detective);

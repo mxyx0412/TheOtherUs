@@ -59,10 +59,6 @@ namespace TheOtherRoles {
         //public static CustomOption vampireGarlicButton;
         //public static CustomOption vampireCanKillNearGarlics;
 
-        public static CustomOption transporterSpawnRate;
-        public static CustomOption transportCooldown;
-        public static CustomOption transportNum;
-
 
         public static CustomOption eraserSpawnRate;
         public static CustomOption eraserCooldown;
@@ -149,6 +145,7 @@ namespace TheOtherRoles {
         public static CustomOption portalmakerLogHasTime;
 
         public static CustomOption engineerSpawnRate;
+        public static CustomOption engineerResetFixAfterMeeting;
         public static CustomOption engineerNumberOfFixes;
         public static CustomOption engineerHighlightForImpostors;
         public static CustomOption engineerHighlightForTeamJackal;
@@ -307,7 +304,6 @@ namespace TheOtherRoles {
         public static CustomOption modifierAssassinMultipleShotsPerMeeting;
         public static CustomOption modifierAssassinKillsThroughShield;
 
-
         public static CustomOption modifierBait;
         public static CustomOption modifierBaitQuantity;
         public static CustomOption modifierBaitReportDelayMin;
@@ -363,7 +359,7 @@ namespace TheOtherRoles {
         public static CustomOption allowParallelMedBayScans;
         public static CustomOption shieldFirstKill;
         public static CustomOption impostorCanKillCustomRolesInTheVent;
-      //  public static CustomOption toggleLobbyMode;
+        public static CustomOption debugMode;
 
         public static CustomOption randomGameStartPosition;
         public static CustomOption allowModGuess;
@@ -572,13 +568,10 @@ namespace TheOtherRoles {
             mayorMaxRemoteMeetings = CustomOption.Create(84, Types.Crewmate, "Number Of Remote Meetings", 1f, 1f, 5f, 1f, mayorMeetingButton);
 
             engineerSpawnRate = CustomOption.Create(90, Types.Crewmate, cs(Engineer.color, "Engineer"), rates, null, true);
+            engineerResetFixAfterMeeting = CustomOption.Create(9111, Types.Crewmate, "Reset Fix After Meeting", false, engineerSpawnRate);
             engineerNumberOfFixes = CustomOption.Create(91, Types.Crewmate, "Number Of Sabotage Fixes", 1f, 1f, 3f, 1f, engineerSpawnRate);
             engineerHighlightForImpostors = CustomOption.Create(92, Types.Crewmate, "Impostors See Vents Highlighted", true, engineerSpawnRate);
             engineerHighlightForTeamJackal = CustomOption.Create(93, Types.Crewmate, "Jackal and Sidekick See Vents Highlighted ", true, engineerSpawnRate);
-
-            transporterSpawnRate = CustomOption.Create(164, Types.Crewmate, cs(Transporter.color, "Transporter [BETA]"), rates, null, true);
-            transportCooldown = CustomOption.Create(165, Types.Crewmate, "Transport Cooldown", 15f, 0f, 120f, 5f, transporterSpawnRate);
-            transportNum = CustomOption.Create(199, Types.Crewmate, "Number Of Transports", 5f, 1f, 30f, 1f, transporterSpawnRate);
 
             sheriffSpawnRate = CustomOption.Create(100, Types.Crewmate, cs(Sheriff.color, "Sheriff"), rates, null, true);
             sheriffCooldown = CustomOption.Create(101, Types.Crewmate, "Sheriff Cooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);
@@ -686,7 +679,7 @@ namespace TheOtherRoles {
             mediumCooldown = CustomOption.Create(361, Types.Crewmate, "Medium Questioning Cooldown", 30f, 5f, 120f, 5f, mediumSpawnRate);
             mediumDuration = CustomOption.Create(362, Types.Crewmate, "Medium Questioning Duration", 3f, 0f, 15f, 1f, mediumSpawnRate);
             mediumOneTimeUse = CustomOption.Create(363, Types.Crewmate, "Each Soul Can Only Be Questioned Once", false, mediumSpawnRate);
-            
+
             jumperSpawnRate = CustomOption.Create(9050, Types.Crewmate, cs(Jumper.color, "Jumper"), rates, null, true);
             jumperJumpTime = CustomOption.Create(9051, Types.Crewmate, "Jump Cooldown", 30, 0, 60, 5, jumperSpawnRate);
             jumperChargesOnPlace = CustomOption.Create(9052, Types.Crewmate, "Charges On Place", 1, 0, 10, 1, jumperSpawnRate);
@@ -774,7 +767,7 @@ namespace TheOtherRoles {
             hidePlayerNames = CustomOption.Create(6, Types.General, "Hide Player Names", false);
             allowParallelMedBayScans = CustomOption.Create(7, Types.General, "Allow Parallel MedBay Scans", false);
             shieldFirstKill = CustomOption.Create(8, Types.General, "Shield Last Game First Kill", false);
-            hideOutOfSightNametags = CustomOption.Create(550, Types.General, "Hide Obstructed Player Names", false);
+            hideOutOfSightNametags = CustomOption.Create(550, Types.General, "Hide Obstructed Player Names [BETA]", false);
             impostorCanKillCustomRolesInTheVent = CustomOption.Create(920000003, Types.General, "Impostor Can Kill Players In The Vent", false);
 
             dynamicMap = CustomOption.Create(500, Types.General, "Play On A Random Map", false, null, false);
@@ -794,14 +787,15 @@ namespace TheOtherRoles {
 
 
             showButtonTarget = CustomOption.Create(9994, Types.General, "Show Button Target", true);
-         //   toggleLobbyMode = CustomOption.Create(7000, cs(new Color(0, 1, 217f / 255f, 1f), "Ignore Unready Players"), "option", new string[] { "No", "Yes" }, null, false);
             blockGameEnd = CustomOption.Create(9995, Types.General, "Block Game End if Power Crew is Alive", false);
 
 
             randomGameStartPosition = CustomOption.Create(9041, Types.General, "Random Spawn Location", false);
             allowModGuess = CustomOption.Create(9043, Types.General, "Allow Guessing Some Modifiers", false);
             resetRoundStartCooldown = CustomOption.Create(9042, Types.General, "Reset Spawn Cooldown", false);
-            NoGameEnd = CustomOption.Create(100600, Types.General, "Block Game End", false, null, true);
+            NoGameEnd = CustomOption.Create(100600, Types.General, "No Game End", false, null, true);
+
+            debugMode = CustomOption.Create(9996, Types.General, "Debug Mode", false);
        //     NoGameEndImp = CustomOption.Create(100601, Types.General, "No Game End for Imposter", false);
        //     NoGameEndElse = CustomOption.Create(100602, Types.General, "No Game End for Neutral and Crewmate", false);
 

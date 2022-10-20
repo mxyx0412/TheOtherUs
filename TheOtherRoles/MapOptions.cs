@@ -33,6 +33,7 @@ namespace TheOtherRoles{
 
         public static bool enableHorseMode = false;
         public static bool shieldFirstKill = false;
+        public static bool debugMode = false;
 
         // Updating values
         public static int meetingsCount = 0;
@@ -56,6 +57,7 @@ namespace TheOtherRoles{
             hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.getBool();
             allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.getBool();
             shieldFirstKill = CustomOptionHolder.shieldFirstKill.getBool();
+            debugMode = CustomOptionHolder.debugMode.getBool();
             firstKillPlayer = null;
             restrictDevices = CustomOptionHolder.restrictDevices.getSelection();
             restrictAdminTime = restrictAdminTimeMax = CustomOptionHolder.restrictAdmin.getFloat();

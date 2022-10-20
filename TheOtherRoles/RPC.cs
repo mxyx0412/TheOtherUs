@@ -34,7 +34,6 @@ namespace TheOtherRoles
         Detective,
         TimeMaster,
         Swooper,
-        Transporter,
         Veteren,
         Amnisiac,
 		Cursed,
@@ -128,7 +127,6 @@ namespace TheOtherRoles
         TimeMasterRewindTime,
 		TurnToImpostor,
         BodyGuardGuardPlayer,
-        SetUntransportable,
         VeterenAlert,
         VeterenKill,
         ShifterShift,
@@ -149,7 +147,6 @@ namespace TheOtherRoles
         SetFutureErased,
         SetFutureShifted,
         SetFutureShielded,
-        Transport,
         SetFutureSpelled,
         PlaceNinjaTrace,
         PlacePortal,
@@ -298,9 +295,6 @@ namespace TheOtherRoles
                     case RoleId.Sheriff:
                         Sheriff.sheriff = player;
                         break;
-                    case RoleId.Transporter:
-                       Transporter.transporter = player;
-                        break;
                     case RoleId.BodyGuard:
                         BodyGuard.bodyguard = player;
                         break;
@@ -444,9 +438,6 @@ namespace TheOtherRoles
                 //case RoleId.NiceGuesser:
                     //Guesser.niceGuesser = player;
                     //break;
-                case RoleId.EvilGuesser:
-                    Guesser.evilGuesser.Add(player);
-                    break;
                 case RoleId.Bait:
                     Bait.bait.Add(player);
                     break;
@@ -500,9 +491,9 @@ namespace TheOtherRoles
                 case RoleId.Invert:
                     Invert.invert.Add(player);
                     break;
-             //   case RoleId.EvilGuesser:
-             //       Guesser.evilGuesser.Add(player);
-             //       break;
+                case RoleId.EvilGuesser:
+                    Guesser.evilGuesser.Add(player);
+                    break;
             }
         }
 
@@ -585,6 +576,7 @@ namespace TheOtherRoles
         }
 
         public static void engineerUsedRepair() {
+            Engineer.usedFix = true;
             Engineer.remainingFixes--;
         }
         
@@ -709,12 +701,6 @@ namespace TheOtherRoles
                     if (Amnisiac.resetRole) Mayor.clearAndReload();
                     Mayor.mayor = amnisiac;
                     Amnisiac.clearAndReload();
-                    break;
-
-                case RoleId.Transporter:
-                    if (Amnisiac.resetRole) Transporter.clearAndReload();
-                    Transporter.transporter = amnisiac;
-                    Transporter.clearAndReload();
                     break;
 
                 case RoleId.Jumper:
@@ -1174,8 +1160,6 @@ namespace TheOtherRoles
                 Lighter.lighter = oldShifter;
             if (Detective.detective != null && Detective.detective == player)
                 Detective.detective = oldShifter;
-            if (Transporter.transporter != null && Transporter.transporter == player)
-                Transporter.transporter = oldShifter;
             if (TimeMaster.timeMaster != null && TimeMaster.timeMaster == player)
                 TimeMaster.timeMaster = oldShifter;
             if (Amnisiac.amnisiac != null && Amnisiac.amnisiac == player)
@@ -1368,7 +1352,6 @@ namespace TheOtherRoles
             if (player == Witch.witch) Witch.clearAndReload();
             if (player == Ninja.ninja) Ninja.clearAndReload();
             if (player == Blackmailer.blackmailer) Blackmailer.clearAndReload();
-            if (player == Transporter.transporter) Transporter.clearAndReload();
            // if (Guesser.evilGuesser.Any(x => x.PlayerId == player.PlayerId)) Guesser.evilGuesser.RemoveAll(x => x.PlayerId == player.PlayerId);
 
             // Other roles
@@ -1984,15 +1967,6 @@ namespace TheOtherRoles
                 case (byte)CustomRPC.VeterenKill:
                     RPCProcedure.veterenKill(reader.ReadByte());
                     break;
-                case (byte)CustomRPC.Transport:
-                TransporterUtils.TransportPlayers(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                    break;
-                case (byte)CustomRPC.SetUntransportable:
-                if (Transporter.transporter.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                    {
-                        Transporter.UntransportablePlayers.Add(reader.ReadByte(), DateTime.UtcNow);
-                    }
-                    break;
                 case (byte)CustomRPC.MedicSetShielded:
                     RPCProcedure.medicSetShielded(reader.ReadByte());
                     break;
@@ -2122,9 +2096,6 @@ namespace TheOtherRoles
                     byte bloodyKiller = reader.ReadByte();
                     byte bloodyDead = reader.ReadByte();
                     RPCProcedure.bloody(bloodyKiller, bloodyDead);
-                    break;
-                case (byte)CustomRPC.SetPosition:
-                    RPCProcedure.setPosition(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
                     break;
                 case (byte)CustomRPC.SetFirstKill:
                     byte firstKill = reader.ReadByte();

@@ -33,18 +33,21 @@ Even more roles are coming soon. :)
 | [Ninja](#ninja) | [Tracker](#tracker) |  | [Fanatic](#fanatic) |
 | [Miner](#miner) | [Snitch](#snitch) |  | [Torch](#torch) |
 | [Blackmailer](#blackmailer) | [Spy](#spy) |  | [Tunneler](#tunneler) |
-| [Bomber](#bomber) | [Portalmaker](#portalmaker) |  | [Assassin](#assassin) |
-|  | [Security Guard](#security-guard) |  |  |
+| [Bomber](#bomber) | [Portalmaker](#portalmaker) |  | [Watcher](#watcher) |
+|  | [Security Guard](#security-guard) |  | [Assassin](#assassin) |
 |  | [Medium](#medium) |  |  |
 |  | [Vigilante](#vigilante) |  |
 |  | [Veteran](#veteran) |  |
 |  | [Bodyguard](#bodyguard) |  |
+|  | [Transporter](#transporter) |  |
+|  | [Jumper](#jumper) |  |
 
 The [Role Assignment](#role-assignment) sections explains how the roles are being distributed among the players.
 
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2022.8.24| v1.0.8| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.8/TheOtherUs.zip)
 | 2022.8.24| v1.0.7| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.7/TheOtherUs.zip)
 | 2022.8.24| v1.0.6| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.6/TheOtherUs.zip)
 | 2022.8.24| v1.0.5| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.5/TheOtherUs.zip)
@@ -166,6 +169,22 @@ docker run -d -p 22023:22023/udp --env IMPOSTOR_AntiCheatEnabled=false --env IMP
 [Crowded-Mod](https://github.com/CrowdedMods/CrowdedMod) - Our implementation for 10+ player lobbies is inspired by the one from the **Crowded Mod Team**\
 [Goose-Goose-Duck](https://store.steampowered.com/app/1568590/Goose_Goose_Duck) - Idea for the Vulture role come from **Slushygoose**
 
+# Features
+## Hotkeys
+
+#### Host Only
+| HotKey              | Function                       | Usable Scene    |
+| ------------------- | ------------------------------ | --------------- |
+| `l` (Debug Mode)    | Terminate the game             | In Game         |
+| `C`                 | Cancel game start              | In Countdown    |
+| `Shift`             | Start the game immediately     | In Countdown    |
+| `f` (Debug Mode)    | Spawn dummy                    | In Lobby        |
+
+#### Anyone
+| HotKey              | Function                       | Usable Scene    |
+| ------------------- | -------------------------------| --------------- |
+| `Ctrl`              | Walk through walls             | Lobby           |
+
 # Settings
 The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Streamer Mode:** You can activate the streamer mode in the Among Us settings. It hides the lobby code, the custom server ip and the custom server port. You can set a custom lobby code replacement text, by changing the *Streamer Mode Replacement Text* in the `BepInEx\config\me.eisbison.theotherroles.cfg` file.
@@ -179,7 +198,19 @@ The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Hide Player Names:** Hides the names of all players that have role which is unknown to you. Team Lovers/Impostors/Jackal still see the names of their teammates. Impostors can also see the name of the Spy and everyone can still see the age of the mini.
 - **Allow Parallel MedBay Scans:** Allows players to perform their MedBay scans at the same time.
 - **Shield Last Game First Kill** The first killed player of the previous round will be shielded for all players visible until the first meeting.
-- **Play On A Random Map** If enabled it allows you to set a rotation of all current maps, except ehT dlekS 
+- **Hide Obstructed Player Names:** Player names will be hidden if they are out of vision or blocked by objects. Names can no longer be seen through walls.
+- **Impostor Can Kill Players In the Vent:** Impostors can kill players in vents.
+- **Camouflage Comms:** Comms Sabotage camouflages players until fixed.
+- **Impostors Can See The Roles Of Their Team:** Impostors can see the their partner's role.
+- **Restrict Map Information:** Restricts Admin Table use, Vital use, and Camera use (per round or per game)
+- **Show Button Target:** Button's show the name of the player you are targeting.
+- **Block Game End if Power Crew is Alive:** Game won't end if Power Crew is alive with a killing role (includes Sheriff, Veteran, Mayor, Swapper, Vigilante)
+- **Random Spawn Location:** Players will spawn in random locations at the start of the game and after meetings.
+- **Allow Guessing Some Modifiers:** Some modifiers can be guessed (includes Bait, Tiebreaker, Bloody, Fanatic, Torch, Watcher, Tunneler, and Vip)
+- **Play On A Random Map:** If enabled it allows you to set a rotation of all current maps, except ehT dlekS 
+- **Reset Spawn Cooldow:n** Resets cooldown on spawn
+- **Block Game End:** Prevents game from ending
+- **Debug Mode:** Spawn dummys by pressing f and to end game press l
 - **Ghosts Can See Roles**
 - **Ghosts Can See Votes**
 - **Ghosts Can Additionally See Modifier**
@@ -253,6 +284,14 @@ The count you set will only be reached, if there are enough Crewmates/Impostors 
 Settings: 2 special Crewmate roles, Snitch: 100%, Hacker: 10%, Tracker: 30%\
 Result: Snitch is assigned, then one role out of the pool [Hacker, Tracker, Tracker, Tracker] is being selected\
 Note: Changing the settings to Hacker: 20%, Tracker: 60% would statistically result in the same outcome .
+
+**NOTE:**
+There are some role pairs that are blocked.
+Blocked Role Pairs:
+- Vampire and Warlock
+- Vulture and Cleaner
+- Spy and Mini
+- Lawyer and Executioner
 
 
 ## Mafia
@@ -673,6 +712,7 @@ How the Lawyer wins:
 |----------|:-------------:|
 | Lawyer Spawn Chance | - 
 | Lawyer Client | Options for Lawyer Client to be Crew, Non-Crew, or Any
+| Lawyer Target Knows | - Lawyer Target Knows that they have a Lawyer, but they don't know who
 | Lawyer Target Can Be The Jester | -
 | Lawyer Vision | Pursuer has normal vision
 | Lawyer Knows Target Role | -
@@ -964,6 +1004,7 @@ The Swapper now has initial swap charges and can recharge those charges after co
 | Name | Description
 |----------|:-------------:|
 | Swapper Spawn Chance | -
+| Swapper Can Fix Sabotages | Option to prevent Swapper from fixing Sabotages
 | Swapper can call emergency meeting | Option to disable the emergency button for the Swapper
 | Swapper can only swap others | Sets whether the Swapper can swap themself or not
 | Initial Swap Charges | -
@@ -1194,6 +1235,36 @@ If that player is attacted by anyone, that player and the Bodyguard will swap pl
 |----------|:-------------:|
 | Bodyguard Spawn Chance | -
 | Reset Target After Meeting | -
+-----------------------
+
+## Transporter
+### **Team: Crewmates**
+The Transporter is a Crewmate that can change the locations of two random players at will.
+Players who have been transported are alerted with a blue flash on their screen.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Transporter Spawn Chance | -
+| Transport Cooldown | -
+| Number Of Transports | -
+| Transporter Can Use Vitals | -
+-----------------------
+
+## Jumper
+### **Team: Crewmates**
+The Jumper is a Crewmate that can mark a location and jump across the map to it later.
+
+**NOTE:**
+- Every jump requires one charge. Charges are regained after each meeting.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Jump Cooldown | -
+| Charges On Place | -
+| Charges Gained After Meeting	 | -
+| Maximum Charges | -
 
 -----------------------
 
@@ -1427,7 +1498,17 @@ The Tunneler modifier is a Crewmate only modifier. When the Tunneler is done wit
 ### Game Options
 | Name | Description
 |----------|:-------------:|
-| Fanatic Spawn Chance | -
+| Tunneler Spawn Chance | -
+-----------------------
+
+## Watcher
+
+The Watcher modifier allows the player to see everyone's votes during meetings.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Watcher Spawn Chance | -
 -----------------------
 
 ## Assassin
@@ -1449,6 +1530,7 @@ Depending on the options, the Assassin can't guess the shielded player and depen
 | Assassin Quantity | -
 | Assassin Number Of Shots Per Game | -
 | Assassin Can Shoot Multiple Times Per Meeting |  -
+| Assassin Can Guess Crewmate | -
 | Assassin Can Guess The Spy | -
 | Assassin Can't Guess Snitch When Tasks Completed | -
 | Guesses Ignore The Medic Shield | -

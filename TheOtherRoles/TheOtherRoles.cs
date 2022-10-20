@@ -68,7 +68,6 @@ namespace TheOtherRoles
             Ninja.clearAndReload();
             Blackmailer.clearAndReload();
             Miner.clearAndReload();
-            Transporter.clearAndReload();
             Jumper.clearAndReload();
 
             // Modifier
@@ -135,60 +134,6 @@ namespace TheOtherRoles
                 usedGuard = false;
             }
         }
-
-        public static class Transporter {
-        public static PlayerControl transporter;
-         public static bool PressedButton;
-        public static bool MenuClick;
-        public static bool LastMouse;
-        public static ChatController TransportList { get; set; }
-        public static PlayerControl TransportPlayer1 { get; set; }
-        public static PlayerControl TransportPlayer2 { get; set; }
-        public static Color color = new Color32(0, 238, 255, byte.MaxValue);
-        public static Color rcolor = new Color(0f, 0.93f, 1f, 1f);
-        public static Dictionary<byte, DateTime> UntransportablePlayers = new Dictionary<byte, DateTime>();
-        
-        public static TMPro.TextMeshPro UsesText;
-
-        public static float transportCooldown;
-        public static int transportsLeft;
-        public static bool ButtonUsable => transportsLeft != 0;
-        public static CustomButton button;
-
-        private static Sprite transportSprite;
-        public static Sprite getTransportSprite() {
-            if (transportSprite) return transportSprite;
-            transportSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.Transport.png", 115f);
-            return transportSprite;
-        }
-
-        public static void PerformKillButton(CustomButton gbutton) 
-        {
-            TransportPlayer1 = null;
-            TransportPlayer2 = null;
-            if (button == null) button = gbutton;
-            PressedButton = true;
-            MenuClick = true;
-        }
-        public static void idk() 
-        {
-            
-        }
-
-        public static void clearAndReload() {
-            transporter = null;
-            TransportPlayer1 = null;
-            TransportPlayer2 = null;
-            PressedButton = false;
-            button = null;
-            MenuClick = false;
-            LastMouse = false;
-            TransportList = null;
-            UntransportablePlayers = new Dictionary<byte, DateTime>();
-            transportCooldown = CustomOptionHolder.transportCooldown.getFloat();
-            transportsLeft = Mathf.RoundToInt(CustomOptionHolder.transportNum.getFloat());
-        }
-    }
         
         public static class Portalmaker {
             public static PlayerControl portalmaker;
@@ -325,9 +270,12 @@ namespace TheOtherRoles
             public static Color color = new Color32(0, 40, 245, byte.MaxValue);
             private static Sprite buttonSprite;
 
+            public static bool resetFixAfterMeeting = false;
             public static int remainingFixes = 1;           
             public static bool highlightForImpostors = true;
             public static bool highlightForTeamJackal = true; 
+
+            public static bool usedFix = false;
 
             public static Sprite getButtonSprite() {
                 if (buttonSprite) return buttonSprite;
@@ -335,11 +283,19 @@ namespace TheOtherRoles
                 return buttonSprite;
             }
 
+            public static void resetFixes() {
+            remainingFixes = Mathf.RoundToInt(CustomOptionHolder.engineerNumberOfFixes.getFloat());
+            usedFix = false;
+        }
+
             public static void clearAndReload() {
                 engineer = null;
+                resetFixes();
+                resetFixAfterMeeting = CustomOptionHolder.engineerResetFixAfterMeeting.getBool();
                 remainingFixes = Mathf.RoundToInt(CustomOptionHolder.engineerNumberOfFixes.getFloat());
                 highlightForImpostors = CustomOptionHolder.engineerHighlightForImpostors.getBool();
                 highlightForTeamJackal = CustomOptionHolder.engineerHighlightForTeamJackal.getBool();
+                usedFix = false;
             }
         }
 

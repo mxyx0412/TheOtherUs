@@ -334,7 +334,7 @@ namespace TheOtherRoles.Patches {
                         roleInfo.roleId != RoleId.Vip) continue;
                 } else
                     if (roleInfo.isModifier) continue;
-                if (roleInfo.roleId == guesserRole || (!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Spy || (!Guesser.evilGuesserCanGuessCrewmate && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Crewmate))) continue; // Not guessable roles & modifier evilGuesserCanGuessCrewmate
+                 if (roleInfo.roleId == guesserRole || (!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Spy || (!Guesser.evilGuesserCanGuessCrewmate && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Crewmate))) continue; // Not guessable roles & modifier evilGuesserCanGuessCrewmate
                 // remove all roles that cannot spawn due to the settings from the ui.
                 RoleManagerSelectRolesPatch.RoleAssignmentData roleData = RoleManagerSelectRolesPatch.getRoleAssignmentData();
                 if (roleInfo.roleId == RoleId.Swooper)

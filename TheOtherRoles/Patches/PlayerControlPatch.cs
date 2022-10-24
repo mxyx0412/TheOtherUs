@@ -14,6 +14,7 @@ namespace TheOtherRoles.Patches {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public static class PlayerControlFixedUpdatePatch {
         // Helpers
+        
         static PlayerControl setTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null) {
             PlayerControl result = null;
             float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -203,10 +204,6 @@ namespace TheOtherRoles.Patches {
             setPlayerOutline(Deputy.currentTarget, Deputy.color);
         }
 
-        public static void transporterStuff() {
-            if (Transporter.transporter == null || Transporter.transporter != CachedPlayer.LocalPlayer.PlayerControl || Transporter.transporter.Data.IsDead) return;
-        }
-
         public static void deputyCheckPromotion(bool isMeeting=false)
         {
             // If LocalPlayer is Deputy, the Sheriff is disconnected and Deputy promotion is enabled, then trigger promotion
@@ -325,12 +322,12 @@ namespace TheOtherRoles.Patches {
             }
         }
 
-       static void cultistSetFollower() {
-            var untargetablePlayers = new List<PlayerControl>();
-            if (Mini.mini != null && !Mini.isGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Jackal from targeting the Mini unless it has grown up
-            Cultist.currentFollower = setTarget(untargetablePlayers: untargetablePlayers);
-            setPlayerOutline(Cultist.currentFollower, Palette.ImpostorRed);
-        }
+   //    static void cultistSetFollower() {
+   //         var untargetablePlayers = new List<PlayerControl>();
+   //         if (Mini.mini != null && !Mini.isGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Jackal from targeting the Mini unless it has grown up
+//            Cultist.currentFollower = setTarget(untargetablePlayers: untargetablePlayers);
+ //           setPlayerOutline(Cultist.currentFollower, Palette.ImpostorRed);
+ //       }
 
         static void eraserSetTarget() {
             if (Eraser.eraser == null || Eraser.eraser != CachedPlayer.LocalPlayer.PlayerControl) return;
@@ -1054,8 +1051,6 @@ namespace TheOtherRoles.Patches {
                 // SecurityGuard
                 securityGuardSetTarget();
                 securityGuardUpdate();
-                // Transporter
-                transporterStuff();
                 // Arsonist
                 arsonistSetTarget();
                 // Snitch
@@ -1071,8 +1066,8 @@ namespace TheOtherRoles.Patches {
 		// Vulture
                 vultureUpdate();
                 
-                //Cultist
-                cultistSetFollower();
+   //             //Cultist
+   //             cultistSetFollower();
 		// Amnisiac
 		amnisiacUpdate();
                 // Medium
@@ -1296,10 +1291,6 @@ namespace TheOtherRoles.Patches {
                     HudManagerStartPatch.warlockCurseButton.Timer = Warlock.warlock.killTimer;
                 }
             }
-            // Transporter Button Sync
-             if (Transporter.transporter != null && CachedPlayer.LocalPlayer.PlayerControl == Transporter.transporter && __instance == Transporter.transporter && HudManagerStartPatch.transportButton != null)
-                HudManagerStartPatch.transportButton.Timer = HudManagerStartPatch.transportButton.MaxTimer;
-                
             // Ninja Button Sync
             if (Ninja.ninja != null && CachedPlayer.LocalPlayer.PlayerControl == Ninja.ninja && __instance == Ninja.ninja && HudManagerStartPatch.ninjaButton != null)
                 HudManagerStartPatch.ninjaButton.Timer = HudManagerStartPatch.ninjaButton.MaxTimer;

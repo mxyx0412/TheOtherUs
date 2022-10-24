@@ -23,8 +23,8 @@ namespace TheOtherRoles
         Engineer,
         Sheriff,
         Deputy,
-        Cultist,
-        Follower,
+   //     Cultist,
+   //     Follower,
         Lighter,
         Werewolf,
         Godfather,
@@ -34,7 +34,6 @@ namespace TheOtherRoles
         Detective,
         TimeMaster,
         Swooper,
-        Transporter,
         Veteren,
         Amnisiac,
 		Cursed,
@@ -76,6 +75,7 @@ namespace TheOtherRoles
         Impostor,
         // Modifier ---
         Lover,
+        LifeGuard,
         Bait,
         Bloody,
         AntiTeleport,
@@ -128,7 +128,6 @@ namespace TheOtherRoles
         TimeMasterRewindTime,
 		TurnToImpostor,
         BodyGuardGuardPlayer,
-        SetUntransportable,
         VeterenAlert,
         VeterenKill,
         ShifterShift,
@@ -149,13 +148,12 @@ namespace TheOtherRoles
         SetFutureErased,
         SetFutureShifted,
         SetFutureShielded,
-        Transport,
         SetFutureSpelled,
         PlaceNinjaTrace,
         PlacePortal,
         AmnisiacTakeRole,
         UsePortal,
-        CultistCreateImposter,
+    //    CultistCreateImposter,
         TurnToCrewmate,
         PlaceJackInTheBox,
         LightsOut,
@@ -172,6 +170,7 @@ namespace TheOtherRoles
         UseCameraTime,
         UseVitalsTime,
         UnblackmailPlayer,
+        LifeGuardSave,
         SetBlanked,
         Bloody,
         SetFirstKill,
@@ -227,25 +226,7 @@ namespace TheOtherRoles
                 }
             }
         }
- // ahdfbawhfwahfoawhfhawofhawofhoaiwfhioawhfiowahfiowahfioawhfawhfawhfwahfowahfoawhfoiawhfawhfioahjfhawfhwaoifhjwafjawohjfwaoifhowipafawfawfwafwafaw
-    //    public static void forceEnd() {
-     //       foreach (PlayerControl player in CachedPlayer.AllPlayers)
-     //       {
-     //           if (!player.Data.Role.IsImpostor)
-     //           {
-      //              if (!Cultist.cultist && player.Data.Role.IsImpostor) {
-     //               player.Data.Role.IsImpostor = 1;
-    //                    
-    //        } else  //test cultist
-//
-    //                player.RemoveInfected();
-    //                player.MurderPlayer(player);
-    //                player.Data.IsDead = true;
-    //            }
-   //         }
-   //     }
 
-// ahdfbawhfwahfoawhfhawofhawofhoaiwfhioawhfiowahfiowahfioawhfawhfawhfwahfowahfoawhfoiawhfawhfioahjfhawfhwaoifhjwafjawohjfwaoifhowipafawfawfwafwafaw
         public static void workaroundSetRoles(byte numberOfRoles, MessageReader reader)
         {
                 for (int i = 0; i < numberOfRoles; i++)
@@ -297,9 +278,6 @@ namespace TheOtherRoles
                         break;
                     case RoleId.Sheriff:
                         Sheriff.sheriff = player;
-                        break;
-                    case RoleId.Transporter:
-                       Transporter.transporter = player;
                         break;
                     case RoleId.BodyGuard:
                         BodyGuard.bodyguard = player;
@@ -370,9 +348,9 @@ namespace TheOtherRoles
                     case RoleId.Sidekick:
                         Sidekick.sidekick = player;
                         break;
-                    case RoleId.Follower:
-                        Follower.follower = player;
-                        break;
+      //              case RoleId.Follower:
+    //                    Follower.follower = player;
+     //                   break;
                     case RoleId.Eraser:
                         Eraser.eraser = player;
                         break;
@@ -427,13 +405,13 @@ namespace TheOtherRoles
                     case RoleId.Jumper:
                         Jumper.jumper = player;
                         break;
-                    case RoleId.Cultist:
-                        Cultist.cultist = player;
-                        List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
-                        impostors.RemoveAll(x => !x.Data.Role.IsImpostor);
-                        Helpers.turnToCrewmate(impostors,player);
-
-                        break;
+         //           case RoleId.Cultist:
+         //               Cultist.cultist = player;
+         //               List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
+         //               impostors.RemoveAll(x => !x.Data.Role.IsImpostor);
+         //               Helpers.turnToCrewmate(impostors,player);
+//
+         //               break;
                     }
                 }
         }
@@ -444,9 +422,6 @@ namespace TheOtherRoles
                 //case RoleId.NiceGuesser:
                     //Guesser.niceGuesser = player;
                     //break;
-                case RoleId.EvilGuesser:
-                    Guesser.evilGuesser.Add(player);
-                    break;
                 case RoleId.Bait:
                     Bait.bait.Add(player);
                     break;
@@ -462,6 +437,9 @@ namespace TheOtherRoles
                     break;
                 case RoleId.Tiebreaker:
                     Tiebreaker.tiebreaker = player;
+                    break;
+                case RoleId.LifeGuard:
+                    LifeGuard.lifeguard = player;
                     break;
                 case RoleId.Sunglasses:
                     Sunglasses.sunglasses.Add(player);
@@ -500,9 +478,9 @@ namespace TheOtherRoles
                 case RoleId.Invert:
                     Invert.invert.Add(player);
                     break;
-             //   case RoleId.EvilGuesser:
-             //       Guesser.evilGuesser.Add(player);
-             //       break;
+                case RoleId.EvilGuesser:
+                    Guesser.evilGuesser.Add(player);
+                    break;
             }
         }
 
@@ -585,6 +563,7 @@ namespace TheOtherRoles
         }
 
         public static void engineerUsedRepair() {
+            Engineer.usedFix = true;
             Engineer.remainingFixes--;
         }
         
@@ -711,12 +690,6 @@ namespace TheOtherRoles
                     Amnisiac.clearAndReload();
                     break;
 
-                case RoleId.Transporter:
-                    if (Amnisiac.resetRole) Transporter.clearAndReload();
-                    Transporter.transporter = amnisiac;
-                    Transporter.clearAndReload();
-                    break;
-
                 case RoleId.Jumper:
                     if (Amnisiac.resetRole) Jumper.clearAndReload();
                     Jumper.jumper = amnisiac;
@@ -760,10 +733,10 @@ namespace TheOtherRoles
                     Amnisiac.clearAndReload();
                     break;
                     
-                case RoleId.Cultist:
-                    Helpers.turnToImpostor(Amnisiac.amnisiac);
-                    Amnisiac.clearAndReload();
-                    break;
+      //          case RoleId.Cultist:
+      //              Helpers.turnToImpostor(Amnisiac.amnisiac);
+      //              Amnisiac.clearAndReload();
+      //              break;
 
                 case RoleId.Mafioso:
                     Helpers.turnToImpostor(Amnisiac.amnisiac);
@@ -1062,13 +1035,13 @@ namespace TheOtherRoles
 
 
 
-        public static void cultistCreateImposter(byte targetId) {
-            PlayerControl player = Helpers.playerById(targetId);
-            erasePlayerRoles(player.PlayerId, false);
-            Helpers.turnToImpostor(player);
-            Follower.follower = player; //testing
-            Cultist.needsFollower = false;
-        }
+   //     public static void cultistCreateImposter(byte targetId) {
+    //        PlayerControl player = Helpers.playerById(targetId);
+//            erasePlayerRoles(player.PlayerId, false);
+   //         Helpers.turnToImpostor(player);
+  //          Follower.follower = player; //testing
+  //          Cultist.needsFollower = false;
+  //      }
 		
         public static void turnToImpostor(byte targetId) {
             PlayerControl player = Helpers.playerById(targetId);
@@ -1174,8 +1147,6 @@ namespace TheOtherRoles
                 Lighter.lighter = oldShifter;
             if (Detective.detective != null && Detective.detective == player)
                 Detective.detective = oldShifter;
-            if (Transporter.transporter != null && Transporter.transporter == player)
-                Transporter.transporter = oldShifter;
             if (TimeMaster.timeMaster != null && TimeMaster.timeMaster == player)
                 TimeMaster.timeMaster = oldShifter;
             if (Amnisiac.amnisiac != null && Amnisiac.amnisiac == player)
@@ -1215,6 +1186,13 @@ namespace TheOtherRoles
             if (MeetingHud.Instance) {
                 Swapper.playerId1 = playerId1;
                 Swapper.playerId2 = playerId2;
+            }
+        }
+
+        public static void lifeGuardSave(byte playerId1) {
+            if (MeetingHud.Instance) {
+                LifeGuard.playerId1 = playerId1;
+                LifeGuard.isLifeGuard = true;
             }
         }
 
@@ -1358,8 +1336,8 @@ namespace TheOtherRoles
             if (player == Janitor.janitor) Janitor.clearAndReload();
             if (player == Vampire.vampire) Vampire.clearAndReload();
             if (player == Eraser.eraser) Eraser.clearAndReload();
-            if (player == Cultist.cultist) Cultist.clearAndReload();
-            if (player == Follower.follower) Follower.clearAndReload();
+     //       if (player == Cultist.cultist) Cultist.clearAndReload();
+    //        if (player == Follower.follower) Follower.clearAndReload();
             if (player == Trickster.trickster) Trickster.clearAndReload();
             if (player == Cleaner.cleaner) Cleaner.clearAndReload();
             if (player == Undertaker.undertaker) Undertaker.clearAndReload();
@@ -1368,7 +1346,6 @@ namespace TheOtherRoles
             if (player == Witch.witch) Witch.clearAndReload();
             if (player == Ninja.ninja) Ninja.clearAndReload();
             if (player == Blackmailer.blackmailer) Blackmailer.clearAndReload();
-            if (player == Transporter.transporter) Transporter.clearAndReload();
            // if (Guesser.evilGuesser.Any(x => x.PlayerId == player.PlayerId)) Guesser.evilGuesser.RemoveAll(x => x.PlayerId == player.PlayerId);
 
             // Other roles
@@ -1797,7 +1774,11 @@ namespace TheOtherRoles
       
     }
     
-    public static void showBodyGuardFlash() { Helpers.showFlash(BodyGuard.color, 1f); }
+    public static void showBodyGuardFlash() {
+        if (CustomOptionHolder.bodyGuardFlash.getBool()) {
+            Helpers.showFlash(BodyGuard.color, 1f); }
+    }
+
     public static void dousePlayer(byte playerId) {
       PlayerControl target = Helpers.playerById(playerId);
       Arsonist.dousedPlayers.Add(target);
@@ -1984,15 +1965,6 @@ namespace TheOtherRoles
                 case (byte)CustomRPC.VeterenKill:
                     RPCProcedure.veterenKill(reader.ReadByte());
                     break;
-                case (byte)CustomRPC.Transport:
-                TransporterUtils.TransportPlayers(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                    break;
-                case (byte)CustomRPC.SetUntransportable:
-                if (Transporter.transporter.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                    {
-                        Transporter.UntransportablePlayers.Add(reader.ReadByte(), DateTime.UtcNow);
-                    }
-                    break;
                 case (byte)CustomRPC.MedicSetShielded:
                     RPCProcedure.medicSetShielded(reader.ReadByte());
                     break;
@@ -2006,6 +1978,10 @@ namespace TheOtherRoles
                     byte playerId1 = reader.ReadByte();
                     byte playerId2 = reader.ReadByte();
                     RPCProcedure.swapperSwap(playerId1, playerId2);
+                    break;
+                case (byte)CustomRPC.LifeGuardSave:
+                    byte savedId = reader.ReadByte();
+                    RPCProcedure.lifeGuardSave(savedId);
                     break;
                 case (byte)CustomRPC.MorphlingMorph:
                     RPCProcedure.morphlingMorph(reader.ReadByte());
@@ -2123,9 +2099,6 @@ namespace TheOtherRoles
                     byte bloodyDead = reader.ReadByte();
                     RPCProcedure.bloody(bloodyKiller, bloodyDead);
                     break;
-                case (byte)CustomRPC.SetPosition:
-                    RPCProcedure.setPosition(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
-                    break;
                 case (byte)CustomRPC.SetFirstKill:
                     byte firstKill = reader.ReadByte();
                     RPCProcedure.setFirstKill(firstKill);
@@ -2158,9 +2131,9 @@ namespace TheOtherRoles
                     byte invisibleFlag3 = reader.ReadByte();
                     RPCProcedure.setInvisibleGen(invisiblePlayer3, invisibleFlag3);
                     break;  
-                case (byte)CustomRPC.CultistCreateImposter:
-                    RPCProcedure.cultistCreateImposter(reader.ReadByte());
-                    break;
+       //         case (byte)CustomRPC.CultistCreateImposter:
+       //             RPCProcedure.cultistCreateImposter(reader.ReadByte());
+        //            break;
 					
                 case (byte)CustomRPC.TurnToImpostor:
                     RPCProcedure.turnToImpostor(reader.ReadByte());

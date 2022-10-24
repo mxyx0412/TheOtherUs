@@ -9,8 +9,8 @@ namespace TheOtherRoles{
         public static bool blockSkippingInEmergencyMeetings = false;
         public static bool noVoteIsSelfVote = false;
         public static bool hidePlayerNames = false;
-        public static bool hideOutOfSightNametags = false;
-        public static bool ImpostorSeeRoles = false;
+   //     public static bool hideOutOfSightNametags = false;
+     //   public static bool ImpostorSeeRoles = false;
         public static bool ghostsSeeRoles = true;
         public static bool ghostsSeeModifier = true;
         public static bool ghostsSeeTasks = true;
@@ -33,6 +33,7 @@ namespace TheOtherRoles{
 
         public static bool enableHorseMode = false;
         public static bool shieldFirstKill = false;
+        public static bool debugMode = false;
 
         // Updating values
         public static int meetingsCount = 0;
@@ -52,10 +53,11 @@ namespace TheOtherRoles{
             blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.getBool();
             noVoteIsSelfVote = CustomOptionHolder.noVoteIsSelfVote.getBool();
             hidePlayerNames = CustomOptionHolder.hidePlayerNames.getBool();
-            ImpostorSeeRoles = CustomOptionHolder.ImpostorSeeRoles.getBool();
-            hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.getBool();
+      //      ImpostorSeeRoles = CustomOptionHolder.ImpostorSeeRoles.getBool();
+      //      hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.getBool();
             allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.getBool();
             shieldFirstKill = CustomOptionHolder.shieldFirstKill.getBool();
+            debugMode = CustomOptionHolder.debugMode.getBool();
             firstKillPlayer = null;
             restrictDevices = CustomOptionHolder.restrictDevices.getSelection();
             restrictAdminTime = restrictAdminTimeMax = CustomOptionHolder.restrictAdmin.getFloat();

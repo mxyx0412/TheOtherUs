@@ -47,15 +47,14 @@ namespace TheOtherRoles
         public static RoleInfo camouflager = new RoleInfo("Camouflager", Camouflager.color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager);
         public static RoleInfo miner = new RoleInfo("Miner", Miner.color, "Make new Vents", "Create Vents", RoleId.Miner);
         public static RoleInfo vampire = new RoleInfo("Vampire", Vampire.color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire);
-        public static RoleInfo transporter = new RoleInfo("Transporter", Transporter.color, "Choose Two Players To Swap Locations", "Choose two players to swap locations", RoleId.Transporter);
         public static RoleInfo eraser = new RoleInfo("Eraser", Eraser.color, "Kill the Crewmates and erase their roles", "Erase the roles of your enemies", RoleId.Eraser);
         public static RoleInfo trickster = new RoleInfo("Trickster", Trickster.color, "Use your jack-in-the-boxes to surprise others", "Surprise your enemies", RoleId.Trickster);
         public static RoleInfo cleaner = new RoleInfo("Cleaner", Cleaner.color, "Kill everyone and leave no traces", "Clean up dead bodies", RoleId.Cleaner);
         public static RoleInfo undertaker = new RoleInfo("Undertaker", Undertaker.color, "Kill everyone and leave no traces", "Drag up dead bodies to hide them", RoleId.Undertaker);
         public static RoleInfo warlock = new RoleInfo("Warlock", Warlock.color, "Curse other players and kill everyone", "Curse and kill everyone", RoleId.Warlock);
         public static RoleInfo bountyHunter = new RoleInfo("Bounty Hunter", BountyHunter.color, "Hunt your bounty down", "Hunt your bounty down", RoleId.BountyHunter);
-        public static RoleInfo detective = new RoleInfo("Detective", Detective.color, "Find the <color=#FF1919FF>Impostors</color> by examining footprints", "Examine footprints", RoleId.Detective);
-         public static RoleInfo jumper = new RoleInfo("Jumper", Jumper.color, "Surprise the <color=#FF1919FF>Impostors</color>", "Surprise the Impostors", RoleId.Jumper);
+        public static RoleInfo detective = new RoleInfo("Investigator", Detective.color, "Find the <color=#FF1919FF>Impostors</color> by examining footprints", "Examine footprints", RoleId.Detective);
+        public static RoleInfo jumper = new RoleInfo("Jumper", Jumper.color, "Surprise the <color=#FF1919FF>Impostors</color>", "Surprise the Impostors", RoleId.Jumper);
         public static RoleInfo timeMaster = new RoleInfo("Time Master", TimeMaster.color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster);
         public static RoleInfo veteren = new RoleInfo("Veteran", Veteren.color, "Protect yourself from other", "Protect yourself from others", RoleId.Veteren);
         public static RoleInfo medic = new RoleInfo("Medic", Medic.color, "Protect someone with your shield", "Protect other players", RoleId.Medic);
@@ -80,8 +79,8 @@ namespace TheOtherRoles
         public static RoleInfo impostor = new RoleInfo("Impostor", Palette.ImpostorRed, Helpers.cs(Palette.ImpostorRed, "Sabotage and kill everyone"), "Sabotage and kill everyone", RoleId.Impostor);
         public static RoleInfo crewmate = new RoleInfo("Crewmate", Color.white, "Find the Impostors", "Find the Impostors", RoleId.Crewmate);
         public static RoleInfo witch = new RoleInfo("Witch", Witch.color, "Cast a spell upon your foes", "Cast a spell upon your foes", RoleId.Witch);
-        public static RoleInfo cultist = new RoleInfo("Cultist", Cultist.color, "Recruit for your cause", "Recruit for your cause", RoleId.Cultist);
-        public static RoleInfo follower = new RoleInfo("Follower", Cultist.color, "Follow your leader", "Follow your leader", RoleId.Follower);
+    //    public static RoleInfo cultist = new RoleInfo("Cultist", Cultist.color, "Recruit for your cause", "Recruit for your cause", RoleId.Cultist);
+    //    public static RoleInfo follower = new RoleInfo("Follower", Cultist.color, "Follow your leader", "Follow your leader", RoleId.Follower);
         public static RoleInfo ninja = new RoleInfo("Ninja", Ninja.color, "Surprise and assassinate your foes", "Surprise and assassinate your foes", RoleId.Ninja);
         public static RoleInfo blackmailer = new RoleInfo("Blackmailer", Blackmailer.color, "Blackmail those who seek to hurt you", "Blackmail those who seek to hurt you", RoleId.Blackmailer);
 
@@ -96,7 +95,8 @@ namespace TheOtherRoles
         public static RoleInfo lover = new RoleInfo("Lover", Lovers.color, $"You are in love", $"You are in love", RoleId.Lover, false, true);
         public static RoleInfo mini = new RoleInfo("Mini", Color.yellow, "No one will harm you until you grow up", "No one will harm you", RoleId.Mini, false, true);
         public static RoleInfo vip = new RoleInfo("VIP", Color.yellow, "You are the VIP", "Everyone is notified when you die", RoleId.Vip, false, true);
-        public static RoleInfo indomitable  = new RoleInfo("Indomitable", Indomitable.color, "Your role cannot be guessed", "You are Indomitable!", RoleId.Indomitable, false, true);
+        public static RoleInfo indomitable  = new RoleInfo("Indomitable", Color.yellow, "Your role cannot be guessed", "You are Indomitable!", RoleId.Indomitable, false, true);
+        public static RoleInfo lifeguard  = new RoleInfo("Life Guard", Color.yellow, "Prevent 1 person from being ejected Once", "Save someones life in a meeting", RoleId.LifeGuard, false, true);
         public static RoleInfo slueth  = new RoleInfo("Sleuth", Color.yellow, "Learn the roles of bodies you report", "Who dat?", RoleId.Slueth, false, true);
         public static RoleInfo cursed  = new RoleInfo("Fanatic", Color.yellow, "You are crewmate....for now", "Discover your true potential", RoleId.Cursed, false, true, true);
         public static RoleInfo invert = new RoleInfo("Invert", Color.yellow, "Your movement is inverted", "Your movement is inverted", RoleId.Invert, false, true);
@@ -125,14 +125,13 @@ namespace TheOtherRoles
             warlock,
             werewolf,
 			cursed,
-            cultist,
-            follower,
+        //    cultist,
+        //    follower,
             bountyHunter,
             witch,
             ninja,
             bodyguard,
             blackmailer,
-            transporter,
             miner,
 			swooper,
             goodGuesser,
@@ -173,6 +172,7 @@ namespace TheOtherRoles
             bloody,
             antiTeleport,
             tiebreaker,
+            lifeguard,
             sunglasses,
             torch,
             mini,
@@ -211,6 +211,7 @@ namespace TheOtherRoles
                 if (p == Blind.blind) infos.Add(blind);
                 if (p == Watcher.watcher) infos.Add(watcher);
                 if (p == Tunneler.tunneler) infos.Add(tunneler);
+                if (p == LifeGuard.lifeguard) infos.Add(lifeguard);
                 if (p == Slueth.slueth) infos.Add(slueth);
               //  if (p == Cursed.cursed) infos.Add(cursed); //moved up and changed
                 if (Invert.invert.Any(x => x.PlayerId == p.PlayerId)) infos.Add(invert);
@@ -246,13 +247,12 @@ namespace TheOtherRoles
             if (p == Bomber.bomber) infos.Add(bomber);
             if (p == Warlock.warlock) infos.Add(warlock);
             if (p == Witch.witch) infos.Add(witch);
-            if (p == Transporter.transporter) infos.Add(transporter);
             if (p == Ninja.ninja) infos.Add(ninja);
             if (p == Blackmailer.blackmailer) infos.Add(blackmailer);
             if (p == Detective.detective) infos.Add(detective);
             if (p == TimeMaster.timeMaster) infos.Add(timeMaster);
-            if (p == Cultist.cultist) infos.Add(cultist);
-            if (p == Follower.follower) infos.Add(follower);
+     //       if (p == Cultist.cultist) infos.Add(cultist);
+      //      if (p == Follower.follower) infos.Add(follower);
             if (p == Amnisiac.amnisiac) infos.Add(amnisiac);
             if (p == Veteren.veteren) infos.Add(veteren);
             if (p == Medic.medic) infos.Add(medic);

@@ -297,7 +297,6 @@ namespace TheOtherRoles.Patches {
     }
 
 
-
     [HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
     public static class ConsoleCanUsePatch {
         public static bool Prefix(ref float __result, Console __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse) {
@@ -330,8 +329,6 @@ namespace TheOtherRoles.Patches {
             }
         }
     }
-
-
 
     [HarmonyPatch]
     class VitalsMinigamePatch {

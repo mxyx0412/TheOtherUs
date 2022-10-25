@@ -42,8 +42,8 @@ namespace TheOtherRoles
             Seer.clearAndReload();
             Morphling.clearAndReload();
             Camouflager.clearAndReload();
-            Cultist.clearAndReload();
-            Follower.clearAndReload();
+      //     Cultist.clearAndReload();
+      //      Follower.clearAndReload();
             Hacker.clearAndReload();
             Tracker.clearAndReload();
             Vampire.clearAndReload();
@@ -68,7 +68,6 @@ namespace TheOtherRoles
             Ninja.clearAndReload();
             Blackmailer.clearAndReload();
             Miner.clearAndReload();
-            Transporter.clearAndReload();
             Jumper.clearAndReload();
 
             // Modifier
@@ -77,6 +76,7 @@ namespace TheOtherRoles
             AntiTeleport.clearAndReload();
             Tiebreaker.clearAndReload();
             Sunglasses.clearAndReload();
+            LifeGuard.clearAndReload();
             Torch.clearAndReload();
             Mini.clearAndReload();
             Indomitable.clearAndReload();
@@ -113,6 +113,7 @@ namespace TheOtherRoles
             public static Color color = new Color32(145, 102, 64, byte.MaxValue);
             public static bool reset = true;
             public static bool usedGuard = false;
+            public static bool guardFlash = false;
             private static Sprite guardButtonSprite;
             public static PlayerControl currentTarget;            
 
@@ -130,65 +131,12 @@ namespace TheOtherRoles
 
             public static void clearAndReload() {
                 bodyguard = null;
+                guardFlash = CustomOptionHolder.bodyGuardFlash.getBool();
                 reset = CustomOptionHolder.bodyGuardResetTargetAfterMeeting.getBool();
                 guarded = null;
                 usedGuard = false;
             }
         }
-
-        public static class Transporter {
-        public static PlayerControl transporter;
-         public static bool PressedButton;
-        public static bool MenuClick;
-        public static bool LastMouse;
-        public static ChatController TransportList { get; set; }
-        public static PlayerControl TransportPlayer1 { get; set; }
-        public static PlayerControl TransportPlayer2 { get; set; }
-        public static Color color = new Color32(0, 238, 255, byte.MaxValue);
-        public static Color rcolor = new Color(0f, 0.93f, 1f, 1f);
-        public static Dictionary<byte, DateTime> UntransportablePlayers = new Dictionary<byte, DateTime>();
-        
-        public static TMPro.TextMeshPro UsesText;
-
-        public static float transportCooldown;
-        public static int transportsLeft;
-        public static bool ButtonUsable => transportsLeft != 0;
-        public static CustomButton button;
-
-        private static Sprite transportSprite;
-        public static Sprite getTransportSprite() {
-            if (transportSprite) return transportSprite;
-            transportSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.Transport.png", 115f);
-            return transportSprite;
-        }
-
-        public static void PerformKillButton(CustomButton gbutton) 
-        {
-            TransportPlayer1 = null;
-            TransportPlayer2 = null;
-            if (button == null) button = gbutton;
-            PressedButton = true;
-            MenuClick = true;
-        }
-        public static void idk() 
-        {
-            
-        }
-
-        public static void clearAndReload() {
-            transporter = null;
-            TransportPlayer1 = null;
-            TransportPlayer2 = null;
-            PressedButton = false;
-            button = null;
-            MenuClick = false;
-            LastMouse = false;
-            TransportList = null;
-            UntransportablePlayers = new Dictionary<byte, DateTime>();
-            transportCooldown = CustomOptionHolder.transportCooldown.getFloat();
-            transportsLeft = Mathf.RoundToInt(CustomOptionHolder.transportNum.getFloat());
-        }
-    }
         
         public static class Portalmaker {
             public static PlayerControl portalmaker;
@@ -251,37 +199,36 @@ namespace TheOtherRoles
             }
         }
         
-        public static class Cultist {
-            public static PlayerControl cultist;
-            public static Color color = Palette.ImpostorRed;
-            public static bool isCultistGame = false;
-            public static bool needsFollower = true;
-            public static PlayerControl currentFollower;
-                public static Sprite buttonSprite;
+    //    public static class Cultist {
+    //        public static PlayerControl cultist;
+  //          public static Color color = Palette.ImpostorRed;
+ //           public static bool isCultistGame = false;
+  //          public static bool needsFollower = true;
+//            public static PlayerControl currentFollower;
+//                public static Sprite buttonSprite;
 
 
-            public static Sprite getSidekickButtonSprite() {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.SidekickButton.png", 115f);
-                return buttonSprite;
-            }
+//            public static Sprite getSidekickButtonSprite() {
+  //              if (buttonSprite) return buttonSprite;
+ //               buttonSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.SidekickButton.png", 115f);
+ //               return buttonSprite;
+ //           }
 
-            public static void clearAndReload() {
-                cultist = null;
-                currentFollower = null;
-                needsFollower = true;
-            }
-        }
+   //         public static void clearAndReload() {
+   //             cultist = null;
+   //             currentFollower = null;
+   //             needsFollower = true;
+   //         }
+   //     }
 
-        public static class Follower {
-        public static PlayerControl follower;
-        public static Color color = Palette.ImpostorRed;
-
-
-        public static void clearAndReload() {
-            follower = null;
-        }
-    }
+   //     public static class Follower {
+//        public static PlayerControl follower;
+  //      public static Color color = Palette.ImpostorRed;
+//
+  //      public static void clearAndReload() {
+ //           follower = null;
+ //       }
+//    }
 
         public static class Crew {
             public static PlayerControl crew;
@@ -325,9 +272,12 @@ namespace TheOtherRoles
             public static Color color = new Color32(0, 40, 245, byte.MaxValue);
             private static Sprite buttonSprite;
 
+            public static bool resetFixAfterMeeting = false;
             public static int remainingFixes = 1;           
             public static bool highlightForImpostors = true;
             public static bool highlightForTeamJackal = true; 
+
+            public static bool usedFix = false;
 
             public static Sprite getButtonSprite() {
                 if (buttonSprite) return buttonSprite;
@@ -335,11 +285,19 @@ namespace TheOtherRoles
                 return buttonSprite;
             }
 
+            public static void resetFixes() {
+            remainingFixes = Mathf.RoundToInt(CustomOptionHolder.engineerNumberOfFixes.getFloat());
+            usedFix = false;
+        }
+
             public static void clearAndReload() {
                 engineer = null;
+                resetFixes();
+                resetFixAfterMeeting = CustomOptionHolder.engineerResetFixAfterMeeting.getBool();
                 remainingFixes = Mathf.RoundToInt(CustomOptionHolder.engineerNumberOfFixes.getFloat());
                 highlightForImpostors = CustomOptionHolder.engineerHighlightForImpostors.getBool();
                 highlightForTeamJackal = CustomOptionHolder.engineerHighlightForTeamJackal.getBool();
+                usedFix = false;
             }
         }
 
@@ -515,7 +473,7 @@ namespace TheOtherRoles
 
         public static class Detective {
             public static PlayerControl detective;
-            public static Color color = new Color32(45, 106, 165, byte.MaxValue);
+            public static Color color = new Color32(8, 180, 180, byte.MaxValue);
 
             public static float footprintIntervall = 1f;
             public static float footprintDuration = 1f;
@@ -2101,11 +2059,32 @@ namespace TheOtherRoles
     
     public static class Indomitable {
         public static PlayerControl indomitable;
-        public static Color color = new Color32(48, 21, 89, byte.MaxValue);
+        public static Color color = new Color32(0, 247, 255, byte.MaxValue);
 
 
         public static void clearAndReload() {
             indomitable = null;
+        }
+    }
+
+    public static class LifeGuard {
+        public static PlayerControl lifeguard;
+        public static bool hasSaved = false;
+        public static byte playerId1 = Byte.MaxValue;
+        private static Sprite spriteCheck;
+        public static bool isLifeGuard = false;
+
+        public static Sprite getSaveSprite() {
+            if (spriteCheck) return spriteCheck;
+            spriteCheck = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.LGSave.png", 150f);
+            return spriteCheck;
+        }
+
+        
+        public static void clearAndReload() {
+            lifeguard = null;
+            hasSaved = false;
+            playerId1 = Byte.MaxValue;
         }
     }
 

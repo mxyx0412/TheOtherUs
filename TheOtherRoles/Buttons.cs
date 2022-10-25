@@ -20,12 +20,11 @@ namespace TheOtherRoles
         private static CustomButton deputyHandcuffButton;
         private static CustomButton timeMasterShieldButton;
         private static CustomButton amnisiacRememberButton;
-        public static CustomButton transportButton;
         private static CustomButton veterenAlertButton;
         private static CustomButton medicShieldButton;
         private static CustomButton bomberBombButton;
         private static CustomButton bomberKillButton;
-        private static CustomButton cultistTurnButton;
+    //    private static CustomButton cultistTurnButton;
         private static CustomButton shifterShiftButton;
         private static CustomButton morphlingButton;
         private static CustomButton camouflagerButton;
@@ -70,7 +69,6 @@ namespace TheOtherRoles
         public static CustomButton mayorMeetingButton;
         public static CustomButton blackmailerButton;
         public static CustomButton zoomOutButton;
-     //   public static CustomButton readyButton;
 
         public static Dictionary<byte, List<CustomButton>> deputyHandcuffedButtons = null;
         public static PoolablePlayer morphTargetDisplay;
@@ -107,7 +105,6 @@ namespace TheOtherRoles
             //garlicButton.MaxTimer = 0f;
             jackalKillButton.MaxTimer = Jackal.cooldown;
             swooperKillButton.MaxTimer = Jackal.cooldown;
-            transportButton.MaxTimer = Transporter.transportCooldown;
             werewolfKillButton.MaxTimer = Werewolf.killCooldown;
             
             sidekickKillButton.MaxTimer = Sidekick.cooldown;
@@ -135,7 +132,6 @@ namespace TheOtherRoles
             minerMineButton.MaxTimer = Miner.cooldown;
             blackmailerButton.MaxTimer = Blackmailer.cooldown;
             mayorMeetingButton.MaxTimer = PlayerControl.GameOptions.EmergencyCooldown;
-     //       readyButton.MaxTimer = 3f;
 
             timeMasterShieldButton.EffectDuration = TimeMaster.shieldDuration;
             veterenAlertButton.EffectDuration = Veteren.alertDuration;
@@ -291,9 +287,9 @@ namespace TheOtherRoles
                         if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
                             || SubmergedCompatibility.IsSubmerged && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask)
                             sabotageActive = true;
-                    return sabotageActive && Engineer.remainingFixes > 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
+                    return sabotageActive && Engineer.remainingFixes > 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !Engineer.usedFix;
                 },
-                () => {},
+                () => { if(Engineer.resetFixAfterMeeting) Engineer.resetFixes(); },
                 Engineer.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1472,27 +1468,6 @@ namespace TheOtherRoles
                 KeyCode.F
             );
 
-            // Transport Button
-            transportButton = new CustomButton(
-                () => {
-                    if (Transporter.transportsLeft != 0) {
-                       // Transporter.transportsLeft--;
-                       // transportButton.Timer = transportButton.MaxTimer;
-                        Transporter.PerformKillButton(transportButton);
-                    }
-
-                },
-                () => { return Transporter.transporter != null && Transporter.transporter == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead && Transporter.transportsLeft != 0; },
-                () => {
-                    return Transporter.transportsLeft != 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove && Transporter.transporter != null;
-                },
-                () => { transportButton.Timer = 1; },
-                Transporter.getTransportSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
-                __instance,
-                KeyCode.F
-            );
-
             // Cleaner Clean
             undertakerDragButton = new CustomButton(
                 () => {
@@ -2080,7 +2055,6 @@ namespace TheOtherRoles
             jumperChargesText.enableWordWrapping = false;
             jumperChargesText.transform.localScale = Vector3.one * 0.5f;
             jumperChargesText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-            
 
             // Ninja mark and assassinate button 
             ninjaButton = new CustomButton(
@@ -2232,22 +2206,22 @@ namespace TheOtherRoles
                "Meeting"
            );
            
-            // Jackal Sidekick Button
-            cultistTurnButton = new CustomButton(
-                () => {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CultistCreateImposter, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Cultist.currentFollower.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.cultistCreateImposter(Cultist.currentFollower.PlayerId);
-                },
-                () => { return Cultist.needsFollower && Cultist.cultist != null && Cultist.cultist == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
-                () => { return Cultist.needsFollower && Cultist.currentFollower != null && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
-                () => { jackalSidekickButton.Timer = jackalSidekickButton.MaxTimer;},
-                Cultist.getSidekickButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
-                __instance,
-                KeyCode.F
-            );
+    //        // Jackal Sidekick Button
+    //        cultistTurnButton = new CustomButton(
+    //            () => {
+    //                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CultistCreateImposter, Hazel.SendOption.Reliable, -1);
+   //                 writer.Write(Cultist.currentFollower.PlayerId);
+   //                 AmongUsClient.Instance.FinishRpcImmediately(writer);
+   //                 RPCProcedure.cultistCreateImposter(Cultist.currentFollower.PlayerId);
+   //             },
+   //             () => { return Cultist.needsFollower && Cultist.cultist != null && Cultist.cultist == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
+   //             () => { return Cultist.needsFollower && Cultist.currentFollower != null && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
+   //             () => { jackalSidekickButton.Timer = jackalSidekickButton.MaxTimer;},
+   //             Cultist.getSidekickButtonSprite(),
+   //             new Vector3(-1.8f, -0.06f, 0),
+   //             __instance,
+   //             KeyCode.F
+   //         );
 
             zoomOutButton = new CustomButton(
                 () => { Helpers.toggleZoom();
@@ -2286,42 +2260,6 @@ namespace TheOtherRoles
                 KeyCode.KeypadMinus
                 );
             changeChatButton.Timer = 0f;
-
-            // ready button
-     //       readyButton = new CustomButton(
-    //            () => {
-    //                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetReadyStatus, Hazel.SendOption.Reliable, -1);
-    //                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-    //                if (readyButton.buttonText == "Not Ready") {       
-    //                    readyButton.Sprite = Helpers.loadSpriteFromResources("TheEpicRoles.Resources.ReadyButton.png", 115f);
-    //                    readyButton.buttonText = "Ready";
-    //                    readyButton.actionButton.buttonLabelText.outlineColor = Color.green;
-    //                    writer.Write(byte.MaxValue);
-    //                    if (AmongUsClient.Instance.AmHost)
-    //                        RPCProcedure.setReadyStatus(PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
-    //                }
-    //                else {
-    //                    readyButton.Sprite = Helpers.loadSpriteFromResources("TheEpicRoles.Resources.NotReadyButton.png", 115f);
-    //                    readyButton.buttonText = "Not Ready"; 
-    //                    readyButton.actionButton.buttonLabelText.outlineColor = Color.red;
-    //                    writer.Write(byte.MinValue);
-     //                   if (AmongUsClient.Instance.AmHost)
-    //                        RPCProcedure.setReadyStatus(PlayerControl.LocalPlayer.PlayerId, byte.MinValue);
-    //                }            
-    //                readyButton.Timer = 3f;
-    //                AmongUsClient.Instance.FinishRpcImmediately(writer);
-    //            },
-    //            () => { return AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay; },
-    //            () => { return true; },
-    //            () => { },
-   //             Helpers.loadSpriteFromResources("TheEpicRoles.Resources.NotReadyButton.png", 115f),
-   //             new Vector3(-1f, 0, 0),
-   //             __instance,
-    //            KeyCode.LeftControl,
-   //             false,
-   //             "Not Ready",
-   //             true
-   //         );
 
             // Set the default (or settings from the previous game) timers / durations when spawning the buttons
             setCustomButtonCooldowns();

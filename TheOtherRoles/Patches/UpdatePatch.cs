@@ -118,8 +118,6 @@ namespace TheOtherRoles.Patches {
                 setPlayerNameColor(Tracker.tracker, Tracker.color);
             else if (Snitch.snitch != null && Snitch.snitch == localPlayer)
                 setPlayerNameColor(Snitch.snitch, Snitch.color);
-            else if (Transporter.transporter != null && Transporter.transporter == localPlayer)
-                setPlayerNameColor(Transporter.transporter, Transporter.color);
             else if (Jackal.jackal != null && Jackal.jackal == localPlayer) {
                 // Jackal can see his sidekick
                 if (Jackal.jackal != Swooper.swooper) setPlayerNameColor(Jackal.jackal, Jackal.color);
@@ -221,17 +219,6 @@ namespace TheOtherRoles.Patches {
                         if (Lovers.lover1.PlayerId == player.TargetPlayerId || Lovers.lover2.PlayerId == player.TargetPlayerId)
                             player.NameText.text += suffix;
             }
-
-   //         // Lawyer
-  //          if (Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == CachedPlayer.LocalPlayer.PlayerControl) {
-    //            string suffix = Helpers.cs(Lawyer.color, " §");
-   //             Lawyer.target.cosmetics.nameText.text += suffix;
-//
-    //            if (MeetingHud.Instance != null)
-    //                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-    //                    if (player.TargetPlayerId == Lawyer.target.PlayerId)
-    //                        player.NameText.text += suffix;
-    //        }
 
             // Lawyer
             bool localIsLawyer = Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == PlayerControl.LocalPlayer;

@@ -23,7 +23,7 @@ namespace TheOtherRoles
     public class TheOtherRolesPlugin : BasePlugin
     {
         public const string Id = "me.eisbison.theotherroles";
-        public const string VersionString = "1.0.8";
+        public const string VersionString = "1.0.9";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
 
@@ -107,7 +107,7 @@ namespace TheOtherRoles
             UpdateRegions();
 
             GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(3, 16).ToArray(); // Max Imp = Recommended Imp = 3 //regular and distributes imposter
-       //     GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(0, 16).ToArray(); // Max Imp = Recommended Imp = 3 //distributes neutral and crewmate
+         //   GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(0, 16).ToArray(); // Max Imp = Recommended Imp = 3 //distributes neutral and crewmate
             GameOptionsData.MinPlayers = Enumerable.Repeat(1, 15).ToArray(); // Min Players = 4
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", false);
@@ -161,10 +161,11 @@ namespace TheOtherRoles
 
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (!TheOtherRolesPlugin.DebugMode.Value) return;
+       //     if (!TheOtherRolesPlugin.DebugMode.Value) return;
+              if (CustomOptionHolder.debugMode.getBool()) {
 
             // Spawn dummys
-            if (Input.GetKeyDown(KeyCode.F)) {
+            if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.F)) {
                 var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
                 var i = playerControl.PlayerId = (byte) GameData.Instance.GetAvailableId();
 
@@ -179,14 +180,17 @@ namespace TheOtherRoles
                 playerControl.SetColor((byte) random.Next(Palette.PlayerColors.Length));
                 GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
             }
+              
 
             // Terminate round
-            if(Input.GetKeyDown(KeyCode.L)) {
+            if(AmongUsClient.Instance.AmHost && Helpers.gameStarted && Input.GetKeyDown(KeyCode.L)) {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ForceEnd, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.forceEnd();
             }
         }
+        }
+        
 
         public static string RandomString(int length)
         {

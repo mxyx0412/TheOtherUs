@@ -40,7 +40,7 @@ namespace TheOtherRoles {
         public static Sprite teamJackalChat = null;
         public static Sprite teamLoverChat = null;
 
-        public static bool gameStarted
+        public static bool gameStarted //new
         {
             get
             {
@@ -107,6 +107,7 @@ namespace TheOtherRoles {
             if (isRoleAlive(Veteren.veteren)) powerCrewAlive = true;
             if (isRoleAlive(Mayor.mayor)) powerCrewAlive = true;
             if (isRoleAlive(Swapper.swapper)) powerCrewAlive = true;
+            if (isRoleAlive(Guesser.niceGuesser)) powerCrewAlive = true;
 
             return powerCrewAlive;
         }
@@ -286,7 +287,7 @@ public static bool isPlayerLover(PlayerControl player) {
             foreach (var player2 in PlayerControl.AllPlayerControls) {
                 if (player2.Data.Role.IsImpostor && CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor) {
                     player.cosmetics.nameText.color = Palette.White;
-                    player.RemoveInfected(); //testing cultist
+     //               player.RemoveInfected(); //testing cultist
                 }
             }
 
@@ -599,24 +600,26 @@ public static bool isPlayerLover(PlayerControl player) {
         }
 
         public static bool hidePlayerName(PlayerControl source, PlayerControl target) {
-//
-            if (source == target) return false; // Player sees his own name
-            if (source == null || target == null) return true;
-            if (source.isDead()) return false;
-            if (target.isDead()) return true;
-//
+
+//// if there is a problem, it is here !!!
+ //           if (source == target) return false; // Player sees his own name
+ //           if (source == null || target == null) return true;
+ //           if (source.isDead()) return false;
+ //           if (target.isDead()) return true;
+////
+
             if (Camouflager.camouflageTimer > 0f) return true; // No names are visible
        //     else if (Helpers.isCamoComms() && !Helpers.isActiveCamoComms()) return true;  // testing
             else if (Ninja.isInvisble && Ninja.ninja == target) return true; 
             else if (Swooper.isInvisable && Swooper.swooper == target) return true; 
-            if (MapOptions.hideOutOfSightNametags && gameStarted && MapUtilities.CachedShipStatus != null && source.transform != null && target.transform != null)
-            {
-                float distMod = 1.025f;
-                float distance = Vector3.Distance(source.transform.position, target.transform.position);
-                bool anythingBetween = PhysicsHelpers.AnythingBetween(source.GetTruePosition(), target.GetTruePosition(), Constants.ShadowMask, false);
+  //          if (MapOptions.hideOutOfSightNametags && gameStarted && MapUtilities.CachedShipStatus != null && source.transform != null && target.transform != null)
+  //          {
+  //              float distMod = 1.025f;
+  //              float distance = Vector3.Distance(source.transform.position, target.transform.position);
+  //              bool anythingBetween = PhysicsHelpers.AnythingBetween(source.GetTruePosition(), target.GetTruePosition(), Constants.ShadowMask, false);
 
-                if (distance > MapUtilities.CachedShipStatus.CalculateLightRadius(source.Data) * distMod || anythingBetween) return true;
-            }
+  //              if (distance > ShipStatus.Instance.CalculateLightRadius(source.Data) * distMod || anythingBetween) return true;
+ //           }
             else if (!MapOptions.hidePlayerNames || source.Data.IsDead) return false; // All names are visible
             else if (source == null || target == null) return true;
             else if (source == target) return false; // Player sees his own name
@@ -628,13 +631,12 @@ public static bool isPlayerLover(PlayerControl player) {
             return true;
         }
 
-        internal static bool ImpostorCriteria(PlayerControl source, PlayerControl target)
-        {
-            if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor) && CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor &&
-                MapOptions.ImpostorSeeRoles) return true;
-            return false;
-        }
-
+    //    internal static bool ImpostorCriteria(PlayerControl source, PlayerControl target)
+    //    {
+   //         if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor) && CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor &&
+    //            MapOptions.ImpostorSeeRoles) return true;
+    //        return false;
+    //    }
 
         public static void setDefaultLook(this PlayerControl target) {
             target.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);

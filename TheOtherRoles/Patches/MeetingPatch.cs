@@ -15,12 +15,17 @@ namespace TheOtherRoles.Patches {
     [HarmonyPatch]
     class MeetingHudPatch {
         static bool[] selections;
+        static bool[] selectionsLG;
         static SpriteRenderer[] renderers;
         private static GameData.PlayerInfo target = null;
         private const float scale = 0.65f;
         private static TMPro.TextMeshPro swapperChargesText;
         private static PassiveButton[] swapperButtonList;
         private static TMPro.TextMeshPro swapperConfirmButtonLabel;
+        
+        private static PassiveButton[] lifeGuardButtonList;
+        private static TMPro.TextMeshPro lifeGuardConfirmButtonLabel;
+
         public static bool shookAlready = false;
         public static Sprite PrevXMark = null;
         public static Sprite PrevOverlay = null;
@@ -117,6 +122,16 @@ namespace TheOtherRoles.Patches {
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.setTiebreak();
                         }
+                    }
+
+                    if (LifeGuard.isLifeGuard) {
+                        if (exiled.Object.PlayerId == LifeGuard.playerId1) {
+                            exiled = null;
+                            tie = false;
+                        }
+                        LifeGuard.isLifeGuard = false;
+                        LifeGuard.playerId1 = Byte.MaxValue;
+
                     }
 
                     // RPCVotingComplete
@@ -248,6 +263,25 @@ namespace TheOtherRoles.Patches {
             }
         }
 
+        static void lifeGuardOnClick(int i, MeetingHud __instance) {
+            if (__instance.state == MeetingHud.VoteStates.Results || Swapper.charges <= 0) return;
+            if (__instance.playerStates[i].AmDead) return;
+
+            int selectedCount = selectionsLG.Where(b => b).Count();
+            SpriteRenderer renderer = renderers[i];
+
+            if (selectedCount == 0) {
+                renderer.color = Color.yellow;
+                selectionsLG[i] = true;
+            } else if (selectedCount == 1) {
+                if (selectionsLG[i]) {
+                    renderer.color = Color.red;
+                    selectionsLG[i] = false;
+                    lifeGuardConfirmButtonLabel.text = Helpers.cs(Color.red, "Confirm Save");
+                }
+            }
+        }
+
         static void swapperConfirm(MeetingHud __instance) {
             __instance.playerStates[0].Cancel();  // This will stop the underlying buttons of the template from showing up
             if (__instance.state == MeetingHud.VoteStates.Results) return;
@@ -279,6 +313,35 @@ namespace TheOtherRoles.Patches {
                 swapperConfirmButtonLabel.text = Helpers.cs(Color.green, "Swapping!");
                 Swapper.charges--;
                 swapperChargesText.text = $"Swaps: {Swapper.charges}";
+            }
+        }
+
+        static void lifeGuardConfirm(MeetingHud __instance) {
+            __instance.playerStates[0].Cancel();  // This will stop the underlying buttons of the template from showing up
+            if (__instance.state == MeetingHud.VoteStates.Results) return;
+            if (selectionsLG.Where(b => b).Count() != 1) return;
+            if (LifeGuard.hasSaved || LifeGuard.playerId1 != Byte.MaxValue) return;
+            PlayerVoteArea savedPlayer = null;
+            for (int A = 0; A < selectionsLG.Length; A++) {
+                if (selectionsLG[A]) {
+                    if (savedPlayer == null) {
+                        savedPlayer = __instance.playerStates[A];
+                    }
+                    renderers[A].color = Color.green;
+                } else if (renderers[A] != null) {
+                    renderers[A].color = Color.gray;
+                }
+                if (lifeGuardButtonList[A] != null) lifeGuardButtonList[A].OnClick.RemoveAllListeners();  // Swap buttons can't be clicked / changed anymore
+            }
+            if (savedPlayer != null  || true) {
+                
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.LifeGuardSave, Hazel.SendOption.Reliable, -1);
+                writer.Write((byte)savedPlayer.TargetPlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                
+                RPCProcedure.lifeGuardSave((byte)savedPlayer.TargetPlayerId); 
+                lifeGuardConfirmButtonLabel.text = Helpers.cs(Color.green, "Saving!");
+                LifeGuard.hasSaved = true;
             }
         }
 
@@ -331,10 +394,11 @@ namespace TheOtherRoles.Patches {
                         roleInfo.roleId != RoleId.Torch &&
                         roleInfo.roleId != RoleId.Watcher &&
                         roleInfo.roleId != RoleId.Tunneler &&
+                        roleInfo.roleId != RoleId.LifeGuard &&
                         roleInfo.roleId != RoleId.Vip) continue;
                 } else
                     if (roleInfo.isModifier) continue;
-                if (roleInfo.roleId == guesserRole || (!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Spy || (!Guesser.evilGuesserCanGuessCrewmate && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Crewmate))) continue; // Not guessable roles & modifier evilGuesserCanGuessCrewmate
+                 if (roleInfo.roleId == guesserRole || (!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Spy || (!Guesser.evilGuesserCanGuessCrewmate && guesserRole == RoleId.EvilGuesser && roleInfo.roleId == RoleId.Crewmate))) continue; // Not guessable roles & modifier evilGuesserCanGuessCrewmate
                 // remove all roles that cannot spawn due to the settings from the ui.
                 RoleManagerSelectRolesPatch.RoleAssignmentData roleData = RoleManagerSelectRolesPatch.getRoleAssignmentData();
                 if (roleInfo.roleId == RoleId.Swooper)
@@ -439,6 +503,66 @@ namespace TheOtherRoles.Patches {
         }
 
         static void populateButtonsPostfix(MeetingHud __instance) {
+
+            // Add LifeGuard save buttons
+            if (LifeGuard.lifeguard != null && CachedPlayer.LocalPlayer.PlayerControl == LifeGuard.lifeguard && !LifeGuard.lifeguard.Data.IsDead && !LifeGuard.hasSaved) {
+                selectionsLG = new bool[__instance.playerStates.Length];
+                renderers = new SpriteRenderer[__instance.playerStates.Length];
+                lifeGuardButtonList = new PassiveButton[__instance.playerStates.Length];
+
+                for (int i = 0; i < __instance.playerStates.Length; i++) {
+                    PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+
+                    GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                    GameObject checkbox = UnityEngine.Object.Instantiate(template);
+                    checkbox.transform.SetParent(playerVoteArea.transform);
+                    checkbox.transform.position = template.transform.position;
+                    checkbox.transform.localPosition = new Vector3(-0.35f, 0.03f, -1.3f);
+                    SpriteRenderer renderer = checkbox.GetComponent<SpriteRenderer>();
+                    renderer.sprite = LifeGuard.getSaveSprite();
+                    renderer.color = Color.red;
+
+
+                    PassiveButton button = checkbox.GetComponent<PassiveButton>();
+                    lifeGuardButtonList[i] = button;
+                    button.OnClick.RemoveAllListeners();
+                    int copiedIndex = i;
+                    button.OnClick.AddListener((System.Action)(() => lifeGuardOnClick(copiedIndex, __instance)));
+                    
+                    selectionsLG[i] = false;
+                    renderers[i] = renderer;
+                }
+                // Add the "Confirm Save" button
+                Transform meetingUI = __instance.transform.FindChild("PhoneUI");
+                var buttonTemplate = __instance.playerStates[0].transform.FindChild("votePlayerBase");
+                var maskTemplate = __instance.playerStates[0].transform.FindChild("MaskArea");
+                var textTemplate = __instance.playerStates[0].NameText;
+                Transform confirmSaveButtonParent = (new GameObject()).transform;
+                confirmSaveButtonParent.SetParent(meetingUI);
+              
+                Transform confirmSaveButtonLG = UnityEngine.Object.Instantiate(buttonTemplate, confirmSaveButtonParent);
+                Transform confirmSaveButtonMask = UnityEngine.Object.Instantiate(maskTemplate, confirmSaveButtonParent);
+                lifeGuardConfirmButtonLabel = UnityEngine.Object.Instantiate(textTemplate, confirmSaveButtonLG);
+                confirmSaveButtonLG.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                confirmSaveButtonParent.localPosition = new Vector3(0, -2.225f, -5);
+                confirmSaveButtonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
+                lifeGuardConfirmButtonLabel.text = Helpers.cs(Color.red, "Confirm Save");
+                lifeGuardConfirmButtonLabel.alignment = TMPro.TextAlignmentOptions.Center;
+                lifeGuardConfirmButtonLabel.transform.localPosition = new Vector3(0, 0, lifeGuardConfirmButtonLabel.transform.localPosition.z);
+                lifeGuardConfirmButtonLabel.transform.localScale *= 1.7f;
+
+                PassiveButton passiveButton = confirmSaveButtonLG.GetComponent<PassiveButton>();
+                passiveButton.OnClick.RemoveAllListeners();               
+                if (!CachedPlayer.LocalPlayer.Data.IsDead) passiveButton.OnClick.AddListener((Action)(() => lifeGuardConfirm(__instance)));
+                confirmSaveButtonLG.parent.gameObject.SetActive(false);
+                __instance.StartCoroutine(Effects.Lerp(7.27f, new Action<float>((p) => { // Button appears delayed, so that its visible in the voting screen only!
+                    if (p == 1f) {
+                        confirmSaveButtonLG.parent.gameObject.SetActive(true);
+                    }
+                })));
+
+            }
+
             // Add Swapper Buttons
             if (Swapper.swapper != null && CachedPlayer.LocalPlayer.PlayerControl == Swapper.swapper && !Swapper.swapper.Data.IsDead) {
                 selections = new bool[__instance.playerStates.Length];
@@ -523,7 +647,8 @@ namespace TheOtherRoles.Patches {
                         SpriteRenderer rend = (new GameObject()).AddComponent<SpriteRenderer>();
                         rend.transform.SetParent(pva.transform);
                         rend.gameObject.layer = pva.Megaphone.gameObject.layer;
-                        rend.transform.localPosition = new Vector3(-0.5f, -0.03f, -1f);
+                  //      rend.transform.localPosition = new Vector3(-0.5f, -0.03f, -1f); 
+                        rend.transform.localPosition = new Vector3(1f, -0.03f, -1f); //change position due to LifeGuard overlay
                         rend.sprite = Witch.getSpelledOverlaySprite();
                     }
                 }

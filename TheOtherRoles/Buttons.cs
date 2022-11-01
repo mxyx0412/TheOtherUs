@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
+using TheOtherRoles.CustomGameModes;
 
 namespace TheOtherRoles
 {
@@ -20,12 +21,11 @@ namespace TheOtherRoles
         private static CustomButton deputyHandcuffButton;
         private static CustomButton timeMasterShieldButton;
         private static CustomButton amnisiacRememberButton;
-        public static CustomButton transportButton;
         private static CustomButton veterenAlertButton;
         private static CustomButton medicShieldButton;
         private static CustomButton bomberBombButton;
         private static CustomButton bomberKillButton;
-        private static CustomButton cultistTurnButton;
+      //  private static CustomButton cultistTurnButton;
         private static CustomButton shifterShiftButton;
         private static CustomButton morphlingButton;
         private static CustomButton camouflagerButton;
@@ -39,7 +39,7 @@ namespace TheOtherRoles
         private static CustomButton bodyGuardGuardButton;
         private static CustomButton trackerTrackCorpsesButton;
         public static CustomButton vampireKillButton;
-        //private static CustomButton garlicButton;
+    //    private static CustomButton garlicButton;
         public static CustomButton jackalKillButton;
         public static CustomButton sidekickKillButton;
         private static CustomButton jackalSidekickButton;
@@ -58,6 +58,7 @@ namespace TheOtherRoles
         public static CustomButton pursuerButton;
         public static CustomButton witchSpellButton;
         public static CustomButton jumperButton;
+        public static CustomButton escapistButton;
         public static CustomButton ninjaButton;
         public static CustomButton swooperSwoopButton;
         public static CustomButton swooperKillButton;
@@ -69,8 +70,13 @@ namespace TheOtherRoles
         
         public static CustomButton mayorMeetingButton;
         public static CustomButton blackmailerButton;
+        public static CustomButton thiefKillButton;
+        public static CustomButton trapperButton;
         public static CustomButton zoomOutButton;
-     //   public static CustomButton readyButton;
+        private static CustomButton hunterLighterButton;
+        private static CustomButton hunterAdminTableButton;
+        private static CustomButton hunterArrowButton;
+        private static CustomButton huntedShieldButton;
 
         public static Dictionary<byte, List<CustomButton>> deputyHandcuffedButtons = null;
         public static PoolablePlayer morphTargetDisplay;
@@ -81,12 +87,13 @@ namespace TheOtherRoles
         public static TMPro.TMP_Text pursuerButtonBlanksText;
         public static TMPro.TMP_Text hackerAdminTableChargesText;
         public static TMPro.TMP_Text hackerVitalsChargesText;
-        public static TMPro.TMP_Text jumperChargesText;
+        public static TMPro.TMP_Text trapperChargesText;
+        public static TMPro.TMP_Text huntedShieldCountText;
 
         public static void setCustomButtonCooldowns() {
             engineerRepairButton.MaxTimer = 0f;
             janitorCleanButton.MaxTimer = Janitor.cooldown;
-            sheriffKillButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
+            sheriffKillButton.MaxTimer = Sheriff.cooldown;
             deputyHandcuffButton.MaxTimer = Deputy.handcuffCooldown;
             timeMasterShieldButton.MaxTimer = TimeMaster.cooldown;
             veterenAlertButton.MaxTimer = Veteren.cooldown;
@@ -103,11 +110,11 @@ namespace TheOtherRoles
             vampireKillButton.MaxTimer = Vampire.cooldown;
             trackerTrackPlayerButton.MaxTimer = 0f;
             jumperButton.MaxTimer = Jumper.jumperJumpTime;
+            escapistButton.MaxTimer = Escapist.escapistEscapeTime;
             bodyGuardGuardButton.MaxTimer = 0f;
-            //garlicButton.MaxTimer = 0f;
+      //      garlicButton.MaxTimer = 0f;
             jackalKillButton.MaxTimer = Jackal.cooldown;
             swooperKillButton.MaxTimer = Jackal.cooldown;
-            transportButton.MaxTimer = Transporter.transportCooldown;
             werewolfKillButton.MaxTimer = Werewolf.killCooldown;
             
             sidekickKillButton.MaxTimer = Sidekick.cooldown;
@@ -134,8 +141,13 @@ namespace TheOtherRoles
             swooperSwoopButton.MaxTimer = Swooper.swoopCooldown;
             minerMineButton.MaxTimer = Miner.cooldown;
             blackmailerButton.MaxTimer = Blackmailer.cooldown;
+            thiefKillButton.MaxTimer = Thief.cooldown;
             mayorMeetingButton.MaxTimer = PlayerControl.GameOptions.EmergencyCooldown;
-     //       readyButton.MaxTimer = 3f;
+            trapperButton.MaxTimer = Trapper.cooldown;
+            hunterLighterButton.MaxTimer = Hunter.lightCooldown;
+            hunterAdminTableButton.MaxTimer = Hunter.AdminCooldown;
+            hunterArrowButton.MaxTimer = Hunter.ArrowCooldown;
+            huntedShieldButton.MaxTimer = Hunted.shieldCooldown;
 
             timeMasterShieldButton.EffectDuration = TimeMaster.shieldDuration;
             veterenAlertButton.EffectDuration = Veteren.alertDuration;
@@ -160,6 +172,9 @@ namespace TheOtherRoles
             trackerTrackCorpsesButton.EffectDuration = Tracker.corpsesTrackingDuration;
             witchSpellButton.EffectDuration = Witch.spellCastingDuration;
             securityGuardCamButton.EffectDuration = SecurityGuard.duration;
+            hunterLighterButton.EffectDuration = Hunter.lightDuration;
+            hunterArrowButton.EffectDuration = Hunter.ArrowDuration;
+            huntedShieldButton.EffectDuration = Hunted.shieldDuration;
             // Already set the timer to the max, as the button is enabled during the game and not available at the start
             lightsOutButton.Timer = lightsOutButton.MaxTimer;
             zoomOutButton.MaxTimer = 0f;
@@ -178,6 +193,13 @@ namespace TheOtherRoles
             timeMasterShieldButton.Timer = timeMasterShieldButton.MaxTimer;
             timeMasterShieldButton.isEffectActive = false;
             timeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+            SoundEffectsManager.stop("timemasterShield");
+        }
+
+        public static void resetHuntedRewindButton() {
+            huntedShieldButton.Timer = huntedShieldButton.MaxTimer;
+            huntedShieldButton.isEffectActive = false;
+            huntedShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
             SoundEffectsManager.stop("timemasterShield");
         }
 
@@ -291,9 +313,9 @@ namespace TheOtherRoles
                         if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
                             || SubmergedCompatibility.IsSubmerged && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask)
                             sabotageActive = true;
-                    return sabotageActive && Engineer.remainingFixes > 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
+                    return sabotageActive && Engineer.remainingFixes > 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !Engineer.usedFix;
                 },
-                () => {},
+                () => { if(Engineer.resetFixAfterMeeting) Engineer.resetFixes(); },
                 Engineer.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -336,90 +358,53 @@ namespace TheOtherRoles
                 __instance,
                 KeyCode.F
             );
-
+/*
             // Sheriff Kill
-        //    sheriffKillButton = new CustomButton(
-      //          () => {
-      //              if (Helpers.checkAndDoVetKill(Sheriff.currentTarget)) return;
-      //              MurderAttemptResult murderAttemptResult = Helpers.checkMuderAttempt(Sheriff.sheriff, Sheriff.currentTarget);
-     //               if (murderAttemptResult == MurderAttemptResult.SuppressKill) return;
-      //              if (murderAttemptResult == MurderAttemptResult.PerformKill) {
-      //                  byte targetId = 0;
-      //                  if ((Sheriff.currentTarget.Data.Role.IsImpostor && (Sheriff.currentTarget != Mini.mini || Mini.isGrownUp())) ||
-      //                      (Sheriff.spyCanDieToSheriff && Spy.spy == Sheriff.currentTarget) ||
-      //                      (Sheriff.canKillNeutrals && (Arsonist.arsonist == Sheriff.currentTarget || Jester.jester == Sheriff.currentTarget || Vulture.vulture == Sheriff.currentTarget || Lawyer.lawyer == Sheriff.currentTarget || Pursuer.pursuer == Sheriff.currentTarget)) ||
-      //                      (Jackal.jackal == Sheriff.currentTarget || Sidekick.sidekick == Sheriff.currentTarget) ||
-      //                      (Swooper.swooper == Sheriff.currentTarget) ||
-      //                      (Prosecutor.prosecutor == Sheriff.currentTarget) ||
-      //                      (Werewolf.werewolf == Sheriff.currentTarget)) {
-      //                      targetId = Sheriff.currentTarget.PlayerId;
-     //                   }
-     //                   else {
-     //                       targetId = CachedPlayer.LocalPlayer.PlayerId;
-     //                   }
-//
-     //                   MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
-     //                   killWriter.Write(Sheriff.sheriff.Data.PlayerId);
-    //                    killWriter.Write(targetId);
-    //                    killWriter.Write(byte.MaxValue);
-    //                    AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-    //                    RPCProcedure.uncheckedMurderPlayer(Sheriff.sheriff.Data.PlayerId, targetId, Byte.MaxValue);
-    //                }
-    //                if (murderAttemptResult == MurderAttemptResult.BodyGuardKill) {
-    //                    Helpers.checkMuderAttemptAndKill(Sheriff.sheriff, Sheriff.currentTarget);
-   //                 }
-//
-   //                 sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
-     //               Sheriff.currentTarget = null;
-   //             },
- //               () => { return Sheriff.sheriff != null && Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
-  //              () => { 
-  //                  showTargetNameOnButton(Sheriff.currentTarget, sheriffKillButton, "KILL");
-  //                  return Sheriff.currentTarget && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
-  //              },
-  //              () => { sheriffKillButton.Timer = sheriffKillButton.MaxTimer;},
-  //              __instance.KillButton.graphic.sprite,
-   //             new Vector3(0f, 1f, 0),
-   //             __instance,
-  //              KeyCode.Q
-  //          );
-//
-            // Deputy Handcuff
-  //          deputyHandcuffButton = new CustomButton(
-  //              () => {
- //                   byte targetId = 0;
- //                   PlayerControl target = Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl ? Sheriff.currentTarget : Deputy.currentTarget;  // If the deputy is now the sheriff, sheriffs target, else deputies target
- //                   targetId = target.PlayerId;
-   //                 if (Helpers.checkAndDoVetKill(target)) return;
-   //                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.DeputyUsedHandcuffs, Hazel.SendOption.Reliable, -1);
-   //                 writer.Write(targetId);
-  //                  AmongUsClient.Instance.FinishRpcImmediately(writer);
-   //                 RPCProcedure.deputyUsedHandcuffs(targetId);
-   //                 Deputy.currentTarget = null;
-   //                 deputyHandcuffButton.Timer = deputyHandcuffButton.MaxTimer;
-//
-   //                 SoundEffectsManager.play("deputyHandcuff");
-   //             },
-   //             () => { return (Deputy.deputy != null && Deputy.deputy == CachedPlayer.LocalPlayer.PlayerControl || Sheriff.sheriff != null && Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl && Sheriff.sheriff == Sheriff.formerDeputy && Deputy.keepsHandcuffsOnPromotion) && !CachedPlayer.LocalPlayer.Data.IsDead; },
-   //             () => {
-   //                 showTargetNameOnButton(Deputy.currentTarget, deputyHandcuffButton, "CUFF");
-   //                 if (deputyButtonHandcuffsText != null) deputyButtonHandcuffsText.text = $"{Deputy.remainingHandcuffs}";
-   //                 return ((Deputy.deputy != null && Deputy.deputy == CachedPlayer.LocalPlayer.PlayerControl && Deputy.currentTarget || Sheriff.sheriff != null && Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl && Sheriff.sheriff == Sheriff.formerDeputy && Sheriff.currentTarget) && Deputy.remainingHandcuffs > 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove);
-  //              },
-   //             () => { deputyHandcuffButton.Timer = deputyHandcuffButton.MaxTimer; },
-   //             Deputy.getButtonSprite(),
-   //             new Vector3(-1.8f, -0.06f, 0),
-  //              __instance,
-   //             KeyCode.F
-   //         );
-            // Deputy Handcuff button handcuff counter
-   //         deputyButtonHandcuffsText = GameObject.Instantiate(deputyHandcuffButton.actionButton.cooldownTimerText, deputyHandcuffButton.actionButton.cooldownTimerText.transform.parent);
-   //         deputyButtonHandcuffsText.text = "";
-   //         deputyButtonHandcuffsText.enableWordWrapping = false;
-   //         deputyButtonHandcuffsText.transform.localScale = Vector3.one * 0.5f;
-   //         deputyButtonHandcuffsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+            sheriffKillButton = new CustomButton(
+                () => {
+                    if (Helpers.checkAndDoVetKill(Sheriff.currentTarget)) return;
+                    MurderAttemptResult murderAttemptResult = Helpers.checkMuderAttempt(Sheriff.sheriff, Sheriff.currentTarget);
+                    if (murderAttemptResult == MurderAttemptResult.SuppressKill) return;
+                    if (murderAttemptResult == MurderAttemptResult.PerformKill) {
+                        byte targetId = 0;
+                        if ((Sheriff.currentTarget.Data.Role.IsImpostor && (Sheriff.currentTarget != Mini.mini || Mini.isGrownUp())) ||
+                            (Sheriff.spyCanDieToSheriff && Spy.spy == Sheriff.currentTarget) ||
+                            (Sheriff.canKillNeutrals && Helpers.isNeutral(Sheriff.currentTarget)) ||
+                            (Jackal.jackal == Sheriff.currentTarget || Sidekick.sidekick == Sheriff.currentTarget)) {
+                            targetId = Sheriff.currentTarget.PlayerId;
+                        }
+                        else {
+                            targetId = CachedPlayer.LocalPlayer.PlayerId;
+                        }
 
-           //Sheriff Kill
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        killWriter.Write(Sheriff.sheriff.Data.PlayerId);
+                        killWriter.Write(targetId);
+                        killWriter.Write(byte.MaxValue);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                        RPCProcedure.uncheckedMurderPlayer(Sheriff.sheriff.Data.PlayerId, targetId, Byte.MaxValue);
+                    }
+                    if (murderAttemptResult == MurderAttemptResult.BodyGuardKill) {
+                        Helpers.checkMuderAttemptAndKill(Sheriff.sheriff, Sheriff.currentTarget);
+                    }
+
+                    sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
+                    Sheriff.currentTarget = null;
+                },
+                () => { return Sheriff.sheriff != null && Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
+                () => { 
+                    showTargetNameOnButton(Sheriff.currentTarget, sheriffKillButton, "KILL");
+                    return Sheriff.currentTarget && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
+                },
+                () => { sheriffKillButton.Timer = sheriffKillButton.MaxTimer;},
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0f, 1f, 0),
+                __instance,
+                KeyCode.Q
+            );
+*/
+
+            //Sheriff Kill
             sheriffKillButton = new CustomButton(
                 () => {
                     if (Helpers.checkAndDoVetKill(Sheriff.currentTarget)) return;
@@ -440,6 +425,7 @@ namespace TheOtherRoles
                             Jester.jester == Sheriff.currentTarget && Sheriff.canKillJester ||
                             Vulture.vulture == Sheriff.currentTarget && Sheriff.canKillVulture ||
                             Lawyer.lawyer == Sheriff.currentTarget && Sheriff.canKillLawyer ||
+                            Thief.thief == Sheriff.currentTarget && Sheriff.canKillThief ||
                             Prosecutor.prosecutor == Sheriff.currentTarget && Sheriff.canKillProsecutor ||
                             Pursuer.pursuer == Sheriff.currentTarget && Sheriff.canKillPursuer))))
                         {
@@ -623,9 +609,10 @@ namespace TheOtherRoles
                 },
                 () => { },
                 Shifter.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(0, 0.73f, 0),
                 __instance,
-                KeyCode.F
+                null,
+                true
             );
 
             // Morphling morph
@@ -950,7 +937,7 @@ namespace TheOtherRoles
                             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Vampire.delay, new Action<float>((p) => { // Delayed action
                                 if (p == 1f) {
                                     // Perform kill if possible and reset bitten (regardless whether the kill was successful or not)
-                                    Helpers.checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, showAnimation: false);
+                                    Helpers.checkMurderAttemptAndKill(Vampire.vampire, Vampire.bitten, showAnimation: false);
                                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
                                     writer.Write(byte.MaxValue);
                                     writer.Write(byte.MaxValue);
@@ -1001,32 +988,34 @@ namespace TheOtherRoles
                     vampireKillButton.Timer = vampireKillButton.MaxTimer;
                 }
             );
-      //      if (Vampire.garlicButton) {
-      //          garlicButton = new CustomButton(
-      //              () => {
-      //                  Vampire.localPlacedGarlic = true;
-      //                  var pos = CachedPlayer.LocalPlayer.transform.position;
-      //                  byte[] buff = new byte[sizeof(float) * 2];
-       //                 Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0*sizeof(float), sizeof(float));
-        //                Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1*sizeof(float), sizeof(float));
-         //               MessageWriter writer = AmongUsClient.Instance.StartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.PlaceGarlic, Hazel.SendOption.Reliable);
-          //              writer.WriteBytesAndSize(buff);
-           //             writer.EndMessage();
-            //            RPCProcedure.placeGarlic(buff); 
-             //           SoundEffectsManager.play("garlic");
+            /*
+            if (Vampire.garlicButton) {
+                garlicButton = new CustomButton(
+                    () => {
+                        Vampire.localPlacedGarlic = true;
+                        var pos = CachedPlayer.LocalPlayer.transform.position;
+                        byte[] buff = new byte[sizeof(float) * 2];
+                        Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0*sizeof(float), sizeof(float));
+                        Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1*sizeof(float), sizeof(float));
+                        MessageWriter writer = AmongUsClient.Instance.StartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.PlaceGarlic, Hazel.SendOption.Reliable);
+                        writer.WriteBytesAndSize(buff);
+                        writer.EndMessage();
+                        RPCProcedure.placeGarlic(buff); 
+                        SoundEffectsManager.play("garlic");
 
-               //     },
-                //    () => { return !Vampire.localPlacedGarlic && !CachedPlayer.LocalPlayer.Data.IsDead && Vampire.garlicsActive; },
-                 //   () => { return CachedPlayer.LocalPlayer.PlayerControl.CanMove && !Vampire.localPlacedGarlic; },
-                  //  () => { },
-          //          Vampire.getGarlicButtonSprite(),
-           //         new Vector3(0, -0.06f, 0),
-             //       __instance,
-               //     null,
-             //       true
-            //    );
-          //  }
-            
+                    },
+                    () => { return !Vampire.localPlacedGarlic && !CachedPlayer.LocalPlayer.Data.IsDead && Vampire.garlicsActive; },
+                    () => { return CachedPlayer.LocalPlayer.PlayerControl.CanMove && !Vampire.localPlacedGarlic; },
+                    () => { },
+                    Vampire.getGarlicButtonSprite(),
+                    new Vector3(0, -0.06f, 0),
+                    __instance,
+                    null,
+                    true
+                );
+            }
+
+            */
             portalmakerPlacePortalButton = new CustomButton(
                 () => {
                     portalmakerPlacePortalButton.Timer = portalmakerPlacePortalButton.MaxTimer;
@@ -1472,27 +1461,6 @@ namespace TheOtherRoles
                 KeyCode.F
             );
 
-            // Transport Button
-            transportButton = new CustomButton(
-                () => {
-                    if (Transporter.transportsLeft != 0) {
-                       // Transporter.transportsLeft--;
-                       // transportButton.Timer = transportButton.MaxTimer;
-                        Transporter.PerformKillButton(transportButton);
-                    }
-
-                },
-                () => { return Transporter.transporter != null && Transporter.transporter == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead && Transporter.transportsLeft != 0; },
-                () => {
-                    return Transporter.transportsLeft != 0 && CachedPlayer.LocalPlayer.PlayerControl.CanMove && Transporter.transporter != null;
-                },
-                () => { transportButton.Timer = 1; },
-                Transporter.getTransportSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
-                __instance,
-                KeyCode.F
-            );
-
             // Cleaner Clean
             undertakerDragButton = new CustomButton(
                 () => {
@@ -1571,7 +1539,7 @@ namespace TheOtherRoles
                         warlockCurseButton.Timer = 1f;
                         SoundEffectsManager.play("warlockCurse");
                     } else if (Warlock.curseVictim != null && Warlock.curseVictimTarget != null) {
-                        MurderAttemptResult murder = Helpers.checkMuderAttemptAndKill(Warlock.warlock, Warlock.curseVictimTarget, showAnimation: false);
+                        MurderAttemptResult murder = Helpers.checkMurderAttemptAndKill(Warlock.warlock, Warlock.curseVictimTarget, showAnimation: false);
                         if (murder == MurderAttemptResult.SuppressKill) return; 
 
                         // If blanked or killed
@@ -2042,6 +2010,7 @@ namespace TheOtherRoles
             // Jumper Jump
             jumperButton = new CustomButton(
                 () => {
+                    
                     if (Jumper.jumpLocation == Vector3.zero) { //set location
                         Jumper.jumpLocation = PlayerControl.LocalPlayer.transform.localPosition;
                         jumperButton.Sprite = Jumper.getJumpButtonSprite();
@@ -2055,32 +2024,74 @@ namespace TheOtherRoles
 
                         PlayerControl.LocalPlayer.transform.position = Jumper.jumpLocation;
 
+                        
+
                         Jumper.jumperCharges -= 1f;
                     }
                     if (Jumper.jumperCharges > 0) jumperButton.Timer = jumperButton.MaxTimer;
                 },
                 () => { return Jumper.jumper != null && Jumper.jumper == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {
-                    if (jumperChargesText != null) jumperChargesText.text = $"{Jumper.jumperCharges}";
+                 //   if (jumperChargesText != null) jumperChargesText.text = $"{Jumper.jumperCharges}";
+                    Jumper.usedPlace = true;
                     return (Jumper.jumpLocation == Vector3.zero || Jumper.jumperCharges >= 1f) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => {
-                    Jumper.jumperCharges += Jumper.jumperChargesGainOnMeeting;
+                    if(Jumper.resetPlaceAfterMeeting) Jumper.resetPlaces();{jumperButton.Sprite = Jumper.getJumpMarkButtonSprite();}
+                //    Jumper.jumperCharges += Jumper.jumperChargesGainOnMeeting;
                     if (Jumper.jumperCharges > Jumper.jumperMaxCharges) Jumper.jumperCharges = Jumper.jumperMaxCharges;
+                    
                     if (Jumper.jumperCharges > 0) jumperButton.Timer = jumperButton.MaxTimer;
+                    
                 },
                 Jumper.getJumpMarkButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 KeyCode.F
             );
-            // Jumper Charges counter
-            jumperChargesText = GameObject.Instantiate(jumperButton.actionButton.cooldownTimerText, jumperButton.actionButton.cooldownTimerText.transform.parent);
-            jumperChargesText.text = "";
-            jumperChargesText.enableWordWrapping = false;
-            jumperChargesText.transform.localScale = Vector3.one * 0.5f;
-            jumperChargesText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-            
+
+            // Escapist Escape
+            escapistButton = new CustomButton(
+                () => {
+                    
+                    if (Escapist.escapeLocation == Vector3.zero) { //set location
+                        Escapist.escapeLocation = PlayerControl.LocalPlayer.transform.localPosition;
+                        escapistButton.Sprite = Escapist.getEscapeButtonSprite();
+                        Escapist.escapistCharges = Escapist.escapistChargesOnPlace;
+                    } else if (Escapist.escapistCharges >= 1f) { //teleport to location if you have one
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetPositionESC, Hazel.SendOption.Reliable, -1);
+                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        writer.Write(Escapist.escapeLocation.x);
+                        writer.Write(Escapist.escapeLocation.y);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+                        PlayerControl.LocalPlayer.transform.position = Escapist.escapeLocation;
+
+                        
+
+                        Escapist.escapistCharges -= 1f;
+                    }
+                    if (Escapist.escapistCharges > 0) escapistButton.Timer = escapistButton.MaxTimer;
+                },
+                () => { return Escapist.escapist != null && Escapist.escapist == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => {
+                 //   if (jumperChargesText != null) jumperChargesText.text = $"{Jumper.jumperCharges}";
+                    Escapist.usedPlace = true;
+                    return (Escapist.escapeLocation == Vector3.zero || Escapist.escapistCharges >= 1f) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => {
+                    if(Escapist.resetPlaceAfterMeeting) Escapist.resetPlaces();{escapistButton.Sprite = Escapist.getEscapeMarkButtonSprite();}
+                //    Jumper.jumperCharges += Jumper.jumperChargesGainOnMeeting;
+                    if (Escapist.escapistCharges > Escapist.escapistMaxCharges) Escapist.escapistCharges = Escapist.escapistMaxCharges;
+                    
+                    if (Escapist.escapistCharges > 0) escapistButton.Timer = escapistButton.MaxTimer;
+                    
+                },
+                Escapist.getEscapeMarkButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                KeyCode.F
+            );
 
             // Ninja mark and assassinate button 
             ninjaButton = new CustomButton(
@@ -2210,7 +2221,7 @@ namespace TheOtherRoles
                    AmongUsClient.Instance.FinishRpcImmediately(writer);
                    mayorMeetingButton.Timer = 1f;
                },
-               () => { return Mayor.mayor != null && Mayor.mayor == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead ;},
+               () => { return Mayor.mayor != null && Mayor.mayor == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
                () => {
                    mayorMeetingButton.actionButton.OverrideText("Emergency ("+ Mayor.remoteMeetingsLeft + ")");
                    bool sabotageActive = false;
@@ -2232,22 +2243,109 @@ namespace TheOtherRoles
                "Meeting"
            );
            
-            // Jackal Sidekick Button
-            cultistTurnButton = new CustomButton(
+       //     // Jackal Sidekick Button
+     //       cultistTurnButton = new CustomButton(
+     //           () => {
+     //               MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CultistCreateImposter, Hazel.SendOption.Reliable, -1);
+     //               writer.Write(Cultist.currentFollower.PlayerId);
+     //               AmongUsClient.Instance.FinishRpcImmediately(writer);
+    //                RPCProcedure.cultistCreateImposter(Cultist.currentFollower.PlayerId);
+     //           },
+    //            () => { return Cultist.needsFollower && Cultist.cultist != null && Cultist.cultist == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
+    //            () => { return Cultist.needsFollower && Cultist.currentFollower != null && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
+    //            () => { jackalSidekickButton.Timer = jackalSidekickButton.MaxTimer;},
+    //            Cultist.getSidekickButtonSprite(),
+   //             new Vector3(-1.8f, -0.06f, 0),
+    //            __instance,
+   //             KeyCode.F
+  //          );
+
+            // Trapper button
+            trapperButton = new CustomButton(
                 () => {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CultistCreateImposter, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Cultist.currentFollower.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.cultistCreateImposter(Cultist.currentFollower.PlayerId);
+
+
+                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+
+                    MessageWriter writer = AmongUsClient.Instance.StartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetTrap, Hazel.SendOption.Reliable);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndMessage();
+                    RPCProcedure.setTrap(buff);
+
+                    SoundEffectsManager.play("trapperTrap");
+                    trapperButton.Timer = trapperButton.MaxTimer;
                 },
-                () => { return Cultist.needsFollower && Cultist.cultist != null && Cultist.cultist == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
-                () => { return Cultist.needsFollower && Cultist.currentFollower != null && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
-                () => { jackalSidekickButton.Timer = jackalSidekickButton.MaxTimer;},
-                Cultist.getSidekickButtonSprite(),
+                () => { return Trapper.trapper != null && Trapper.trapper == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
+                () => {
+                    if (trapperChargesText != null) trapperChargesText.text = $"{Trapper.charges} / {Trapper.maxCharges}";
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && Trapper.charges > 0;
+                },
+                () => { trapperButton.Timer = trapperButton.MaxTimer; },
+                Trapper.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 KeyCode.F
             );
+
+            thiefKillButton = new CustomButton(
+                () => {
+                    PlayerControl thief = Thief.thief;
+                    PlayerControl target = Thief.currentTarget;
+                    var result = Helpers.checkMuderAttempt(thief, target);
+                    if (result == MurderAttemptResult.BlankKill) {
+                        thiefKillButton.Timer = thiefKillButton.MaxTimer;
+                        return;
+                    }
+
+                    if (Thief.suicideFlag) {
+                        // Suicide
+                        MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        writer2.Write(thief.PlayerId);
+                        writer2.Write(thief.PlayerId);
+                        writer2.Write(0);
+                        RPCProcedure.uncheckedMurderPlayer(thief.PlayerId, thief.PlayerId, 0);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer2);
+                        Thief.thief.clearAllTasks();
+                    }
+
+                    // Steal role if survived.
+                    if (!Thief.thief.Data.IsDead && result == MurderAttemptResult.PerformKill) {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ThiefStealsRole, Hazel.SendOption.Reliable, -1);
+                        writer.Write(target.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.thiefStealsRole(target.PlayerId);
+                    }
+                    // Kill the victim (after becoming their role - so that no win is triggered for other teams)
+                    if (result == MurderAttemptResult.PerformKill) {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        writer.Write(thief.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.Write(byte.MaxValue);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.uncheckedMurderPlayer(thief.PlayerId, target.PlayerId, byte.MaxValue);
+                    }
+
+                    
+
+                },
+               () => { return Thief.thief != null && CachedPlayer.LocalPlayer.PlayerControl == Thief.thief && !CachedPlayer.LocalPlayer.Data.IsDead; },
+               () => { return Thief.currentTarget != null && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
+               () => { thiefKillButton.Timer = thiefKillButton.MaxTimer; },
+               __instance.KillButton.graphic.sprite,
+               new Vector3(0, 1f, 0),
+               __instance,
+               KeyCode.Q
+               );
+
+            // Trapper Charges
+            trapperChargesText = GameObject.Instantiate(trapperButton.actionButton.cooldownTimerText, trapperButton.actionButton.cooldownTimerText.transform.parent);
+            trapperChargesText.text = "";
+            trapperChargesText.enableWordWrapping = false;
+            trapperChargesText.transform.localScale = Vector3.one * 0.5f;
+            trapperChargesText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             zoomOutButton = new CustomButton(
                 () => { Helpers.toggleZoom();
@@ -2287,41 +2385,136 @@ namespace TheOtherRoles
                 );
             changeChatButton.Timer = 0f;
 
-            // ready button
-     //       readyButton = new CustomButton(
-    //            () => {
-    //                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetReadyStatus, Hazel.SendOption.Reliable, -1);
-    //                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-    //                if (readyButton.buttonText == "Not Ready") {       
-    //                    readyButton.Sprite = Helpers.loadSpriteFromResources("TheEpicRoles.Resources.ReadyButton.png", 115f);
-    //                    readyButton.buttonText = "Ready";
-    //                    readyButton.actionButton.buttonLabelText.outlineColor = Color.green;
-    //                    writer.Write(byte.MaxValue);
-    //                    if (AmongUsClient.Instance.AmHost)
-    //                        RPCProcedure.setReadyStatus(PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
-    //                }
-    //                else {
-    //                    readyButton.Sprite = Helpers.loadSpriteFromResources("TheEpicRoles.Resources.NotReadyButton.png", 115f);
-    //                    readyButton.buttonText = "Not Ready"; 
-    //                    readyButton.actionButton.buttonLabelText.outlineColor = Color.red;
-    //                    writer.Write(byte.MinValue);
-     //                   if (AmongUsClient.Instance.AmHost)
-    //                        RPCProcedure.setReadyStatus(PlayerControl.LocalPlayer.PlayerId, byte.MinValue);
-    //                }            
-    //                readyButton.Timer = 3f;
-    //                AmongUsClient.Instance.FinishRpcImmediately(writer);
-    //            },
-    //            () => { return AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay; },
-    //            () => { return true; },
-    //            () => { },
-   //             Helpers.loadSpriteFromResources("TheEpicRoles.Resources.NotReadyButton.png", 115f),
-   //             new Vector3(-1f, 0, 0),
-   //             __instance,
-    //            KeyCode.LeftControl,
-   //             false,
-   //             "Not Ready",
-   //             true
-   //         );
+            hunterLighterButton = new CustomButton(
+                () => {
+                    Hunter.lightActive.Add(CachedPlayer.LocalPlayer.PlayerId);
+                    SoundEffectsManager.play("lighterLight");
+
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareTimer, Hazel.SendOption.Reliable, -1);
+                    writer.Write(Hunter.lightPunish);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.shareTimer(Hunter.lightPunish);
+                },
+                () => { return HideNSeek.isHunter() && !CachedPlayer.LocalPlayer.Data.IsDead; },
+                () => { return true; },
+                () => {
+                    hunterLighterButton.Timer = lighterButton.MaxTimer;
+                    hunterLighterButton.isEffectActive = false;
+                    hunterLighterButton.actionButton.graphic.color = Palette.EnabledColor;
+                },
+                Lighter.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                KeyCode.F,
+                true,
+                Hunter.lightDuration,
+                () => {
+                    Hunter.lightActive.Remove(CachedPlayer.LocalPlayer.PlayerId);
+                    hunterLighterButton.Timer = hunterLighterButton.MaxTimer;
+                    SoundEffectsManager.play("lighterLight");
+                }
+            );
+
+            hunterAdminTableButton = new CustomButton(
+               () => {
+                   FastDestroyableSingleton<HudManager>.Instance.ShowMap((System.Action<MapBehaviour>)(m => m.ShowCountOverlay()));
+
+                   CachedPlayer.LocalPlayer.NetTransform.Halt(); // Stop current movement 
+
+                   MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareTimer, Hazel.SendOption.Reliable, -1);
+                   writer.Write(Hunter.AdminPunish); 
+                   AmongUsClient.Instance.FinishRpcImmediately(writer);
+                   RPCProcedure.shareTimer(Hunter.AdminPunish);
+               },
+               () => { return HideNSeek.isHunter() && !CachedPlayer.LocalPlayer.Data.IsDead; },
+               () => { return true; },
+               () => {
+                   hunterAdminTableButton.Timer = hunterAdminTableButton.MaxTimer;
+                   hunterAdminTableButton.isEffectActive = false;
+                   hunterAdminTableButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+               },
+               Hacker.getAdminSprite(),
+               new Vector3(-2.7f, -0.06f, 0),
+               __instance,
+               KeyCode.G,
+               true,
+               Hunter.AdminDuration,
+               () => {
+                   hunterAdminTableButton.Timer = hunterAdminTableButton.MaxTimer;
+                   if (MapBehaviour.Instance && MapBehaviour.Instance.isActiveAndEnabled) MapBehaviour.Instance.Close();
+               },
+               false,
+               "ADMIN"
+            );
+
+            hunterArrowButton = new CustomButton(
+                () => {
+                    Hunter.arrowActive = true;
+                    SoundEffectsManager.play("trackerTrackPlayer");
+
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareTimer, Hazel.SendOption.Reliable, -1);
+                    writer.Write(Hunter.ArrowPunish);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.shareTimer(Hunter.ArrowPunish);
+                },
+                () => { return HideNSeek.isHunter() && !CachedPlayer.LocalPlayer.Data.IsDead; },
+                () => { return true; },
+                () => {
+                    hunterArrowButton.Timer = lighterButton.MaxTimer;
+                    hunterArrowButton.isEffectActive = false;
+                    hunterArrowButton.actionButton.graphic.color = Palette.EnabledColor;
+                },
+                Hunter.getArrowSprite(),
+                new Vector3(-2.7f, 1f, 0),
+                __instance,
+                KeyCode.R,
+                true,
+                Hunter.ArrowDuration,
+                () => {
+                    Hunter.arrowActive = false;
+                    hunterArrowButton.Timer = hunterArrowButton.MaxTimer;
+                    SoundEffectsManager.play("trackerTrackPlayer");
+                }
+            );           
+
+            huntedShieldButton = new CustomButton(
+                () => {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.HuntedShield, Hazel.SendOption.Reliable, -1);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.huntedShield(CachedPlayer.LocalPlayer.PlayerId);
+                    SoundEffectsManager.play("timemasterShield");
+
+                    Hunted.shieldCount--;
+                },
+                () => { return HideNSeek.isHunted() && !CachedPlayer.LocalPlayer.Data.IsDead; },
+                () => {
+                    if (huntedShieldCountText != null) huntedShieldCountText.text = $"{Hunted.shieldCount}";
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && Hunted.shieldCount > 0;
+                },
+                () => {
+                    huntedShieldButton.Timer = huntedShieldButton.MaxTimer;
+                    huntedShieldButton.isEffectActive = false;
+                    huntedShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                },
+                TimeMaster.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                KeyCode.F,
+                true,
+                Hunted.shieldDuration,
+                () => {
+                    huntedShieldButton.Timer = huntedShieldButton.MaxTimer;
+                    SoundEffectsManager.stop("timemasterShield");
+
+                }
+            );
+
+            huntedShieldCountText = GameObject.Instantiate(huntedShieldButton.actionButton.cooldownTimerText, huntedShieldButton.actionButton.cooldownTimerText.transform.parent);
+            huntedShieldCountText.text = "";
+            huntedShieldCountText.enableWordWrapping = false;
+            huntedShieldCountText.transform.localScale = Vector3.one * 0.5f;
+            huntedShieldCountText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             // Set the default (or settings from the previous game) timers / durations when spawning the buttons
             setCustomButtonCooldowns();

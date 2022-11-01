@@ -1,4 +1,5 @@
 using System;
+using AmongUs.Data;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -21,7 +22,7 @@ namespace TheOtherRoles.Modules {
                                 if (!Int32.TryParse(text.Substring(6), out LobbyLimit)) {
                                     __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, "Invalid Size\nUsage: /size {amount}");
                                 } else {
-                                    LobbyLimit = Math.Clamp(LobbyLimit, 1, 15);
+                                    LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
                                     if (LobbyLimit != PlayerControl.GameOptions.MaxPlayers) {
                                         PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
                                         FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
@@ -46,7 +47,7 @@ namespace TheOtherRoles.Modules {
             public static void Prefix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings) {
                 DynamicLobbies.LobbyLimit = settings.MaxPlayers;
                 settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
-                SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
             }
             public static void Postfix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings) {
                 settings.MaxPlayers = DynamicLobbies.LobbyLimit;
@@ -55,7 +56,7 @@ namespace TheOtherRoles.Modules {
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
         public static class InnerNetClientJoinPatch {
             public static void Prefix(InnerNet.InnerNetClient __instance) {
-                SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
             }
         }
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]

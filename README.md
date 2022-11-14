@@ -925,7 +925,7 @@ The Investigator's other feature shows when they report a corpse: they receive c
 | Anonymous Footprints | If set to true, all footprints will have the same color. Otherwise they will have the color of the respective player.
 | Footprint Interval | The interval between two footprints
 | Footprint Duration | Sets how long the footprints remain visible.
-| Time Where Investigator Reports Will Have Name | The amount of time that the Detective will have to report the body since death to get the killer's name.  |
+| Time Where Investigator Reports Will Have Name | The amount of time that the Investigator will have to report the body since death to get the killer's name.  |
 | Time Where Investigator Reports Will Have Color Type| The amount of time that the Investigator will have to report the body since death to get the killer's color type. |
 -----------------------
 

@@ -1250,6 +1250,7 @@ The BodyGuard is a killing crewmate whose ability protects another player at the
 |----------|:-------------:|
 | Bodyguard Spawn Chance | -
 | Reset Target After Meeting | -
+| Show Flash On Death | -
 -----------------------
 
 ## Jumper

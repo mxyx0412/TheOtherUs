@@ -211,9 +211,10 @@ The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Show Button Target:** Button's show the name of the player you are targeting.
 - **Block Game End if Power Crew is Alive:** Game won't end if Power Crew is alive with a killing role (includes Sheriff, Veteran, Mayor, Swapper, Vigilante)
 - **Random Spawn Location:** Players will spawn in random locations at the start of the game and after meetings.
-- **Allow Guessing Some Modifiers:** Some modifiers can be guessed (includes Bait, Tiebreaker, Bloody, Fanatic, Torch, Watcher, Tunneler, and Vip)
+- **Allow Guessing Some Modifiers:** Some modifiers can be guessed (includes Bait, Tiebreaker, Bloody, Fanatic, Torch, Sleuth, Watcher, Tunneler, Multitasker, Lover, Vip)
 - **Play On A Random Map** If enabled it allows you to set percentages for each current map, except ehT dlekS. 
-- **Reset Spawn Cooldow:n** Resets cooldown on spawn
+- **Enable Better Polus:** Adjust Vents, Move Vitals To Labs, Swap Reboot And Chart Course, and Move Cold Temp TO Death Valley
+- **Reset Spawn Cooldown:** Resets cooldown on spawn
 - **Debug Mode:** Allows Host to spawn dummies, end game, and end meetings
 - **Ghosts Can See Roles.**
 - **Ghosts Can See Votes.**

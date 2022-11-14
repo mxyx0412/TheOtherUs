@@ -182,9 +182,9 @@ docker run -d -p 22023:22023/udp --env IMPOSTOR_AntiCheatEnabled=false --env IMP
 | HotKey              | Function                       | Usable Scene    |
 | ------------------------ | ------------------------------ | --------------- |
 | `Left Shift + L + Enter` | Terminate the game             | In Game         |
+| `Left Shift + M + Enter` | Terminate meeting              | In Game         |
 | `C`                      | Cancel game start              | In Countdown    |
 | `Shift`                  | Start the game immediately     | In Countdown    |
-| `Left Shift + M + Enter` | Spawn dummy                    | In Lobby        |
 | `Right Shift + F`        | Spawn dummy                    | In Lobby        |
 
 #### Anyone

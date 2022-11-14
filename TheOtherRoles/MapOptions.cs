@@ -9,8 +9,6 @@ namespace TheOtherRoles{
         public static bool blockSkippingInEmergencyMeetings = false;
         public static bool noVoteIsSelfVote = false;
         public static bool hidePlayerNames = false;
-        public static bool hideOutOfSightNametags = false;
-        public static bool ImpostorSeeRoles = false;
         public static bool ghostsSeeRoles = true;
         public static bool ghostsSeeModifier = true;
         public static bool ghostsSeeTasks = true;
@@ -18,7 +16,7 @@ namespace TheOtherRoles{
         public static bool showRoleSummary = true;
         public static bool allowParallelMedBayScans = false;
         public static bool showLighterDarker = false;
-        public static bool toggleCursor = false;
+        public static bool toggleCursor = true;
         public static bool showKillAnimation = true;
         public static bool camoComms = false;
 
@@ -33,6 +31,8 @@ namespace TheOtherRoles{
 
         public static bool enableHorseMode = false;
         public static bool shieldFirstKill = false;
+        public static bool transparentTasks = false;
+        public static CustomGamemodes gameMode = CustomGamemodes.Classic;
 
         // Updating values
         public static int meetingsCount = 0;
@@ -52,10 +52,9 @@ namespace TheOtherRoles{
             blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.getBool();
             noVoteIsSelfVote = CustomOptionHolder.noVoteIsSelfVote.getBool();
             hidePlayerNames = CustomOptionHolder.hidePlayerNames.getBool();
-            ImpostorSeeRoles = CustomOptionHolder.ImpostorSeeRoles.getBool();
-            hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.getBool();
             allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.getBool();
             shieldFirstKill = CustomOptionHolder.shieldFirstKill.getBool();
+            transparentTasks = CustomOptionHolder.transparentTasks.getBool();
             firstKillPlayer = null;
             restrictDevices = CustomOptionHolder.restrictDevices.getSelection();
             restrictAdminTime = restrictAdminTimeMax = CustomOptionHolder.restrictAdmin.getFloat();

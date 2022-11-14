@@ -46,11 +46,11 @@ The [Role Assignment](#role-assignment) sections explains how the roles are bein
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| 2022.8.24| v1.1.4| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.4/TheOtherUs.zip)
-| 2022.8.24| v1.1.3| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.3/TheOtherUs.zip)
-| 2022.8.24| v1.1.2| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.2/TheOtherUs.zip)
-| 2022.8.24| v1.1.1| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.1/TheOtherUs.zip)
-| 2022.8.24| v1.1.0| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.0/TheOtherUs.zip)
+| 2022.10.25s| v1.1.4| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.4/TheOtherUs.zip)
+| 2022.10.25s| v1.1.3| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.3/TheOtherUs.zip)
+| 2022.10.25s| v1.1.2| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.2/TheOtherUs.zip)
+| 2022.10.25s| v1.1.1| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.1/TheOtherUs.zip)
+| 2022.10.25s| v1.1.0| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.0/TheOtherUs.zip)
 | 2022.8.24| v1.0.9| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.9/TheOtherUs.zip)
 | 2022.8.24| v1.0.8| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.8/TheOtherUs.zip)
 | 2022.8.24| v1.0.7| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.7/TheOtherUs.zip)

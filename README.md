@@ -34,7 +34,7 @@ Even more roles are coming soon. :)
 | [Miner](#miner) | [Spy](#spy) |  | [Sleuth](#sleuth) |
 | [Blackmailer](#blackmailer) | [Portalmaker](#portalmaker) | | [Fanatic](#fanatic) |  |
 | [Bomber](#bomber) | [Security Guard](#security-guard) | | [Torch](#torch) |  |
-|  | [Medium](#medium) |  | [Tunneler](#tunneler) |
+| [Escapist](#escapist) | [Medium](#medium) |  | [Tunneler](#tunneler) |
 |  | [Trapper](#trapper) |  | [Watcher](#watcher) |
 |  | [Vigilante](#vigilante) |  | [Multitasker](#multitasker) |
 |  | [Veteran](#veteran) |  | [Assassin](#assassin) |
@@ -566,6 +566,21 @@ If a player with a bomb attempts to give the bomb to the Bomber, that player wil
 | Bomb Cooldown | -
 | Bomb Delay | -
 | Bomb Timer | -
+-----------------------
+
+## Escapist
+### **Team: Impostors**
+The Escapist is an Impostor that can mark a location and teleport across the map to it later.
+
+**NOTE:**
+- Every escape requires one charge. Mark resets along with the charges after each meeting
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Escape Cooldown | -
+| Charges On Place | -
+| Maximum Charges | -
 
 -----------------------
 

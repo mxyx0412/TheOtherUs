@@ -24,16 +24,16 @@ Even more roles are coming soon. :)
 | [Morphling](#morphling) | [Deputy](#deputy) | [Sidekick](#sidekick) | [Bait](#bait) |
 | [Camouflager](#camouflager) | [Lighter](#lighter) | [Vulture](#vulture) | [Lovers](#lovers) |
 | [Vampire](#vampire) | [Investigator](#investigator) | [Lawyer](#lawyer) | [Sunglasses](#sunglasses) |
-| [Eraser](#eraser) | [Time Master](#time-master) | [Executioner](#executioner) | [Mini](#mini) |
-| [Trickster](#trickster) | [Medic](#medic) | [Pursuer](#pursuer) | [VIP](#vip) |
-| [Cleaner](#cleaner) | [Swapper](#swapper) | [Thief](#thief) | [Invert](#invert) |
+| [Eraser](#eraser) | [Time Master](#time-master) | [Pursuer](#pursuer | [Mini](#mini) |
+| [Trickster](#trickster) | [Medic](#medic) | [Thief](#thief) | [VIP](#vip) |
+| [Cleaner](#cleaner) | [Swapper](#swapper) | [Executioner](#executioner) | [Invert](#invert) |
 | [Warlock](#warlock) | [Seer](#seer) | [Amnesiac](#amnesiac) | [Chameleon](#chameleon) |
 | [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) | [Swooper](#swooper) | [Shifter](#shifter)
 | [Witch](#witch) | [Tracker](#tracker) | [Werewolf](#werewolf) | [Indomitable](#indomitable) |
 | [Ninja](#ninja) | [Snitch](#snitch) |  | [Blind](#blind) |
 | [Miner](#miner) | [Spy](#spy) |  | [Sleuth](#sleuth) |
-| [Blackmailer](#blackmailer) | [Portalmaker](#portalmaker) | [Fanatic](#fanatic) |  |
-| [Bomber](#bomber) | [Security Guard](#security-guard) | [Torch](#torch) |  |
+| [Blackmailer](#blackmailer) | [Portalmaker](#portalmaker) | | [Fanatic](#fanatic) |  |
+| [Bomber](#bomber) | [Security Guard](#security-guard) | | [Torch](#torch) |  |
 |  | [Medium](#medium) |  | [Tunneler](#tunneler) |
 |  | [Trapper](#trapper) |  | [Watcher](#watcher) |
 |  | [Vigilante](#vigilante) |  | [Multitasker](#multitasker) |

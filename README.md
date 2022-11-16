@@ -205,6 +205,7 @@ The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Allow Parallel MedBay Scans:** Allows players to perform their MedBay scans at the same time.
 - **Shield Last Game First Kill** The first killed player of the previous round will be shielded for all players visible until the first meeting.
 - **Impostor Can Kill Players In the Vent:** Impostors can kill players in vents.
+- **Impostors Can See The Roles Of Their Team:** Impostors can see each others roles.
 - **Camouflage Comms:** Comms Sabotage camouflages players until fixed.
 - **Tasks Are Transparent:** All tasks are transparent
 - **Restrict Map Information:** Restricts Admin Table use, Vital use, and Camera use (per round or per game)

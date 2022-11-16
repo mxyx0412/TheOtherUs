@@ -584,7 +584,7 @@ The Escapist is an Impostor that can mark a location and teleport across the map
 | Maximum Charges | -
 -----------------------
 
-## Assassin
+## Assassin Ability
 ### **Team: Impostors**
 The Assassin is an Imposter ability that gives the Imposters the ability to shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
 You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
@@ -1609,6 +1609,19 @@ The Multitasker modifier is a Crewmate only modifier. This modifiers makes all t
 |----------|:-------------:|
 | Multitasker Spawn Chance | -
 | Multitasker Quantity | -
+-----------------------
+
+## Disperser
+
+The Disperser modifier is an Impostor only modifier. This modifier gives the impostor a 1 time use ability to send all players to a random location on the map.
+\
+**NOTE:**
+- Players with Anti Teleport are not effected by a disperse.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Disperser Spawn Chance | -
 
 -----------------------
 

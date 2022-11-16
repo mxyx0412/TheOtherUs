@@ -292,31 +292,6 @@ Note: Changing the settings to Hacker: 20%, Tracker: 60% would statistically res
 
 
 
-## Assassin
-### **Team: Impostors**
-The Assassin is an Imposter ability that gives the Imposters the ability to shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
-You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
-The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
-You can only shoot during the voting time.\
-Depending on the options, the Assassin can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Assassin guessed).\
-\
-**NOTE:**
-- If a player gets shot, you'll get back your votes
-- Jester wins won't be triggered, if the Assassin shoots the Jester before the Jester gets voted out
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Assassin Spawn Chance | -
-| Assassin Quantity | -
-| Assassin Number Of Shots Per Game | -
-| Assassin Can Shoot Multiple Times Per Meeting |  -
-| Assassin Can Guess Crewmate | -
-| Assassin Can Guess The Spy | -
-| Assassin Can't Guess Snitch When Tasks Completed | -
-| Guesses Ignore The Medic Shield | -
------------------------
-
 ## Mafia
 ### **Team: Impostors**
 The Mafia are a group of three Impostors.\
@@ -607,6 +582,31 @@ The Escapist is an Impostor that can mark a location and teleport across the map
 | Escape Cooldown | -
 | Charges On Place | -
 | Maximum Charges | -
+-----------------------
+
+## Assassin
+### **Team: Impostors**
+The Assassin is an Imposter ability that gives the Imposters the ability to shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
+You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
+The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
+You can only shoot during the voting time.\
+Depending on the options, the Assassin can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Assassin guessed).\
+\
+**NOTE:**
+- If a player gets shot, you'll get back your votes
+- Jester wins won't be triggered, if the Assassin shoots the Jester before the Jester gets voted out
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Assassin Spawn Chance | -
+| Assassin Quantity | -
+| Assassin Number Of Shots Per Game | -
+| Assassin Can Shoot Multiple Times Per Meeting |  -
+| Assassin Can Guess Crewmate | -
+| Assassin Can Guess The Spy | -
+| Assassin Can't Guess Snitch When Tasks Completed | -
+| Guesses Ignore The Medic Shield | -
 
 -----------------------
 

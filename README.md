@@ -1613,7 +1613,7 @@ The Multitasker modifier is a Crewmate only modifier. This modifiers makes all t
 
 ## Disperser
 
-The Disperser modifier is an Impostor only modifier. This modifier gives the impostor a 1 time use ability to send all players to a random location on the map.
+The Disperser modifier is an Impostor only modifier. This modifier gives the impostor a 1 time use ability to send all players to a random location on the map.\
 \
 **NOTE:**
 - Players with Anti Teleport are not effected by a disperse.

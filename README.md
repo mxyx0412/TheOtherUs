@@ -35,9 +35,9 @@ Even more roles are coming soon. :)
 | [Blackmailer](#blackmailer) | [Portalmaker](#portalmaker) | | [Fanatic](#fanatic) |  |
 | [Bomber](#bomber) | [Security Guard](#security-guard) | | [Torch](#torch) |  |
 | [Escapist](#escapist) | [Medium](#medium) |  | [Tunneler](#tunneler) |
-|  | [Trapper](#trapper) |  | [Watcher](#watcher) |
+| [Assassin](#assassin) | [Trapper](#trapper) |  | [Watcher](#watcher) |
 |  | [Vigilante](#vigilante) |  | [Multitasker](#multitasker) |
-|  | [Veteran](#veteran) |  | [Assassin](#assassin) |
+|  | [Veteran](#veteran) |  | [Disperser](#disperser) |
 |  | [Bodyguard](#bodyguard) |  | |
 |  | [Jumper](#jumper) |  | |
 

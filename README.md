@@ -1,5 +1,5 @@
 ![TOU_Logo](https://user-images.githubusercontent.com/113001912/192659417-85c94f28-d9b9-454a-a6b4-6679fe9dca91.png)
-<p align="center"><a href="https://github.com/Eisbison/TheOtherRoles/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>
+<p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>
 
 <p align="center">
 The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.</p>
@@ -16,35 +16,43 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 **The Other Us**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
 Even more roles are coming soon. :)
 
-| Impostors | Crewmates | Neutral | Modifier |
-|----------|-------------|-----------------|----------------|
-| [Godfather (Mafia)](#mafia) | [Shifter](#shifter) | [Jester](#jester) | [Bloody](#bloody) |
-| [Mafioso (Mafia)](#mafia) | [Mayor](#mayor) | [Arsonist](#arsonist) | [Anti Teleport](#anti-teleport) |
-| [Janitor (Mafia)](#mafia) | [Engineer](#engineer) | [Jackal](#jackal) | [Tie Breaker](#tie-breaker) |
-| [Morphling](#morphling) | [Sheriff](#sheriff) | [Sidekick](#sidekick) | [Bait](#bait) |
-| [Camouflager](#camouflager) | [Deputy](#deputy) | [Vulture](#vulture) | [Lovers](#lovers) |
-| [Vampire](#vampire) | [Lighter](#lighter) | [Lawyer](#lawyer) | [Sunglasses](#sunglasses) |
-| [Eraser](#eraser) | [Detective](#detective) | [Executioner](#executioner) | [Mini](#mini) |
-| [Trickster](#trickster) | [Time Master](#time-master) | [Amnesiac](#amnesiac) | [VIP](#vip) |
-| [Cleaner](#cleaner) | [Medic](#medic) | [Swooper](#swooper) | [Invert](#invert) |
-| [Warlock](#warlock) | [Swapper](#swapper) | [Werewolf](#werewolf) | [Indomitable](#indomitable) |
-| [Bounty Hunter](#bounty-hunter) | [Seer](#seer) |  | [Blind](#blind) |
-| [Witch](#witch) | [Hacker](#hacker) |  | [Sleuth](#sleuth) |
-| [Ninja](#ninja) | [Tracker](#tracker) |  | [Fanatic](#fanatic) |
-| [Miner](#miner) | [Snitch](#snitch) |  | [Torch](#torch) |
-| [Blackmailer](#blackmailer) | [Spy](#spy) |  | [Tunneler](#tunneler) |
-| [Bomber](#bomber) | [Portalmaker](#portalmaker) |  | [Assassin](#assassin) |
-|  | [Security Guard](#security-guard) |  |  |
-|  | [Medium](#medium) |  |  |
-|  | [Vigilante](#vigilante) |  |
-|  | [Veteran](#veteran) |  |
-|  | [Bodyguard](#bodyguard) |  |
+| Impostor | Crewmate | Neutral | Modifier | Gamemode |
+|----------|-------------|-----------------|----------------|----------------|
+| [Godfather (Mafia)](#mafia) | [Mayor](#mayor) | [Jester](#jester) | [Bloody](#bloody) | [Classic](#roles) |
+| [Mafioso (Mafia)](#mafia) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Anti Teleport](#anti-teleport) | [Guesser](#guesser-modifier) |
+| [Janitor (Mafia)](#mafia) | [Sheriff](#sheriff) | [Jackal](#jackal) | [Tie Breaker](#tie-breaker) | [Hide 'n Seek](#hide-n-seek) |
+| [Morphling](#morphling) | [Deputy](#deputy) | [Sidekick](#sidekick) | [Bait](#bait) |
+| [Camouflager](#camouflager) | [Lighter](#lighter) | [Vulture](#vulture) | [Lovers](#lovers) |
+| [Vampire](#vampire) | [Investigator](#investigator) | [Lawyer](#lawyer) | [Sunglasses](#sunglasses) |
+| [Eraser](#eraser) | [Time Master](#time-master) | [Pursuer](#pursuer) | [Mini](#mini) |
+| [Trickster](#trickster) | [Medic](#medic) | [Thief](#thief) | [VIP](#vip) |
+| [Cleaner](#cleaner) | [Swapper](#swapper) | [Executioner](#executioner) | [Invert](#invert) |
+| [Warlock](#warlock) | [Seer](#seer) | [Amnesiac](#amnesiac) | [Chameleon](#chameleon) |
+| [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) | [Swooper](#swooper) | [Shifter](#shifter)
+| [Witch](#witch) | [Tracker](#tracker) | [Werewolf](#werewolf) | [Indomitable](#indomitable) |
+| [Ninja](#ninja) | [Snitch](#snitch) |  | [Blind](#blind) |
+| [Miner](#miner) | [Spy](#spy) |  | [Sleuth](#sleuth) |
+| [Blackmailer](#blackmailer) | [Portalmaker](#portalmaker) | | [Fanatic](#fanatic) |  |
+| [Bomber](#bomber) | [Security Guard](#security-guard) | | [Torch](#torch) |  |
+| [Escapist](#escapist) | [Medium](#medium) |  | [Tunneler](#tunneler) |
+| [Assassin](#assassin) | [Trapper](#trapper) |  | [Watcher](#watcher) |
+|  | [Vigilante](#vigilante) |  | [Multitasker](#multitasker) |
+|  | [Veteran](#veteran) |  | [Disperser](#disperser) |
+|  | [Bodyguard](#bodyguard) |  | |
+|  | [Jumper](#jumper) |  | |
 
 The [Role Assignment](#role-assignment) sections explains how the roles are being distributed among the players.
 
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2022.10.25s| v1.1.4| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.4/TheOtherUs.zip)
+| 2022.10.25s| v1.1.3| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.3/TheOtherUs.zip)
+| 2022.10.25s| v1.1.2| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.2/TheOtherUs.zip)
+| 2022.10.25s| v1.1.1| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.1/TheOtherUs.zip)
+| 2022.10.25s| v1.1.0| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.1.0/TheOtherUs.zip)
+| 2022.8.24| v1.0.9| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.9/TheOtherUs.zip)
+| 2022.8.24| v1.0.8| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.8/TheOtherUs.zip)
 | 2022.8.24| v1.0.7| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.7/TheOtherUs.zip)
 | 2022.8.24| v1.0.6| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.6/TheOtherUs.zip)
 | 2022.8.24| v1.0.5| [Download](https://github.com/SpexGH/TheOtherUs/releases/download/v1.0.5/TheOtherUs.zip)
@@ -57,7 +65,7 @@ The [Role Assignment](#role-assignment) sections explains how the roles are bein
 # Changelog
 <details>
   <summary>Click to show the Changelog</summary>
-  
+
 **Version 1.0.0**  
 - New Colors!
 - New Imposter Roles: Bomber, Undertaker, Blackmailer, Miner
@@ -110,10 +118,10 @@ Not working? You might want to install the dependency [vc_redist](https://aka.ms
 ## Linux Installation
 1. Install Among Us via Steam
 2. Download newest [release](https://github.com/SpexGH/TheOtherUs/releases/latest) and extract it to ~/.steam/steam/steamapps/common/Among Us
-3. Enable `winhttp.dll` via the proton winecfg (https://docs.bepinex.dev/articles/advanced/steam_interop.html#open-winecfg-for-the-target-game)
+3. Enable winhttp.dll via the proton winecfg (https://docs.bepinex.dev/articles/advanced/proton_wine.html)
 4. Launch the game via Steam
 
-## The Other Us Custom Servers
+## The Other Roles Custom Servers
 **A custom server is not necessary and official servers are working just fine with the mod, but in case you want to set up and host your own server, here's a guide for you to follow.**
 
 **Setup the Server:**
@@ -147,28 +155,45 @@ docker run -d -p 22023:22023/udp --env IMPOSTOR_AntiCheatEnabled=false --env IMP
 
 
 # Credits & Resources
-[OxygenFilter](https://github.com/NuclearPowered/Reactor.OxygenFilter) - For all the version v2.3.0 to v2.6.1, we were using the OxygenFilter for automatic deobfuscation\
-[Reactor](https://github.com/NuclearPowered/Reactor) - The framework used for all version before v2.0.0\
-[BepInEx](https://github.com/BepInEx) - Used to hook game functions\
+[OxygenFilter](https://github.com/NuclearPowered/Reactor.OxygenFilter) - For all the versions between v2.3.0 and v2.6.1, we were using the OxygenFilter for automatic deobfuscation\
+[Reactor](https://github.com/NuclearPowered/Reactor) - The framework used for all versions before v2.0.0\
+[BepInEx](https://github.com/BepInEx) - Used to hook to game functions\
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - Custom game options by **DorCoMaNdO**:
 - Before v1.6: We used the default Essentials release
-- v1.6-v1.8: We slightly changed the default Essentials. The changes can be found on this [branch](https://github.com/Eisbison/Reactor-Essentials/tree/feature/TheOtherRoles-Adaption) of our fork.
-- v2.0.0 and later: As we're not using Reactor anymore, we are using our own implementation, inspired by the one from **DorCoMaNdO**
+- v1.6-v1.8: We slightly changed the default Essentials release. The changes can be found on this [branch](https://github.com/Eisbison/Reactor-Essentials/tree/feature/TheOtherRoles-Adaption) of our fork.
+- v2.0.0 and later: We're no longer using Reactor anymore we are using our own implementation inspired by the one from **DorCoMaNdO**
 
-[Jackal and Sidekick](https://www.twitch.tv/dhalucard) - Original idea for the Jackal and Sidekick comes from **Dhalucard**\
-[Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers role comes from **Woodi-dev**\
-[Jester](https://github.com/Maartii/Jester) - Idea for the Jester role comes from **Maartii**\
-[ExtraRolesAmongUs](https://github.com/NotHunter101/ExtraRolesAmongUs) - Idea for the Engineer and Medic role comes from **NotHunter101**. Also some code snippets come of the implementation were used.\
-[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Idea for the Sheriff role comes from **Woodi-dev**\
-[TooManyRolesMods](https://github.com/Hardel-DW/TooManyRolesMods) - Idea for the Detective and Time Master roles comes from **Hardel-DW**. Also some code snippets of the implementation were used.\
-[TownOfUs](https://github.com/slushiegoose/Town-Of-Us) - Idea for the Swapper, Shifter, Arsonist and a similar Mayor role come from **Slushiegoose**\
-[Ottomated](https://twitter.com/ottomated_) - Idea for the Morphling, Snitch and Camouflager role come from **Ottomated**\
-[Crowded-Mod](https://github.com/CrowdedMods/CrowdedMod) - Our implementation for 10+ player lobbies is inspired by the one from the **Crowded Mod Team**\
-[Goose-Goose-Duck](https://store.steampowered.com/app/1568590/Goose_Goose_Duck) - Idea for the Vulture role come from **Slushygoose**
+[Jackal and Sidekick](https://www.twitch.tv/dhalucard) - Original idea for the Jackal and Sidekick came from **Dhalucard**\
+[Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers modifier came from **Woodi-dev**\
+[Jester](https://github.com/Maartii/Jester) - Idea for the Jester role came from **Maartii**\
+[ExtraRolesAmongUs](https://github.com/NotHunter101/ExtraRolesAmongUs) - Idea for the Engineer and Medic role came from **NotHunter101**. Also some code snippets from their implementation were used.\
+[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Idea for the Sheriff role came from **Woodi-dev**\
+[TooManyRolesMods](https://github.com/Hardel-DW/TooManyRolesMods) - Idea for the Detective and Time Master roles came from **Hardel-DW**. Also some code snippets from their implementation were used.\
+[TownOfUs](https://github.com/slushiegoose/Town-Of-Us) - Idea for the Swapper, Shifter, Arsonist and a similar Mayor role came from **Slushiegoose**\
+[Ottomated](https://twitter.com/ottomated_) - Idea for the Morphling, Snitch and Camouflager role came from **Ottomated**\
+[Crowded-Mod](https://github.com/CrowdedMods/CrowdedMod) - Our implementation for 10+ player lobbies were inspired by the one from the **Crowded Mod Team**\
+[Goose-Goose-Duck](https://store.steampowered.com/app/1568590/Goose_Goose_Duck) - Idea for the Vulture role came from **Slushiegoose**\
+[Ninja](#ninja), [Thief](#thief), [Lawyer](#lawyer) / [Pursuer](#pursuer), [Deputy](#deputy), [Portalmaker](#portalmaker), [Guesser Modifier](#guesser-modifier) - Idea: [K3ndo](https://github.com/K3ndoo) ; Developed by [Gendelo](https://github.com/gendelo3) & [Mallöris](https://github.com/Mallaris)
+
+# Features
+## Hotkeys
+
+#### Host Only
+| HotKey              | Function                       | Usable Scene    |
+| ------------------------ | ------------------------------ | --------------- |
+| `Left Shift + L + Enter` | Terminate the game             | In Game         |
+| `Left Shift + M + Enter` | Terminate meeting              | In Game         |
+| `C`                      | Cancel game start              | In Countdown    |
+| `Shift`                  | Start the game immediately     | In Countdown    |
+| `Right Shift + F`        | Spawn dummy                    | In Lobby        |
+
+#### Anyone
+| HotKey                   | Function                       | Usable Scene    |
+| ------------------------ | -------------------------------| --------------- |
+| `Ctrl`                   | Walk through walls             | Lobby           |
 
 # Settings
 The mod adds a few new settings to Among Us (in addition to the role settings):
-- **Streamer Mode:** You can activate the streamer mode in the Among Us settings. It hides the lobby code, the custom server ip and the custom server port. You can set a custom lobby code replacement text, by changing the *Streamer Mode Replacement Text* in the `BepInEx\config\me.eisbison.theotherroles.cfg` file.
 - **Number of Crewmates:** The number of Crewmate roles can be set inside a lobby.
 - **Number of Neutrals:** The number of Neutral roles can be set inside a lobby.
 - **Number of Impostors:** The number of Impostor roles can be set inside a lobby.
@@ -179,16 +204,28 @@ The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Hide Player Names:** Hides the names of all players that have role which is unknown to you. Team Lovers/Impostors/Jackal still see the names of their teammates. Impostors can also see the name of the Spy and everyone can still see the age of the mini.
 - **Allow Parallel MedBay Scans:** Allows players to perform their MedBay scans at the same time.
 - **Shield Last Game First Kill** The first killed player of the previous round will be shielded for all players visible until the first meeting.
-- **Play On A Random Map** If enabled it allows you to set a rotation of all current maps, except ehT dlekS 
-- **Ghosts Can See Roles**
-- **Ghosts Can See Votes**
-- **Ghosts Can Additionally See Modifier**
-- **Ghosts Can See The Number Of Remaining Tasks**
-- **The map is accessable during a meeting and will show your last location when a body gets reported/meeting gets called**
-- **When you're a ghost and done with tasks, you'll get a zoom out/overview function**
+- **Impostor Can Kill Players In the Vent:** Impostors can kill players in vents.
+- **Impostors Can See The Roles Of Their Team:** Impostors can see each others roles.
+- **Camouflage Comms:** Comms Sabotage camouflages players until fixed.
+- **Tasks Are Transparent:** All tasks are transparent
+- **Restrict Map Information:** Restricts Admin Table use, Vital use, and Camera use (per round or per game)
+- **Show Button Target:** Button's show the name of the player you are targeting.
+- **Block Game End if Power Crew is Alive:** Game won't end if Power Crew is alive with a killing role (includes Sheriff, Veteran, Mayor, Swapper, Vigilante)
+- **Random Spawn Location:** Players will spawn in random locations at the start of the game and after meetings.
+- **Allow Guessing Some Modifiers:** Some modifiers can be guessed (includes Bait, Tiebreaker, Bloody, Fanatic, Torch, Sleuth, Watcher, Tunneler, Multitasker, Lover, Vip)
+- **Play On A Random Map** If enabled it allows you to set percentages for each current map, except ehT dlekS. 
+- **Enable Better Polus:** Adjust Vents, Move Vitals To Labs, Swap Reboot And Chart Course, and Move Cold Temp To Death Valley
+- **Reset Spawn Cooldown:** Resets cooldown on spawn
+- **Debug Mode:** Allows Host to spawn dummies, end game, and end meetings
+- **Ghosts Can See Roles.**
+- **Ghosts Can See Votes.**
+- **Ghosts Can Additionally See Modifier.**
+- **Ghosts Can See The Number Of Remaining Tasks.**
+- **The map is accessable during a meeting and will show your last location when a body gets reported/meeting gets called.**
+- **When you're a ghost and done with tasks, you'll get a zoom out/overview function.**
 - **Task Counts:** You are now able to select more tasks.
-- **Role Summary:** When a game ends there will be a list of all players and their roles and their task progress
-- **Darker/Lighter:** Displays color type of each player in meetings
+- **Role Summary:** When a game ends there will be a list of all players, their roles, their task progression and how many player a killer killed.
+- **Darker/Lighter:** Displays color type of each player in meetings.
 
 ### Task Count Limits per map
 You can configure:
@@ -255,6 +292,7 @@ Result: Snitch is assigned, then one role out of the pool [Hacker, Tracker, Trac
 Note: Changing the settings to Hacker: 20%, Tracker: 60% would statistically result in the same outcome .
 
 
+
 ## Mafia
 ### **Team: Impostors**
 The Mafia are a group of three Impostors.\
@@ -316,8 +354,6 @@ are hidden and all players have the same color.\
 ## Vampire
 ### **Team: Impostors**
 The Vampire is an Impostor, that can bite other player. Bitten players die after a configurable amount of time.\
-If the Vampire spawn chance is greater 0 (even if there is no Vampire in the game), all players can place one garlic.\
-If a victim is near a garlic, the "Bite Button" turns into the default "Kill Button" and the Vampire can only perform a normal kill.\
 \
 **NOTE:**
 - If a bitten player is still alive when a meeting is being called, they die at the start of the meeting.
@@ -342,11 +378,9 @@ By default the Eraser can erase everyone but the Spy and other Impostors.\
 Depending on the options they can also erase them (Impostors will lose their special Impostor ability).\
 \
 **NOTE:**
-- The Shifter shift will always be triggered before the Erase (hence either the new role of the Shifter will be erased or the Shifter saves the role of their target, depending on whom the Eraser erased)
-- Erasing a Lover automatically erases the other Lover as well (if the second Lover is an ImpLover, they will turn into an Impostor)
-- Erasing a Jackal that has a Sidekick, triggers the Sidekick promotion if it's activated in the settings
-- As the erase is being triggered before the ejection of a player, erasing and voting out a Lover in the same round, would result in the
-ex-Lover surviving, as the partnership was erased before. Also a Jester win would not happen, as the erase will be triggered before.
+- The Shifter shift will always be triggered before the Erase (hence either the new role of the Shifter will be erased or the Shifter saves the role of their target, depending on whom the Eraser erased).
+- As the erase is being triggered before the ejection of a player, a Jester win would not happen, as the erase will be triggered before.
+- Modifier will not be erased.
 
 ### Game Options
 | Name | Description |
@@ -501,7 +535,7 @@ Unlike the [Trickster](#trickster) the vents created by the Miner can be used by
 
 ## Blackmailer
 ### **Team: Impostors**
-The Miner is an Impostor who has the ability to silence someone during a meeting..\
+The Blackmailer is an Impostor who has the ability to silence someone during a meeting..\
 \
 **NOTE:**
 The Blackmailer is an Impostor that can silence people in meetings.\
@@ -534,6 +568,46 @@ If a player with a bomb attempts to give the bomb to the Bomber, that player wil
 | Bomb Cooldown | -
 | Bomb Delay | -
 | Bomb Timer | -
+-----------------------
+
+## Escapist
+### **Team: Impostors**
+The Escapist is an Impostor that can mark a location and teleport across the map to it later.
+
+**NOTE:**
+- Every escape requires one charge. Mark resets along with the charges after each meeting
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Escape Cooldown | -
+| Charges On Place | -
+| Maximum Charges | -
+-----------------------
+
+## Assassin Ability
+### **Team: Impostors**
+The Assassin is an Imposter ability that gives the Imposters the ability to shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
+You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
+The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
+You can only shoot during the voting time.\
+Depending on the options, the Assassin can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Assassin guessed).\
+\
+**NOTE:**
+- If a player gets shot, you'll get back your votes
+- Jester wins won't be triggered, if the Assassin shoots the Jester before the Jester gets voted out
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Assassin Spawn Chance | -
+| Assassin Quantity | -
+| Assassin Number Of Shots Per Game | -
+| Assassin Can Shoot Multiple Times Per Meeting |  -
+| Assassin Can Guess Crewmate | -
+| Assassin Can Guess The Spy | -
+| Assassin Can't Guess Snitch When Tasks Completed | -
+| Guesses Ignore The Medic Shield | -
 
 -----------------------
 
@@ -607,6 +681,7 @@ If both Impostors and Jackals are in the game, the game continues even if all Cr
 | Jackal can create a Sidekick | Yes/No |
 | Jackals promoted from Sidekick can create a Sidekick | Yes/No (to prevent the Jackal team from growing) |
 | Jackals can make an Impostor to their Sidekick | Yes/No (to prevent a Jackal from turning an Impostor into a Sidekick, if they use the ability on an Impostor they see the Impostor as Sidekick, but the Impostor isn't converted to Sidekick. If this option is set to "No" Jackal and Sidekick can kill each other.) |
+| Kill A Failed Sidekick Attempt | Yes/No |
 | Jackal and Sidekick have Impostor vision | - |
 -----------------------
 
@@ -665,14 +740,16 @@ How the Lawyer wins:
 - If their client is Jester and the Jester gets voted out, the Lawyer wins together with the Jester.
 
 **NOTE:**
-- If the client disconnects, the Lawyer will also turn into the Pursuer
-- The Lawyer needs to figure out the role of their client depending on the options
+- If the client disconnects, the Lawyer will also turn into the Pursuer.
+- The Lawyer needs to figure out the role of their client depending on the options.
+- The tasks only count, if the Lawyer gets promoted to Pursuer.
+- If the Lawyer dies before their client, they will lose all their tasks and will get the overview immediately.
 
 ### Game Options
 | Name | Description |
 |----------|:-------------:|
 | Lawyer Spawn Chance | - 
-| Lawyer Client | Options for Lawyer Client to be Crew, Non-Crew, or Any
+| Lawyer Target Knows | - Lawyer Target Knows that they have a Lawyer, but they don't know who
 | Lawyer Target Can Be The Jester | -
 | Lawyer Vision | Pursuer has normal vision
 | Lawyer Knows Target Role | -
@@ -681,15 +758,39 @@ How the Lawyer wins:
 ## Pursuer
 ### **Team: Neutral**
 The Pursuer is still a neutral role, but has a different goal to win the game; they have to be alive when the game ends and the Crew wins.\
-In order to achieve this goal, the Pursuer has an ability called "Blank", where they can fill a killers (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their cooldowns will be triggered as usual.\
+In order to achieve this goal, the Pursuer has an ability called "Blank", where they can fill a killer's (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their cooldowns will be triggered as usual.\
 If the killer fires the "Blank", shields (e.g. Medic shield or Time Master shield) will not be triggered.\
-The Pursuer has tasks (which can already be done while being a Lawyer), that count towards the task win for the Crewmates. If the Pursuer dies, their tasks won't be counted anymore.
+The Pursuer has tasks (which can already be done while being a Lawyer/Prosecutor), that count towards the task win for the Crewmates. If the Pursuer dies, their tasks won't be counted anymore.
 
 ### Game Options
 | Name | Description |
 |----------|:-------------:|
 | Pursuer Blank Cooldown | -
 | Pursuer Number Of Blanks | -
+-----------------------
+
+## Thief
+### **Team: Neutral**
+The Thief has to kill another killer (Impostor, Jackal/Sidekick and if enabled Sheriff)
+in order to have a win condition.\
+If the Thief doesn't kill another killer they will lose the game.\
+If the Thief kills one of the other killers, the Thief overtakes their role (e.g. Ninja) and joins their team (in this case
+team Impostor). They then have the new Role's win condition (e.g. Impostor-Win).\
+If the Thief tries to kill any non-killing role (Crewmate or Neutral), they die similar to a misfiring Sheriff.\
+\
+**NOTE**
+- If the option "Thief Can Kill Sheriff" is On, the Thief has tasks which will ONLY begin to count, if they kill
+the Sheriff. While the Thief hasn't fired, their tasks do not count towards the taskwin.
+- If the option "Thief Can Kill Sheriff" is Off, the Thief will not have tasks. 
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Thief Spawn Chance | -
+| Thief Countdown | -
+| Thief Can Kill Sheriff | -
+| Thief Has Impostor Vision | -
+| Thief Can Use Vents | -
 -----------------------
 
 ## Executioner
@@ -702,12 +803,6 @@ If the taget disconnects: Executioner -> [Pursuer](#pursuer)\
 If the target is sidekicked: Executioner -> [Lawyer](#Lawyer) (Client: Target)\
 \
 The target of a Executioner cannot be the following: Impostor, [Jackal](#jackal), [Mayor](#mayor), [Sheriff](#sheriff), [Spy](#spy), [Swapper](#swapper), or a [Lover](#lovers)
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Executioner Spawn Chance | -
------------------------
 
 ## Amnesiac
 ### **Team: Neutral**
@@ -724,11 +819,10 @@ If the target body was on a team with Jackal or Impostor, that player will still
 | Amnesiac Spawn Chance | -
 | Show arrows to dead bodies | If set to true, the Amnesiac will get arrows to dead bodies when they die.
 | Reset role when taken | If set to true, the role that is taken will be fully reset, allowing the abilities to be reused. Note: Weird stuff might happen with this setting off.
------------------------
 
 ## Swooper
 ### **Team: Neutral**
-The Swooper is a solo neutral killer with the option to replace the Jackal.
+The Swooper is a solo nuetral killer with the option to replace the Jackal.\
 
 If it is not an Alternate Jackal, it is on it's own team, and must eliminate all opposing factions.
 The Swooper uses the [Jackal](#jackal) kill cooldown.
@@ -762,29 +856,6 @@ The Werewolf needs to be the last killer alive to win the game.
 
 -----------------------
 
-## Shifter
-### **Team: Crewmates**
-The Shifter can take over the role of another Crewmate, the other player will transform into a Crewmate.\
-The Shift will always be performed at the end of the next meeting right before a player is exiled. The target needs to be chosen during the round.\
-Even if the Shifter or the target dies before the meeting, the Shift will still be performed.\
-Swapping roles with an Impostor or Neutral fails and the Shifter commits suicide after the next meeting (there won't be any body).\
-The Shifter aims to save roles from leaving the game, by e.g. taking over a Sheriff or Medic that is known to the Impostors.\
-This works especially well against the Eraser, but also gives the Eraser the possibility to act like a Shifter.\
-The **special interactions** with the Shifter are noted in the chapters of the respective roles.\
-\
-**NOTE:**
-- The Shifter shift will always be triggered before the Erase (hence either the new role of the Shifter will be erased or the Shifter saves the role of their target, depending on whom the Eraser erased)
-- If the Shifter takes over a role, their new cooldowns will start at the maximum cooldown of the ability
-- One time use abilities (e.g. shielding a player or Engineer sabotage fix) can only used by one player in the game (i.e. the Shifter
-can only use them, if the previous player did not use them before)
-
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Shifter Spawn Chance | -
-| Shifter Shifts Modifiers | Sets if Lovers and/or Medic Shield will be shifted
------------------------
-
 ## Mayor
 ### **Team: Crewmates**
 The Mayor leads the Crewmates by having a vote that counts twice.\
@@ -815,6 +886,7 @@ Because of the vents the Engineer might not be able to start some tasks using th
 | Name | Description |
 |----------|:-------------:|
 | Engineer Spawn Chance | -
+| Reset Fixes After Meeting | -
 | Number Of Sabotage Fixes| -
 | Impostors See Vents Highlighted | -
 | Jackal and Sidekick See Vents Highlighted | -
@@ -823,7 +895,7 @@ Because of the vents the Engineer might not be able to start some tasks using th
 ## Sheriff
 ### **Team: Crewmates**
 The Sheriff has the ability to kill Impostors or Neutral roles if enabled.\
-If they try to kill a Crewmate, they die instead, depending on the settings.\
+If they try to kill a Crewmate, they die instead.\
 \
 **NOTE:**
 - If the Sheriff shoots the person the Medic shielded, the Sheriff and the shielded person **both remain unharmed**.
@@ -833,9 +905,9 @@ If they try to kill a Crewmate, they die instead, depending on the settings.\
 | Name | Description |
 |----------|:-------------:|
 | Sheriff Spawn Chance | -
-| Sheriff Cooldown | - 
+| Sheriff Cooldown | -
 | Misfire Kills | Options for Sheriff Misfires to kill Self, Target, or Both
-| Sheriff Can Kill Neutrals | Options for Sheriff to kill specific Neutral roles including Arsonist, Lawyer, Jester, Executioner, Pursuer, and Vulture
+| Sheriff Can Kill Neutrals | Options for Sheriff to kill specific Neutral roles including Arsonist, Lawyer, Jester, Executioner, Pursuer, Vulture, Amnesiac, and Thief
 | Sheriff Has A Deputy | Deputy can not be in game without Sheriff
 -----------------------
 
@@ -878,25 +950,25 @@ The Lighter can turn on their Lighter every now and then, which increases their 
 | Lighter Duration | -
 -----------------------
 
-## Detective
+## Investigator
 ### **Team: Crewmates**
-The Detective can see footprints that other players leave behind.\
-The Detective's other feature shows when they report a corpse: they receive clues about the killer's identity. The type of information they get is based on the time it took them to find the corpse.
+The Investigator can see footprints that other players leave behind.\
+The Investigator's other feature shows when they report a corpse: they receive clues about the killer's identity. The type of information they get is based on the time it took them to find the corpse.
 
 **NOTE:**
 - When people change their colors (because of a morph or camouflage), all the footprints also change their colors (also the ones that were already on the ground). If the effects are over, all footprints switch back to the original color.
-- The Detective does not see footprints of players that sit in vents
+- The Investigator does not see footprints of players that sit in vents
 - More information about the [colors](#colors)
 
 ### Game Options
 | Name | Description |
 |----------|:-------------:|
-| Detective Spawn Chance | -
+| Investigator Spawn Chance | -
 | Anonymous Footprints | If set to true, all footprints will have the same color. Otherwise they will have the color of the respective player.
 | Footprint Interval | The interval between two footprints
 | Footprint Duration | Sets how long the footprints remain visible.
-| Time Where Detective Reports Will Have Name | The amount of time that the Detective will have to report the body since death to get the killer's name.  |
-| Time Where Detective Reports Will Have Color Type| The amount of time that the Detective will have to report the body since death to get the killer's color type. |
+| Time Where Investigator Reports Will Have Name | The amount of time that the Investigator will have to report the body since death to get the killer's name.  |
+| Time Where Investigator Reports Will Have Color Type| The amount of time that the Investigator will have to report the body since death to get the killer's color type. |
 -----------------------
 
 ## Time Master
@@ -942,8 +1014,9 @@ The Medic's other feature shows when they report a corpse: they will see how lon
 ### Game Options
 | Name | Description | Options |
 |----------|:-------------:|:-------------:|
-| Medic Spawn Chance | - | -
+| Medic Spawn Chance | - |
 | Show Shielded Player | Sets who sees if a player has a shield | "Everyone", "Shielded + Medic", "Medic"
+| Shield Is Unbreakable | Yes/No |
 | Shielded Player Sees Murder Attempt| Whether a shielded player sees if someone tries to kill them | True/false |
 | Shield Will Be Activated | Sets when the shield will be active | "Instantly", "Instantly, Visible After Meeting", "After Meeting"
 | Medic Sees Murder Attempt On Shielded Player | - | If anyone tries to harm the shielded player (Impostor, Sheriff, Guesser, ...), the Medic will see a red flash
@@ -964,6 +1037,7 @@ The Swapper now has initial swap charges and can recharge those charges after co
 | Name | Description
 |----------|:-------------:|
 | Swapper Spawn Chance | -
+| Swapper Can Fix Sabotages | Option to prevent Swapper from fixing Sabotages
 | Swapper can call emergency meeting | Option to disable the emergency button for the Swapper
 | Swapper can only swap others | Sets whether the Swapper can swap themself or not
 | Initial Swap Charges | -
@@ -1103,7 +1177,6 @@ The new camera will be visible after the next meeting and accessible by everyone
 The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still "move to them" underground.
 
 **NOTE:**
-
 - Trickster boxes can't be sealed
 - The Security Guard can't place cameras on MiraHQ
 - The remaining number of screws can be seen above their special button.
@@ -1128,7 +1201,7 @@ The vents will be sealed after the next meeting, players can't enter or exit sea
 ## Medium
 ### **Team: Crewmates**
 
-The medium is a crewmate who can ask the souls of dead players for information. Like the Seer, it sees the places where the players have died (after the next meeting) and can question them. It then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.
+The medium is a crewmate who can ask the souls of dead players for information. Like the Seer, it sees the places where the players have died (after the next meeting) and can question them. It then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.\
 
 Questions:
 What is your Role?
@@ -1145,6 +1218,32 @@ What is your killers role?
 | Medium Each Soul Can Only Be Questioned Once | If set to true, souls can only be questioned once and then disappear
 -----------------------
 
+## Trapper
+### **Team: Crewmates**
+The Trapper is a crewmate which can set up traps to trap player and gain information from them.\
+The traps will stuck player for x-seconds (depends on the setting) and reveal information in chat
+about their "Role", if they are a "Good/Evil Role" or their "Name".\
+The trap is not visible until a configurable amount of player were trapped.\
+When the trap gets visible, the Trapper will gain the information in chat (in a random order).\
+If a trap is triggered (and the option is enabled), the map of the Trapper will open up and show which trap
+was triggered.\
+The traps have a maximum of charges (uses) and a configurable amount of tasks are needed to recharge.\
+\
+**NOTE:**
+- The Trapper can't be trapped in their own trap(s).
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Trapper Spawn Chance | -
+| Trapper Cooldown | -
+| Max Traps Charges | -
+| Number Of Tasks Needed For Recharging | -
+| Trap Needed Trigger To Reveal | -
+| Show Anonymous Map | -
+| Trap Information Type | "Name", "Role", "Good/Evil Role"
+| Trap Duration | -
+-----------------------
 
 ## Vigilante
 ### **Team: Crewmates**
@@ -1183,8 +1282,7 @@ When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they
 
 ## Bodyguard
 ### **Team: Crewmates**
-The Bodyguard is a crewmate who can guard a single player (Once per game or Resets target after every meeting depending on settings)
-If that player is attacted by anyone, that player and the Bodyguard will swap places and the Bodyguard will die instead.
+The BodyGuard is a killing crewmate whose ability protects another player at the cost of the life of the BodyGuard. If someone attempts to kill a guarded player, both the attacker, and the BodyGuard will die
 
 **NOTE:**
 - There is no visible signal that a player is guarded.
@@ -1194,18 +1292,35 @@ If that player is attacted by anyone, that player and the Bodyguard will swap pl
 |----------|:-------------:|
 | Bodyguard Spawn Chance | -
 | Reset Target After Meeting | -
+| Show Flash On Death | -
+-----------------------
+
+## Jumper
+### **Team: Crewmates**
+The Jumper is a Crewmate that can mark a location and jump across the map to it later.
+
+**NOTE:**
+- Every jump requires one charge. Mark resets along with the charges after each meeting
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Jump Cooldown | -
+| Charges On Place | -
+| Maximum Charges | -
 
 -----------------------
 
 # Modifier
-A modifier is an addition to your Impostor/Neutral/Crewmate role.
-Some modifiers can be ingame more than once (Quantity option).
+A Modifier is an addition to your Impostor/Neutral/Crewmate role.
+Some Modifiers can be ingame more than once (Quantity option).
 
 ## Bloody
-### Bloody
 
-If killed, the Bloody Modifier will leave a trail for x-seconds on their killer. The trail will have the color of the killed person. Impostor,
-Neutral or Crewmate roles can have this Modifier.
+If killed, the Bloody Modifier will leave a trail for x-seconds on their killer. The trail will have the color of the killed person.\
+\
+**NOTE**
+- Impostor, Neutral or Crewmate roles can have this Modifier
 
 ### Game Options
 | Name | Description |
@@ -1218,7 +1333,10 @@ Neutral or Crewmate roles can have this Modifier.
 ## Anti Teleport
 
 The Anti Teleport Modifier prevents the player from getting teleported to the Meeting Table if a body gets reported or an Emergency Meeting is called.\
-The player will start the round where the previous one ended (Emergency Meeting Call/Body Report).
+The player will start the round where the previous one ended (Emergency Meeting Call/Body Report).\
+\
+**NOTE**
+- Impostor, Neutral or Crewmate roles can have this Modifier
 
 ### Game Options
 | Name | Description |
@@ -1230,7 +1348,11 @@ The player will start the round where the previous one ended (Emergency Meeting 
 ## Tie Breaker
 
 If the Voting ends in a tie, the Tie Breaker takes place and the player with the Tie Breaker Modifier gets an extra vote thats not visible to anyone.\
-Everyone will know if the Tie Breaker was involved in the Meeting or not.
+Everyone will know if the Tie Breaker was involved in the Meeting or not.\
+\
+**NOTE**
+- Impostor, Neutral or Crewmate roles can have this Modifier
+- There can only be on player with this Modifier
 
 ### Game Options
 | Name | Description |
@@ -1244,7 +1366,8 @@ The Bait forces the killer to self report the body (you can configure a delay in
 There can be more than one Bait.
 
 **NOTE:**
-- If the Sheriff has the Bait modifier and dies while trying to kill a Crewmate, the Sheriff will *NOT* report themself.
+- If the Sheriff has the Bait Modifier and dies while trying to kill a Crewmate, the Sheriff will *NOT* report themself.
+- Impostor, Neutral or Crewmate roles can have this Modifier
 
 ### Game Options
 | Name | Description
@@ -1283,16 +1406,16 @@ In a 2 Crewmates vs 2 Impostors (or 2 members of team Jackal) and the Lovers are
 -----------------------
 
 **NOTE:**
-- The role **Lover** can't be guessed, you'll have to guess the primary role of one of the Lovers, to kill both of them.
+- The Modifier **Lover** can't be guessed, you'll have to guess the primary role of one of the Lovers, to kill both of them.
 
 ## Sunglasses
 
-The Sunglasses will lower the Crewmate's vision by small percentage. The percentage is configurable in the options.\
+The Sunglasses will lower the Crewmate's vision by a small percentage. The percentage is configurable in the options.\
 The vision will also be affected when lights out.
 
 **NOTE:**
 - Sunglasses only affects Crewmates.
-- If you have the Sunglasses modifier and get sidekicked, you lose the modifier.
+- If you have the Sunglasses Modifier and get sidekicked, you will lose the Modifier.
 
 ### Game Options
 | Name | Description
@@ -1330,6 +1453,7 @@ The Mini cannot be killed until it turns 18 years old, however it can be voted o
 |----------|:-------------:|
 | Mini Spawn Chance | -
 | Mini  | Mini Growing Up Duration
+| Mini Grows Up In Meeting | -
 -----------------------
 
 ## VIP
@@ -1354,7 +1478,9 @@ Teams:
 ## Invert
 
 The Invert Modifier inverts your controls (no matter if keyboard or mouse).\
-The Invert can affect all teams (Impostor, Neutral, Crewmate).
+\
+**NOTE**
+- Impostor, Neutral or Crewmate roles can have this Modifier
 
 ### Game Options
 | Name | Description
@@ -1363,13 +1489,68 @@ The Invert can affect all teams (Impostor, Neutral, Crewmate).
 | Invert Quantity | -
 -----------------------
 
+## Chameleon
+
+The Chameleon becomes (partially or fully) invisible when standing still for x-seconds (depends on the settings).\
+\
+**NOTE**
+- You can use abilities while being invisible, only moving will make you visible again
+- Impostor, Neutral or Crewmate roles can have this Modifier
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Chameleon Spawn Chance | -
+| Chameleon Quantity | -
+| Time Until Fading Starts | -
+| Fade Duration | - 
+| Minimum Visibility | -
+-----------------------
+
+## Shifter
+
+The Shifter is a Modifier that can shift with another player. If the other player is Crewmate as well, they will swap their roles.\
+Swapping roles with an Impostor or Neutral fails and the Shifter commits suicide after the next meeting (there won't be a body).\
+The Shift will always be performed at the end of the next meeting right before a player is exiled. The target needs to be chosen during the round.\
+Even if the Shifter or the target dies before the meeting, the Shift will still be performed.\
+\
+**NOTE:**
+- The Shifter shift will always be triggered before the Erase (hence either the new role of the Shifter will be erased or the Shifter gets the role of their target, depending on whom the Eraser erased)
+- One time use abilities (e.g. shielding a player or Engineer sabotage fix) can only used by one player in the game (i.e. the Shifter
+can only use them, if the previous player did not use them before)
+- The Shifter button is located in the bottom left corner right next to the garlic button (if the Vampire is enabled)
+- Only a Crewmate role can have this Modifier
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Shifter Spawn Chance | -
+-----------------------
+
+## Fanatic
+
+The Fanatic modifier is a Crewmate only modifier. If the Impostor attempts to kill the Fanatic, the Impostor is instantly blanked and the Fanatic joins team Impostor.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Fanatic Spawn Chance | -
+-----------------------
+
+## Tunneler
+
+The Tunneler modifier is a Crewmate only modifier. When the Tunneler is done with their tasks, they gain the abilty to vent.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Fanatic Spawn Chance | -
+-----------------------
+
 ## Indomitable
 
-The Indomitable Modifier makes it so that your role cannot be guessed in meetings.
-When someone tries to guess a player with the Indomitable Modifier, a purple flash will appear on both the Indomitable player's screen, and the guesser's screen, alerting both the guesser and the player being guessed that the player being guessed is Indomitable.
-
-**NOTE:**
-- If an Indomitable player's role is guessed incorrectly, the guesser will not die, and both screens will flash purple.
+Indomitable is a modifier that keeps you protected from the Assassin.
+If the Assassin attempts to guess an Indomitable player, the guess will fail instantly, and the Indomitable will be alerted.
 
 ### Game Options
 | Name | Description
@@ -1379,7 +1560,8 @@ When someone tries to guess a player with the Indomitable Modifier, a purple fla
 
 ## Blind
 
-The Blind Modifier makes it so that your report button does not light up.
+The Blind Modifier prevents your report button from lighting up. You can still click it to report, and you can still click a body to report it.
+The Blind can affect all teams (Impostor, Neutral, Crewmate).
 
 ### Game Options
 | Name | Description
@@ -1389,24 +1571,13 @@ The Blind Modifier makes it so that your report button does not light up.
 
 ## Sleuth
 
-The Sleuth Modifier is a crewmate modifier that allows the player to gain knowledge from reporting dead bodies.
-During meetings a player with the Sleuth Modifier can see the roles of all players in which they've reported.
+The Sleuth Modifier tells you the roles of bodies you report.\
+The Sleuth can affect all teams (Impostor, Neutral, Crewmate).
 
 ### Game Options
 | Name | Description
 |----------|:-------------:|
 | Sleuth Spawn Chance | -
------------------------
-
-## Fanatic
-
-The Fanatic Modifier is a crewmate modifier that can be guessed always. 
-If the Fanatic is attacked by an Impostor, the attacker is blanked and the Fanatic becomes Impostor.
-
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Fanatic Spawn Chance | -
 -----------------------
 
 ## Torch
@@ -1420,42 +1591,110 @@ The Torch Modifier is a crewmate modifier that makes it so that the players visi
 | Torch Quantity | -
 -----------------------
 
-## Tunneler
+## Watcher
 
-The Tunneler modifier is a Crewmate only modifier. When the Tunneler is done with their tasks, they gain the abilty to vent.
+The Watcher modifier allows the player to see everyone's votes during meetings.
 
 ### Game Options
 | Name | Description
 |----------|:-------------:|
-| Fanatic Spawn Chance | -
+| Watcher Spawn Chance | -
 -----------------------
 
-## Assassin
-### **Team: Impostors**
-The Assassin is an Imposter Modifer gives the Imposters the ability to shoot players during the meeting, by guessing its role. If the guess is wrong, the Assassin dies instead.\
-You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
-The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
-You can only shoot during the voting time.\
-Depending on the options, the Assassin can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Assassin guessed).\
-\
-**NOTE:**
-- If a player gets shot, you'll get back your votes
-- Jester wins won't be triggered, if the Assassin shoots the Jester before the Jester gets voted out
+## Multitasker
+
+The Multitasker modifier is a Crewmate only modifier. This modifiers makes all the players tasks transparent.
 
 ### Game Options
-| Name | Description |
+| Name | Description
 |----------|:-------------:|
-| Assassin Spawn Chance | -
-| Assassin Quantity | -
-| Assassin Number Of Shots Per Game | -
-| Assassin Can Shoot Multiple Times Per Meeting |  -
-| Assassin Can Guess The Spy | -
-| Assassin Can't Guess Snitch When Tasks Completed | -
-| Guesses Ignore The Medic Shield | -
+| Multitasker Spawn Chance | -
+| Multitasker Quantity | -
 -----------------------
+
+## Disperser
+
+The Disperser modifier is an Impostor only modifier. This modifier gives the impostor a 1 time use ability to send all players to a random location on the map.\
+\
+**NOTE:**
+- Players with Anti Teleport are not effected by a disperse.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Disperser Spawn Chance | -
+
+-----------------------
+
+# Gamemodes
+
+## Guesser Modifier
+The **Guesser-Gamemode** is an extension to the Classic-Gamemode and gives you a multitude of new options for Guessers.\
+The Guesser is now like an addition and can be applied to all players IF you want to. Settings are available to set the number of guessers for each team separately (Impostor, Neutral, Crewmate).\
+When playing this game mode, the Guessers can have another role (e.g. Medic Guesser). The same
+applies of course for Impostor and/or Neutral roles.\
+Players can additionally have a modifier, if enabled (e.g. Medic Guesser Mini).
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Number of Crew Guessers | -
+| Number of Neutral Guessers | -
+| Number of Impostor Guessers | -
+| Force Jackal Guesser | If set to "On", the first neutral role who will be Guesser is the Jackal. 
+| Guessers Can Have A Modifier | -
+| Guesser Number Of Shots | -
+| Guesser Can Shoot Multiple Times Per Meeting | -
+| Guesses Ignore The Medic Shield | -
+| Evil Guesser Can Guess The Spy | -
+| Guesser Can't Guess Snitch When Tasks Completed | -
+-----------------------
+
+**NOTE**
+- If a Crewmate Guesser gets sidekicked, they will remain a Guesser even if the host (maybe) has set up only 1 "Neutral role Guesser".
+
+## Hide 'n Seek
+The **Hide 'n Seek-Gamemode** is a standalone Gamemode where Hunter have to catch their prey ("Hunted" players).\
+The Hunter and Hunted player who are still alive are displayed to everyone in the bottom left corner (similar to the Arsonist display).\
+When the game starts, the Hunter's movement is disabled for x-seconds (depends on the settings).\
+There is a time-limit for each round, if the timer runs out and at least one Hunted is still alive, the Crew wins. The Hunted players can also win, if Taskwin is enabled and the Crew completes all tasks.\
+If the Hunters kill all players before one of these conditions is triggered, the Hunters win.\
+
+#### Hunter Abilities:
+- Enable arrows (arrows point to all Hunted players for x-seconds (depending on settings))
+- Mobile Admin table (like Hacker)
+- Lighter ability (gives the Hunter a biggier vision radius for x-seconds (depending on settings))
+
+#### Hunted Ability:
+- Timeshield (like Timemaster, depending on settings)
+
+Each Hunter action or finished Crew task will lower the timer by a configurable amount of time.\
+\
+**NOTE:**
+- We added a vent on Polus (Specimen), but only for this Gamemode. The vent is connected with Admin & Lab.
+- The Report button lights up, but cannot be pressed.
+- The tasks can be configured separately for this mode, without affecting your normal game settings.
+- Only the Hunter will be rewinded if they try to kill a player with an active timeshield.
+
+### Game Options
+| General | Description | Hunter | Description | Hunted | Description |
+|----------|:-------------:|----------|:-------------:|----------|:-------------:|
+| Map | -                                | Hunter Light Cooldown | -                  | Hunted Shield Cooldown | -
+| Number Of Hunters | -                  | Hunter Light Duration | -                  | Hunted Shield Duration | -
+| Kill Cooldown | -                      | Hunter Light Vision | -                    | Hunted Rewind Time | -
+| Hunter Vision | -                      | Hunter Light Punish in Sec | -             | Hunted Shield Number | -
+| Hunted Vision | -                      | Hunter Admin Cooldown | -
+| Common Tasks | -                       | Hunter Admin Duration | -
+| Short Tasks | -                        | Hunter Admin Punish In Sec | -
+| Long Tasks | -                         | Hunter Arrow Cooldown | -
+| Timer In Min | -                       | Hunter Arrow Duration | -
+| Task Win Is Possible | -               | Hunter Arrow Punish In Sec | -
+| Finish Tasks Punish In Sec | -
+| Enable Sabotages | -
+| Time The Hunter Needs To Wait | -
 
 # Source code
 You can use parts of the code but don't copy paste the whole thing. Make sure you give credits to the other developers, because some parts of the code are based on theirs.
 
 # Bugs, suggestions and requests
-If you found any bugs, have an idea for a new role or any other request, join our [Discord server](https://discord.gg/77RkMJHWsM).
+If you found any bugs, have an idea for a new role or any other request, join our [Discord server](https://discord.gg/yspVyP5meR).

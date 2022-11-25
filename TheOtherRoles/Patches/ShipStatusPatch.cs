@@ -4,6 +4,7 @@ using HarmonyLib;
 using TheOtherRoles.Utilities;
 using static TheOtherRoles.TheOtherRoles;
 using UnityEngine;
+using TheOtherRoles.CustomGameModes;
 
 namespace TheOtherRoles.Patches {
 
@@ -14,7 +15,7 @@ namespace TheOtherRoles.Patches {
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
         public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player) {
             if (!__instance.Systems.ContainsKey(SystemTypes.Electrical)) return true;
-
+/*
             // If player is a role which has Impostor vision
             if (player.Role.IsImpostor
                 || (Jackal.jackal != null && Jackal.jackal.PlayerId == player.PlayerId && Jackal.hasImpostorVision)
@@ -26,6 +27,15 @@ namespace TheOtherRoles.Patches {
                 //__result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
                 __result = GetNeutralLightRadius(__instance, true);
                 return false;
+			}
+*/
+            if (!HideNSeek.isHideNSeekGM || (HideNSeek.isHideNSeekGM && !Hunter.lightActive.Contains(player.PlayerId))) {
+                // If player is a role which has Impostor vision
+                if (Helpers.hasImpVision(player)) {
+                    //__result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
+                    __result = GetNeutralLightRadius(__instance, true);
+                    return false;
+                }
             }
 
             // If player is Lighter with ability active
@@ -34,10 +44,11 @@ namespace TheOtherRoles.Patches {
                 __result = Mathf.Lerp(__instance.MaxLightRadius * Lighter.lighterModeLightsOffVision, __instance.MaxLightRadius * Lighter.lighterModeLightsOnVision, unlerped);
             }
 
-           // if (Werewolf.werewolf != null && Werewolf.werewolf.PlayerId == player.PlayerId && Werewolf.rampageDuration= > 0f) {
-            //    float unlerped = Mathf.InverseLerp(__instance.MinLightRadius, __instance.MaxLightRadius, GetNeutralLightRadius(__instance, false));
-          //      __result = Mathf.Lerp(__instance.MaxLightRadius * Werewolf.werewolfVision, __instance.MaxLightRadius * Werewolf.werewolfRampagedVision, unlerped);
-         //   }
+            // If Game mode is Hide N Seek and hunter with ability active
+            else if (HideNSeek.isHideNSeekGM && Hunter.isLightActive(player.PlayerId)) {
+                float unlerped = Mathf.InverseLerp(__instance.MinLightRadius, __instance.MaxLightRadius, GetNeutralLightRadius(__instance, false));
+                __result = Mathf.Lerp(__instance.MaxLightRadius * Hunter.lightVision, __instance.MaxLightRadius * Hunter.lightVision, unlerped);
+            }
 
             // If there is a Trickster with their ability active
             else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) {
@@ -64,6 +75,7 @@ namespace TheOtherRoles.Patches {
             }
             if (Sunglasses.sunglasses.FindAll(x => x.PlayerId == player.PlayerId).Count > 0) // Sunglasses
                 __result *= 1f - Sunglasses.vision * 0.1f;
+
             var switchSystem = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>(); //TESTING
             var t = switchSystem.Value / 255f;
             if (Torch.torch.FindAll(x => x.PlayerId == player.PlayerId).Count > 0) t = 1;
@@ -96,21 +108,93 @@ namespace TheOtherRoles.Patches {
         private static int originalNumCommonTasksOption = 0;
         private static int originalNumShortTasksOption = 0;
         private static int originalNumLongTasksOption = 0;
+        public static float originalNumCrewVisionOption = 0;
+        public static float originalNumImpVisionOption = 0;
+        public static float originalNumKillCooldownOption = 0;
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static bool Prefix(ShipStatus __instance)
         {
-            var commonTaskCount = __instance.CommonTasks.Count;
-            var normalTaskCount = __instance.NormalTasks.Count;
-            var longTaskCount = __instance.LongTasks.Count;
             originalNumCommonTasksOption = PlayerControl.GameOptions.NumCommonTasks;
             originalNumShortTasksOption = PlayerControl.GameOptions.NumShortTasks;
             originalNumLongTasksOption = PlayerControl.GameOptions.NumLongTasks;
-            if(PlayerControl.GameOptions.NumCommonTasks > commonTaskCount) PlayerControl.GameOptions.NumCommonTasks = commonTaskCount;
-            if(PlayerControl.GameOptions.NumShortTasks > normalTaskCount) PlayerControl.GameOptions.NumShortTasks = normalTaskCount;
-            if(PlayerControl.GameOptions.NumLongTasks > longTaskCount) PlayerControl.GameOptions.NumLongTasks = longTaskCount;
+
+            if (MapOptions.gameMode != CustomGamemodes.HideNSeek) {
+                var commonTaskCount = __instance.CommonTasks.Count;
+                var normalTaskCount = __instance.NormalTasks.Count;
+                var longTaskCount = __instance.LongTasks.Count;
+
+                if (PlayerControl.GameOptions.NumCommonTasks > commonTaskCount) PlayerControl.GameOptions.NumCommonTasks = commonTaskCount;
+                if (PlayerControl.GameOptions.NumShortTasks > normalTaskCount) PlayerControl.GameOptions.NumShortTasks = normalTaskCount;
+                if (PlayerControl.GameOptions.NumLongTasks > longTaskCount) PlayerControl.GameOptions.NumLongTasks = longTaskCount;
+            } else {
+                PlayerControl.GameOptions.NumCommonTasks = Mathf.RoundToInt(CustomOptionHolder.hideNSeekCommonTasks.getFloat());
+                PlayerControl.GameOptions.NumShortTasks = Mathf.RoundToInt(CustomOptionHolder.hideNSeekShortTasks.getFloat());
+                PlayerControl.GameOptions.NumLongTasks = Mathf.RoundToInt(CustomOptionHolder.hideNSeekLongTasks.getFloat());
+            }
+
             return true;
+        }
+
+
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
+        class RepairSystemPatch {
+            public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] SystemTypes systemType, [HarmonyArgument(1)] PlayerControl player, [HarmonyArgument(2)] byte amount) {
+
+                // Mechanic expert repairs
+                if (Engineer.engineer != null && Engineer.engineer == player && Engineer.expertRepairs) {
+                    switch (systemType) {
+                        case SystemTypes.Reactor:
+                            if (amount == 64 || amount == 65) {
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 67);
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 66);
+                            }
+                            if (amount == 16 || amount == 17) {
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 19);
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 18);
+                            }
+                            break;
+                        case SystemTypes.Laboratory:
+                            if (amount == 64 || amount == 65) {
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 67);
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 66);
+                            }
+                            break;
+                        case SystemTypes.LifeSupp:
+                            if (amount == 64 || amount == 65) {
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 67);
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 66);
+                            }
+                            break;
+                        case SystemTypes.Comms:
+                            if (amount == 16 || amount == 17) {
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 19);
+                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 18);
+                            }
+                            break;
+                    }
+                }
+                
+                return true;
+            }
+        }
+            
+        [HarmonyPatch(typeof(SwitchSystem), nameof(SwitchSystem.RepairDamage))]
+        class SwitchSystemRepairPatch
+        {
+            public static void Postfix(SwitchSystem __instance, [HarmonyArgument(0)] PlayerControl player, [HarmonyArgument(1)] byte amount) {
+                
+                // Mechanic expert lights repairs
+                if (Engineer.engineer != null && Engineer.engineer == player && Engineer.expertRepairs) {
+
+                    if (amount >= 0 && amount <= 4) {
+                        __instance.ActualSwitches = 0;
+                        __instance.ExpectedSwitches = 0;
+                    }
+
+                }
+            }
         }
 
         [HarmonyPostfix]
@@ -121,6 +205,12 @@ namespace TheOtherRoles.Patches {
             PlayerControl.GameOptions.NumCommonTasks = originalNumCommonTasksOption;
             PlayerControl.GameOptions.NumShortTasks = originalNumShortTasksOption;
             PlayerControl.GameOptions.NumLongTasks = originalNumLongTasksOption;
+        }
+
+        public static void resetVanillaSettings() {
+            PlayerControl.GameOptions.ImpostorLightMod = originalNumImpVisionOption;
+            PlayerControl.GameOptions.CrewLightMod = originalNumCrewVisionOption;
+            PlayerControl.GameOptions.KillCooldown = originalNumKillCooldownOption;
         }
     }
 }

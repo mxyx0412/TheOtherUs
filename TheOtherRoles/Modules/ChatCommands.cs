@@ -3,6 +3,7 @@ using HarmonyLib;
 using System.Linq;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
+using UnityEngine;
 
 namespace TheOtherRoles.Modules {
     [HarmonyPatch]
@@ -84,12 +85,40 @@ namespace TheOtherRoles.Modules {
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public static class EnableChat {
             public static void Postfix(HudManager __instance) {
-                PlayerControl player = CachedPlayer.LocalPlayer.PlayerControl;
+      //          PlayerControl player = CachedPlayer.LocalPlayer.PlayerControl;
                 if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (CachedPlayer.LocalPlayer.PlayerControl.isLover() && Lovers.enableChat)))
                     __instance.Chat.SetVisible(true);
 
                 if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (CachedPlayer.LocalPlayer.PlayerControl.isTeamJackal() && Jackal.hasChat)))
                     __instance.Chat.SetVisible(true);
+
+                if ((Multitasker.multitasker.FindAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId).Count > 0) || MapOptions.transparentTasks
+         /*   && Jester.jester != CachedPlayer.LocalPlayer.PlayerControl
+            && Werewolf.werewolf != CachedPlayer.LocalPlayer.PlayerControl
+            && Prosecutor.prosecutor != CachedPlayer.LocalPlayer.PlayerControl
+            && Swooper.swooper != CachedPlayer.LocalPlayer.PlayerControl
+            && Jackal.jackal != CachedPlayer.LocalPlayer.PlayerControl
+            && Sidekick.sidekick != CachedPlayer.LocalPlayer.PlayerControl
+            && Arsonist.arsonist != CachedPlayer.LocalPlayer.PlayerControl
+            && Amnisiac.amnisiac != CachedPlayer.LocalPlayer.PlayerControl
+            && Vulture.vulture != CachedPlayer.LocalPlayer.PlayerControl
+            && Lawyer.lawyer != CachedPlayer.LocalPlayer.PlayerControl
+            && Pursuer.pursuer != CachedPlayer.LocalPlayer.PlayerControl
+            && Thief.thief != CachedPlayer.LocalPlayer.PlayerControl
+            */) {
+                if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
+                if (!Minigame.Instance) return;
+
+                var Base = Minigame.Instance as MonoBehaviour;
+            SpriteRenderer[] rends = Base.GetComponentsInChildren<SpriteRenderer>();
+            for (int i = 0; i < rends.Length; i++)
+            {
+                var oldColor1 = rends[i].color[0];
+                var oldColor2 = rends[i].color[1];
+                var oldColor3 = rends[i].color[2];
+                rends[i].color = new Color(oldColor1, oldColor2, oldColor3, 0.5f);
+            }
+        }
             }
         }
 

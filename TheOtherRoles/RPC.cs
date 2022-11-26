@@ -201,6 +201,8 @@ namespace TheOtherRoles
         ProsecutorChangesRole,
         ProsecutorSetTarget,
         ProsecutorToPursuer,
+        updatePhantom,
+        revivePhantom,
 
         ThiefStealsRole,
         SetTrap,
@@ -1355,75 +1357,95 @@ namespace TheOtherRoles
         }
 
         public static void turntoPhantom(byte playerId) {
-            if (PhantomAbility.phantomAbility != null && PhantomAbility.phantomAbility == CachedPlayer.LocalPlayer.PlayerControl) {
+            if (PhantomAbility.phantomAbility != null) {
             PlayerControl player = Helpers.playerById(playerId);
             Helpers.Log("PlayerId; " + player.PlayerId);
             RPCProcedure.erasePlayerRoles(playerId, false);
+            //PhantomRole.phantomRole = player;
+            //PhantomAbility.phantomAbility.gameObject.layer = LayerMask.NameToLayer("Players");
+            player.gameObject.layer = LayerMask.NameToLayer("Players");
+            //PhantomRole.phantomRole.gameObject.SetActive(true);
+            player.ScalePlayer(1f, float.MaxValue);
+            player.notRealPlayer = true;
+            //Helpers.Log("RPC PhantomRole layer: " + PhantomRole.phantomRole.gameObject.layer.ToString());
+             //PlayerControl.LocalPlayer.gameObject.layer = LayerMask.NameToLayer("Players");
+            //player.gameObject.layer = LayerMask.NameToLayer("Players");
             PhantomRole.phantomRole = player;
-       //     PhantomAbility.clearAndReload();
-        //    PhantomRole.clearAndReload();
+            PhantomRole.phantomRole.Revive();
+            PhantomRole.makeClickable();
 
 
-/*
-        if (playerId == Jester.jester.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Jester.clearAndReload();
-            }
-            else if (playerId == Arsonist.arsonist.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Arsonist.clearAndReload();
-            }
-            else if (playerId == Jackal.jackal.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Jackal.clearAndReload();
-            }
-            else if (playerId == Vulture.vulture.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Vulture.clearAndReload();
-            }
-            else if (playerId == Lawyer.lawyer.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Lawyer.clearAndReload();
-            }
-            else if (playerId == Pursuer.pursuer.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Pursuer.clearAndReload();
-            }
-            else if (playerId == Thief.thief.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Thief.clearAndReload();
-            }
-            else if (playerId == Prosecutor.prosecutor.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Prosecutor.clearAndReload();
-            }
-            else if (playerId == Amnisiac.amnisiac.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Amnisiac.clearAndReload();
-            }
-            else if (playerId == Swooper.swooper.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Swooper.clearAndReload();
-            }
-            else if (playerId == Werewolf.werewolf.PlayerId){
-                RPCProcedure.erasePlayerRoles(playerId, false);
-                PhantomRole.phantomRole = player;
-                Werewolf.clearAndReload();
-            }
-            */
+
+                //     PhantomAbility.clearAndReload();
+                //    PhantomRole.clearAndReload();
+
+
+                /*
+                        if (playerId == Jester.jester.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Jester.clearAndReload();
+                            }
+                            else if (playerId == Arsonist.arsonist.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Arsonist.clearAndReload();
+                            }
+                            else if (playerId == Jackal.jackal.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Jackal.clearAndReload();
+                            }
+                            else if (playerId == Vulture.vulture.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Vulture.clearAndReload();
+                            }
+                            else if (playerId == Lawyer.lawyer.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Lawyer.clearAndReload();
+                            }
+                            else if (playerId == Pursuer.pursuer.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Pursuer.clearAndReload();
+                            }
+                            else if (playerId == Thief.thief.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Thief.clearAndReload();
+                            }
+                            else if (playerId == Prosecutor.prosecutor.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Prosecutor.clearAndReload();
+                            }
+                            else if (playerId == Amnisiac.amnisiac.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Amnisiac.clearAndReload();
+                            }
+                            else if (playerId == Swooper.swooper.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Swooper.clearAndReload();
+                            }
+                            else if (playerId == Werewolf.werewolf.PlayerId){
+                                RPCProcedure.erasePlayerRoles(playerId, false);
+                                PhantomRole.phantomRole = player;
+                                Werewolf.clearAndReload();
+                            }
+                            */
             }
         }
 
+        public static void updatePhantom()
+        {
+            if (PhantomRole.phantomRole == null) return;
+            PhantomRole.updateIsMoving();
+            PhantomRole.hide();
+        }
 
         public static void jackalCreatesSidekick(byte targetId) {
             PlayerControl player = Helpers.playerById(targetId);
@@ -2665,6 +2687,13 @@ namespace TheOtherRoles
                     byte rewindPlayer = reader.ReadByte();
                     RPCProcedure.huntedRewindTime(rewindPlayer);
                     break;
+                case (byte)CustomRPC.updatePhantom:
+                    RPCProcedure.updatePhantom();
+                    break;
+                /*case (byte)CustomRPC.revivePhantom:
+                    byte phantomPlayer = reader.ReadByte();
+                    RPCProcedure.revivePhantom(phantomPlayer);
+                    break;*/
             }
         }
     }

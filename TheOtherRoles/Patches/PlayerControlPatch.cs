@@ -244,6 +244,8 @@ namespace TheOtherRoles.Patches {
                 writer.Write(PhantomAbility.phantomAbility.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.turntoPhantom(PhantomAbility.phantomAbility.PlayerId);
+                //PhantomRole.phantomRole.Revive();
+                
             }
         }
 

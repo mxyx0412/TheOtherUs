@@ -9,6 +9,7 @@ using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
 using static TheOtherRoles.TheOtherRoles;
 using AmongUs.Data;
+using UnityEngine.UI;
 
 namespace TheOtherRoles
 {
@@ -131,11 +132,60 @@ namespace TheOtherRoles
 
             public static bool isCaught = false;
             public static bool SpawnInVent = true;
-            public static float minVisibility = 0.2f;
+            public static float visibility = 0.2f;
+            public static float petVisibility = 0.2f;
             public static bool isMoving = false;
 
             public static void clearAndReload() {
                 phantomRole = null;
+            }
+
+            public static void hide()
+            {
+                try
+                {  // Sometimes renderers are missing for weird reasons. Try catch to avoid exceptions
+                    phantomRole.cosmetics.currentBodySprite.BodySprite.color = phantomRole.cosmetics.currentBodySprite.BodySprite.color.SetAlpha(visibility);
+                    if (DataManager.Settings.Accessibility.ColorBlindMode) phantomRole.cosmetics.colorBlindText.color = phantomRole.cosmetics.colorBlindText.color.SetAlpha(visibility);
+                    phantomRole.SetHatAndVisorAlpha(visibility);
+                    phantomRole.cosmetics.skin.layer.color = phantomRole.cosmetics.skin.layer.color.SetAlpha(visibility);
+                    phantomRole.cosmetics.nameText.color = phantomRole.cosmetics.nameText.color.SetAlpha(visibility);
+                    phantomRole.cosmetics.currentPet.rend.color = phantomRole.cosmetics.currentPet.rend.color.SetAlpha(petVisibility);
+                    phantomRole.cosmetics.currentPet.shadowRend.color = phantomRole.cosmetics.currentPet.shadowRend.color.SetAlpha(petVisibility);
+                }
+                catch { }
+            }
+
+            public static void updateIsMoving()
+            {
+                PlayerPhysics phys = phantomRole.MyPhysics;
+                var currentAnim = phys.Animator.GetCurrentAnimation();
+                if ((currentAnim == phys.CurrentAnimationGroup.RunAnim)) {
+                    isMoving = true;
+                    Helpers.Log("Phantom is Moving");
+                    visibility = 0.2f;
+                    return;
+                }
+                //Helpers.Log("Phantom is not Moving");
+                isMoving = false;
+                visibility = 0.9f;
+            }
+
+            public static void makeClickable()
+            {
+                //Make phantom clickable
+                var collider2d = phantomRole.gameObject.AddComponent<BoxCollider2D>();
+                collider2d.isTrigger = true;
+                var button = phantomRole.gameObject.AddComponent<PassiveButton>();
+                button.OnClick = new Button.ButtonClickedEvent();
+                button.OnMouseOut = new Button.ButtonClickedEvent();
+                button.OnMouseOver = new Button.ButtonClickedEvent();
+                button.OnClick.AddListener((Action)(() => {
+                    if (MeetingHud.Instance) return;
+                    if (phantomRole.Data.IsDead) return;
+                    isCaught = true;
+                    Helpers.Log("Caught Phantom!");
+                }));
+                Helpers.Log("Phantom should be spawned and clickable");
             }
         }
         

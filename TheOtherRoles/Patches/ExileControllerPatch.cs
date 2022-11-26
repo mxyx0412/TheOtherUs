@@ -8,6 +8,7 @@ using System;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TheOtherRoles.Patches {
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
@@ -213,12 +214,48 @@ namespace TheOtherRoles.Patches {
                 PlayerControlFixedUpdatePatch.deputyCheckPromotion(isMeeting: true);
             }
 
-            if (PhantomAbility.phantomAbility != null)
-            {
-                PlayerControlFixedUpdatePatch.phantomCheck(isMeeting: true);
-            }
-
             
+            Helpers.Log("Layer Sheriff: " + Sheriff.sheriff.gameObject.layer.ToString());
+            Helpers.Log("Layer Local: " + CachedPlayer.LocalPlayer.PlayerControl.gameObject.layer.ToString());
+            //Helpers.Log("Layer phantomAbb: " + PhantomAbility.phantomAbility.gameObject.layer.ToString());
+            //Helpers.Log("Layer phantomRole: " + PhantomRole.phantomRole.gameObject.layer.ToString());
+            Helpers.Log("Layer players: " + LayerMask.NameToLayer("Players").ToString());
+            if (PhantomAbility.phantomAbility != null && PhantomAbility.phantomAbility.Data.IsDead)
+            {
+               // PhantomAbility.phantomAbility.gameObject.layer = LayerMask.NameToLayer("Players");
+                //PlayerControl.LocalPlayer.gameObject.layer = LayerMask.NameToLayer("Players");
+                PlayerControlFixedUpdatePatch.phantomCheck(isMeeting: true);
+                Helpers.Log("ExileControllerWrapUp Phantom Role Layer: " + PhantomRole.phantomRole.gameObject.layer.ToString());
+                //RPCProcedure.turntoPhantom(PhantomAbility.phantomAbility.PlayerId);
+                //PhantomRole.phantomRole.gameObject.SetActive(true);
+                //PhantomRole.phantomRole.gameObject.layer = LayerMask.NameToLayer("Players");
+
+            }
+            /*if(PhantomRole.phantomRole != null) {
+                //Helpers.Log("ExileControllerWrapUp Phantom Role Not Null Layer: " + PhantomRole.phantomRole.gameObject.layer.ToString());
+                if(!PhantomRole.phantomRole.gameObject.layer.Equals(LayerMask.NameToLayer("Players")))
+                {
+                    PlayerControl.LocalPlayer.gameObject.layer = LayerMask.NameToLayer("Players");
+                    PhantomRole.phantomRole.gameObject.layer = LayerMask.NameToLayer("Players");
+                    //PhantomRole.phantomRole.transform.localScale = Vector3.one;
+                    //var defaultScale = PhantomRole.phantomRole.defaultPlayerScale;
+                    //Helpers.Log("Default player scale x-y-z: " + defaultScale.x.ToString() + "-" + defaultScale.y.ToString() + "-" + defaultScale.z.ToString());
+                    PhantomRole.phantomRole.ScalePlayer(1f, float.MaxValue);
+                    PhantomRole.phantomRole.Revive();
+                    PhantomRole.phantomRole.notRealPlayer = true;
+                    //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.revivePhantom, Hazel.SendOption.Reliable, -1);
+                    //writer.Write(PhantomAbility.phantomAbility.PlayerId);
+                    //AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    //RPCProcedure.updatePhantom();
+                    
+                    
+
+                }
+                //Helpers.Log("ExileControllerWrapUp Phantom Role Not Null End Layer: " + PhantomRole.phantomRole.gameObject.layer.ToString());
+
+            }*/
+
+
 
             // Force Bounty Hunter Bounty Update
             if (BountyHunter.bountyHunter != null && BountyHunter.bountyHunter == CachedPlayer.LocalPlayer.PlayerControl)

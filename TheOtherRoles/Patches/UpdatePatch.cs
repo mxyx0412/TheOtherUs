@@ -8,6 +8,7 @@ using System.Linq;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
+using Hazel;
 
 namespace TheOtherRoles.Patches {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -380,6 +381,20 @@ namespace TheOtherRoles.Patches {
             if (Trapper.trapper == null || !(CachedPlayer.LocalPlayer.PlayerId == Trapper.trapper.PlayerId) || __instance == null || __instance.MapButton == null) return;
             __instance.MapButton.color = Trapper.playersOnMap.Any() ? Trapper.color : Color.white;
         }
+        static void updatePhantom()
+        {
+            if (PhantomRole.phantomRole == null) return;
+            if (CachedPlayer.LocalPlayer.PlayerId == PhantomRole.phantomRole.PlayerId)
+            {
+                PhantomRole.updateIsMoving();
+                //RPCProcedure.updatePhantom();
+            }
+            PhantomRole.hide();
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.updatePhantom, Hazel.SendOption.Reliable, -1);
+            //writer.Write(PhantomAbility.phantomAbility.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.updatePhantom();
+        }
 
         static void Postfix(HudManager __instance)
         {
@@ -418,6 +433,8 @@ namespace TheOtherRoles.Patches {
             timerUpdate();
             // Mini
             miniUpdate();
+            //Phantom
+            updatePhantom();
 
             // Deputy Sabotage, Use and Vent Button Disabling
             updateReportButton(__instance);

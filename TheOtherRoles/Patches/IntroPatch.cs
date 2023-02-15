@@ -8,17 +8,25 @@ using System.Linq;
 using Hazel;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
+using TheOtherRoles.CustomGameModes;
 
 namespace TheOtherRoles.Patches {
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
     class IntroCutsceneOnDestroyPatch
     {
         public static PoolablePlayer playerPrefab;
+        public static Vector3 bottomLeft;
         public static void Prefix(IntroCutscene __instance) {
             // Generate and initialize player icons
             int playerCounter = 0;
+            int hideNSeekCounter = 0;
             if (CachedPlayer.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null) {
-                Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
+                float aspect = Camera.main.aspect;
+                float safeOrthographicSize = CameraSafeArea.GetSafeOrthographicSize(Camera.main);
+                float xpos = 1.75f - safeOrthographicSize * aspect * 1.70f;
+                float ypos = 0.15f - safeOrthographicSize * 1.7f;
+                bottomLeft = new Vector3(xpos / 2, ypos/2, -61f);
+
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) {
                     GameData.PlayerInfo data = p.Data;
                     PoolablePlayer player = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, FastDestroyableSingleton<HudManager>.Instance.transform);
@@ -29,7 +37,8 @@ namespace TheOtherRoles.Patches {
                    // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
                     player.cosmetics.nameText.text = data.PlayerName;
                     player.SetFlipX(true);
-                    MapOptions.playerIcons[p.PlayerId] = player;
+                    MapOptionsTor.playerIcons[p.PlayerId] = player;
+                    player.gameObject.SetActive(false);
 
                     if (CachedPlayer.LocalPlayer.PlayerControl == Arsonist.arsonist && p != Arsonist.arsonist) {
                         Arsonist.poolIcons.Add(player);
@@ -37,14 +46,24 @@ namespace TheOtherRoles.Patches {
                         player.transform.localScale = Vector3.one * 0.2f;
                         player.setSemiTransparent(true);
                         player.gameObject.SetActive(true);
-                    } else if (CachedPlayer.LocalPlayer.PlayerControl == BountyHunter.bountyHunter) {
-                        player.transform.localPosition = bottomLeft + new Vector3(-0.25f, 0f, 0);
+                    } else if (HideNSeek.isHideNSeekGM) {
+                        if (HideNSeek.isHunted() && p.Data.Role.IsImpostor) {
+                            player.transform.localPosition = bottomLeft + new Vector3(-0.25f, 0.4f, 0) + Vector3.right * playerCounter++ * 0.6f;
+                            player.transform.localScale = Vector3.one * 0.3f;
+                            player.cosmetics.nameText.text += $"{Helpers.cs(Color.red, " (Hunter)")}";
+                            player.gameObject.SetActive(true);
+                        } else if (!p.Data.Role.IsImpostor) {
+                            player.transform.localPosition = bottomLeft + new Vector3(-0.35f, -0.25f, 0) + Vector3.right * hideNSeekCounter++ * 0.35f;
+                            player.transform.localScale = Vector3.one * 0.2f;
+                            player.setSemiTransparent(true);
+                            player.gameObject.SetActive(true);
+                        }
+
+                    } else {   //  This can be done for all players not just for the bounty hunter as it was before. Allows the thief to have the correct position and scaling
+                        player.transform.localPosition = bottomLeft;
                         player.transform.localScale = Vector3.one * 0.4f;
                         player.gameObject.SetActive(false);
-
-                    } else {
-                        player.gameObject.SetActive(false);
-                    }
+					}
 
                 }
             }
@@ -53,10 +72,11 @@ namespace TheOtherRoles.Patches {
             if (BountyHunter.bounty != null && CachedPlayer.LocalPlayer.PlayerControl == BountyHunter.bountyHunter) {
                 BountyHunter.bountyUpdateTimer = 0f;
                 if (FastDestroyableSingleton<HudManager>.Instance != null) {
-                    Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
+           //         Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
                     BountyHunter.cooldownText = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.transform);
                     BountyHunter.cooldownText.alignment = TMPro.TextAlignmentOptions.Center;
-                    BountyHunter.cooldownText.transform.localPosition = bottomLeft + new Vector3(0f, -1f, -1f);
+                    BountyHunter.cooldownText.transform.localPosition = bottomLeft + new Vector3(0f, -0.35f, -62f);
+                    BountyHunter.cooldownText.transform.localScale = Vector3.one * 0.4f;
                     BountyHunter.cooldownText.gameObject.SetActive(true);
                 }
             }
@@ -221,31 +241,21 @@ namespace TheOtherRoles.Patches {
 
                 List<Vector3> airshipSpawn = new List<Vector3>() { }; //no spawns since it already has random spawns
 
-                if (PlayerControl.GameOptions.MapId == 0) CachedPlayer.LocalPlayer.PlayerControl.transform.position = skeldSpawn[rnd.Next(skeldSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 1) CachedPlayer.LocalPlayer.PlayerControl.transform.position = miraSpawn[rnd.Next(miraSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 2) CachedPlayer.LocalPlayer.PlayerControl.transform.position = polusSpawn[rnd.Next(polusSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 3) CachedPlayer.LocalPlayer.PlayerControl.transform.position = dleksSpawn[rnd.Next(dleksSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 4) CachedPlayer.LocalPlayer.PlayerControl.transform.position = airshipSpawn[rnd.Next(airshipSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0) CachedPlayer.LocalPlayer.PlayerControl.transform.position = skeldSpawn[rnd.Next(skeldSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 1) CachedPlayer.LocalPlayer.PlayerControl.transform.position = miraSpawn[rnd.Next(miraSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2) CachedPlayer.LocalPlayer.PlayerControl.transform.position = polusSpawn[rnd.Next(polusSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3) CachedPlayer.LocalPlayer.PlayerControl.transform.position = dleksSpawn[rnd.Next(dleksSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4) CachedPlayer.LocalPlayer.PlayerControl.transform.position = airshipSpawn[rnd.Next(airshipSpawn.Count)];
 
             }
             if (CustomOptionHolder.resetRoundStartCooldown.getBool()) { //reset cooldown on round start
                 CachedPlayer.LocalPlayer.PlayerControl.killTimer = 60; //set imp cooldown to the max
                 CustomButton.ResetAllCooldowns(); //reset button cooldowns
             }
-            if (CustomOptionHolder.NoGameEnd.getBool()) //testing
-        //    if (CustomOptionHolder.NoGameEndImp.getBool())
-        //    GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(3, 16).ToArray();
-        //    if (CustomOptionHolder.NoGameEndElse.getBool())
-           // GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(0, 16).ToArray();
-            //else GameOptionsData.RecommendedImpostors = GameOptionsData.MaxImpostors = Enumerable.Repeat(3, 16).ToArray();
-            {
-
-                
-            }
 
             // First kill
-            if (AmongUsClient.Instance.AmHost && MapOptions.shieldFirstKill && MapOptions.firstKillName != "") {
-                PlayerControl target = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault(x => x.Data.PlayerName.Equals(MapOptions.firstKillName));
+            if (AmongUsClient.Instance.AmHost && MapOptionsTor.shieldFirstKill && MapOptionsTor.firstKillName != "" && !HideNSeek.isHideNSeekGM) {
+                PlayerControl target = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault(x => x.Data.PlayerName.Equals(MapOptionsTor.firstKillName));
                 if (target != null) {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetFirstKill, Hazel.SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
@@ -253,7 +263,52 @@ namespace TheOtherRoles.Patches {
                     RPCProcedure.setFirstKill(target.PlayerId);
                 }
             }
-            MapOptions.firstKillName = "";
+            MapOptionsTor.firstKillName = "";
+
+            if (HideNSeek.isHideNSeekGM) {
+                foreach (PlayerControl player in HideNSeek.getHunters()) {
+                    player.moveable = false;
+                    player.NetTransform.Halt();
+                    HideNSeek.timer = HideNSeek.hunterWaitingTime;
+                    FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(HideNSeek.hunterWaitingTime, new Action<float>((p) => {
+                        if (p == 1f) {
+                            player.moveable = true;
+                            HideNSeek.timer = CustomOptionHolder.hideNSeekTimer.getFloat() * 60;
+                            HideNSeek.isWaitingTimer = false;
+                        }
+                    })));
+                    player.MyPhysics.SetBodyType(PlayerBodyTypes.Seeker);
+                }
+
+                if (HideNSeek.polusVent == null && GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2) {
+                    var list = GameObject.FindObjectsOfType<Vent>().ToList();
+                    var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
+                    var bathroomVent = list.FirstOrDefault(x => x.gameObject.name == "BathroomVent");
+                    HideNSeek.polusVent = UnityEngine.Object.Instantiate<Vent>(adminVent);
+                    HideNSeek.polusVent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
+                    HideNSeek.polusVent.transform.position = new Vector3(36.55068f, -21.5168f, -0.0215168f);
+                    HideNSeek.polusVent.Left = adminVent;
+                    HideNSeek.polusVent.Right = bathroomVent;
+                    HideNSeek.polusVent.Center = null;
+                    HideNSeek.polusVent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
+                    var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
+                    allVentsList.Add(HideNSeek.polusVent);
+                    MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
+                    HideNSeek.polusVent.gameObject.SetActive(true);
+                    HideNSeek.polusVent.name = "newVent_" + HideNSeek.polusVent.Id;
+
+                    adminVent.Center = HideNSeek.polusVent;
+                    bathroomVent.Center = HideNSeek.polusVent;
+                }
+
+                ShipStatusPatch.originalNumCrewVisionOption = GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
+                ShipStatusPatch.originalNumImpVisionOption = GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod;
+                ShipStatusPatch.originalNumKillCooldownOption = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
+
+                GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod = CustomOptionHolder.hideNSeekHunterVision.getFloat();
+                GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod = CustomOptionHolder.hideNSeekHuntedVision.getFloat();
+                GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown = CustomOptionHolder.hideNSeekKillCooldown.getFloat();
+            }
         }
     }
 
@@ -303,9 +358,19 @@ namespace TheOtherRoles.Patches {
             if (roleInfo == null) return;
             if (roleInfo.isNeutral) {
                 var neutralColor = new Color32(76, 84, 78, 255);
+
+         //       __instance.BackgroundBar.material.color = roleInfo.color; //theotherroles2
+         //       __instance.TeamTitle.text = roleInfo.name;
+         //       __instance.TeamTitle.color = roleInfo.color;
+
+        //        __instance.BackgroundBar.material.color = neutralColor; //theotherroles
+        //        __instance.TeamTitle.text = "Neutral";
+       //         __instance.TeamTitle.color = neutralColor;
+
                 __instance.BackgroundBar.material.color = roleInfo.color;
-                __instance.TeamTitle.text = roleInfo.name;
-                __instance.TeamTitle.color = roleInfo.color;
+                __instance.TeamTitle.text = "Neutral";
+                __instance.TeamTitle.color = neutralColor;
+
             } else {
                 bool isCrew = true;
                 if (roleInfo.color == Palette.ImpostorRed) isCrew = false;
@@ -405,17 +470,17 @@ namespace TheOtherRoles.Patches {
         }
     }
 
-    [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+   /* [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
     public static class ShouldAlwaysHorseAround {
         public static bool isHorseMode;
         public static bool Prefix(ref bool __result) {
-            if (isHorseMode != MapOptions.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
+            if (isHorseMode != MapOptionsTor.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
             else {
-                __result = MapOptions.enableHorseMode;
-                isHorseMode = MapOptions.enableHorseMode;
+                __result = MapOptionsTor.enableHorseMode;
+                isHorseMode = MapOptionsTor.enableHorseMode;
             }
             return false;
         }
-    }
+    }*/
 }
 

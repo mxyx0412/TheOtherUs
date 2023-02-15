@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
+using TheOtherRoles.CustomGameModes;
+using Hazel;
 
 namespace TheOtherRoles.Patches {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-
     class HudManagerUpdatePatch
     {
         private static Dictionary<byte, (string name, Color color)> TagColorDict = new();
@@ -37,6 +38,7 @@ namespace TheOtherRoles.Patches {
                 
                     nameText.text = Helpers.hidePlayerName(localPlayer, player) ? "" : playerName;
                     nameText.color = color = amImpostor && data.Role.IsImpostor ? Palette.ImpostorRed : Color.white;
+                    nameText.color = nameText.color.SetAlpha(Chameleon.visibility(player.PlayerId));
                 }
                 else
                 {
@@ -60,7 +62,7 @@ namespace TheOtherRoles.Patches {
         }
 
         static void setPlayerNameColor(PlayerControl p, Color color) {
-            p.cosmetics.nameText.color = color;
+            p.cosmetics.nameText.color = color.SetAlpha(Chameleon.visibility(p.PlayerId));
             if (MeetingHud.Instance != null)
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                     if (player.NameText != null && p.PlayerId == player.TargetPlayerId)
@@ -74,9 +76,11 @@ namespace TheOtherRoles.Patches {
             }
         }
         
-        static void setNameColors()
-        {
+        static void setNameColors() {
             var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
+            var localRole = RoleInfo.getRoleInfoForPlayer(localPlayer, false).FirstOrDefault();
+            setPlayerNameColor(localPlayer, localRole.color);
+
             if (Jester.jester != null && Jester.jester == localPlayer)
                 setPlayerNameColor(Jester.jester, Jester.color);
             else if (Prosecutor.prosecutor != null && Prosecutor.prosecutor == CachedPlayer.LocalPlayer.PlayerControl) { // Make Prosecutor see target
@@ -91,7 +95,8 @@ namespace TheOtherRoles.Patches {
                 if (Deputy.deputy != null && Deputy.knowsSheriff) {
                     setPlayerNameColor(Deputy.deputy, Deputy.color);
                 }
-            } else if (Deputy.deputy != null && Deputy.deputy == localPlayer) {
+            } else
+            if (Deputy.deputy != null && Deputy.deputy == localPlayer) {
                 setPlayerNameColor(Deputy.deputy, Deputy.color);
                 if (Sheriff.sheriff != null && Deputy.knowsSheriff) {
                     setPlayerNameColor(Sheriff.sheriff, Sheriff.color);
@@ -106,8 +111,6 @@ namespace TheOtherRoles.Patches {
                 setPlayerNameColor(TimeMaster.timeMaster, TimeMaster.color);
             else if (Medic.medic != null && Medic.medic == localPlayer)
                 setPlayerNameColor(Medic.medic, Medic.color);
-            else if (Shifter.shifter != null && Shifter.shifter == localPlayer)
-                setPlayerNameColor(Shifter.shifter, Shifter.color);
             else if (Swapper.swapper != null && Swapper.swapper == localPlayer)
                 setPlayerNameColor(Swapper.swapper, Swapper.color);
             else if (Seer.seer != null && Seer.seer == localPlayer)
@@ -118,8 +121,6 @@ namespace TheOtherRoles.Patches {
                 setPlayerNameColor(Tracker.tracker, Tracker.color);
             else if (Snitch.snitch != null && Snitch.snitch == localPlayer)
                 setPlayerNameColor(Snitch.snitch, Snitch.color);
-            else if (Transporter.transporter != null && Transporter.transporter == localPlayer)
-                setPlayerNameColor(Transporter.transporter, Transporter.color);
             else if (Jackal.jackal != null && Jackal.jackal == localPlayer) {
                 // Jackal can see his sidekick
                 if (Jackal.jackal != Swooper.swooper) setPlayerNameColor(Jackal.jackal, Jackal.color);
@@ -137,19 +138,18 @@ namespace TheOtherRoles.Patches {
                 setPlayerNameColor(SecurityGuard.securityGuard, SecurityGuard.color);
             } else if (Arsonist.arsonist != null && Arsonist.arsonist == localPlayer) {
                 setPlayerNameColor(Arsonist.arsonist, Arsonist.color);
-            } else if (Guesser.niceGuesser != null && Guesser.niceGuesser == localPlayer) {
-                setPlayerNameColor(Guesser.niceGuesser, Guesser.color);
             } else if (Vulture.vulture != null && Vulture.vulture == localPlayer) {
                 setPlayerNameColor(Vulture.vulture, Vulture.color);
             } else if (Medium.medium != null && Medium.medium == localPlayer) {
                 setPlayerNameColor(Medium.medium, Medium.color);
+            } else if (Trapper.trapper != null && Trapper.trapper == localPlayer) {
+                setPlayerNameColor(Trapper.trapper, Trapper.color);
             } else if (Lawyer.lawyer != null && Lawyer.lawyer == localPlayer) {
                 setPlayerNameColor(Lawyer.lawyer, Lawyer.color);
             } else if (Pursuer.pursuer != null && Pursuer.pursuer == localPlayer) {
                 setPlayerNameColor(Pursuer.pursuer, Pursuer.color);
-            } else if (Jumper.jumper != null && Jumper.jumper == localPlayer) {
-                setPlayerNameColor(Jumper.jumper, Jumper.color);
-            } else if (Swooper.swooper != null && Swooper.swooper == localPlayer) {
+            }
+            else if (Swooper.swooper != null && Swooper.swooper == localPlayer) {
                 setPlayerNameColor(Swooper.swooper, Swooper.color);
             }
 
@@ -221,19 +221,20 @@ namespace TheOtherRoles.Patches {
                         if (Lovers.lover1.PlayerId == player.TargetPlayerId || Lovers.lover2.PlayerId == player.TargetPlayerId)
                             player.NameText.text += suffix;
             }
+/*
+            // Lawyer or Prosecutor
+            if ((Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == CachedPlayer.LocalPlayer.PlayerControl)) {
+                Color color = Lawyer.color;
+                PlayerControl target = Lawyer.target;
+                string suffix = Helpers.cs(color, " §");
+                target.cosmetics.nameText.text += suffix;
 
-   //         // Lawyer
-  //          if (Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == CachedPlayer.LocalPlayer.PlayerControl) {
-    //            string suffix = Helpers.cs(Lawyer.color, " §");
-   //             Lawyer.target.cosmetics.nameText.text += suffix;
-//
-    //            if (MeetingHud.Instance != null)
-    //                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-    //                    if (player.TargetPlayerId == Lawyer.target.PlayerId)
-    //                        player.NameText.text += suffix;
-    //        }
-
-            // Lawyer
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (player.TargetPlayerId == target.PlayerId)
+                            player.NameText.text += suffix;
+            }
+*/
             bool localIsLawyer = Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == PlayerControl.LocalPlayer;
             bool localIsKnowingTarget = Lawyer.lawyer != null && Lawyer.target != null && Lawyer.targetKnows && Lawyer.target == PlayerControl.LocalPlayer;
             if (localIsLawyer || (localIsKnowingTarget && !Lawyer.lawyer.Data.IsDead)) {
@@ -245,15 +246,53 @@ namespace TheOtherRoles.Patches {
                         if (player.TargetPlayerId == Lawyer.target.PlayerId)
                             player.NameText.text += suffix;
             }
+/*
+            // Lawyer
+            bool localIsLawyer = Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == CachedPlayer.LocalPlayer.PlayerControl;
+            bool localIsKnowingTarget = Lawyer.lawyer != null && Lawyer.target != null && Lawyer.targetKnows && Lawyer.target == CachedPlayer.LocalPlayer.PlayerControl;
+            if (localIsLawyer || (localIsKnowingTarget && !Lawyer.lawyer.Data.IsDead)) {
+                Color color = Lawyer.color;
+                PlayerControl target = Lawyer.target;
+                string suffix = Helpers.cs(color, " §");
+                target.cosmetics.nameText.text += suffix;
+
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (player.TargetPlayerId == target.PlayerId)
+                            player.NameText.text += suffix;
+            }
+*/
+            // Former Thief
+            if (Thief.formerThief != null && (Thief.formerThief == CachedPlayer.LocalPlayer.PlayerControl || CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead)) {
+                string suffix = Helpers.cs(Thief.color, " $");
+                Thief.formerThief.cosmetics.nameText.text += suffix;
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (player.TargetPlayerId == Thief.formerThief.PlayerId)
+                            player.NameText.text += suffix;
+            }
 
             // Display lighter / darker color for all alive players
-            if (CachedPlayer.LocalPlayer != null && MeetingHud.Instance != null && MapOptions.showLighterDarker) {
+            if (CachedPlayer.LocalPlayer != null && MeetingHud.Instance != null && MapOptionsTor.showLighterDarker) {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
                     var target = Helpers.playerById(player.TargetPlayerId);
                     if (target != null)  player.NameText.text += $" ({(Helpers.isLighterColor(target.Data.DefaultOutfit.ColorId) ? "L" : "D")})";
                 }
             }
         }
+   //     static void shakeScreenIfReactorSabotage() {
+ //           if (MapOptionsTor.shakeScreenReactor && Helpers.gameStarted) {
+  //              foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) {
+  //                  if (task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic) {
+  //                      HudManager.Instance.PlayerCam.shakeAmount = 0.025f;
+  //                      HudManager.Instance.PlayerCam.shakePeriod = 400;
+  //                  }
+ //                       else HudManager.Instance.PlayerCam.shakeAmount = 0f;
+  //                      HudManager.Instance.PlayerCam.shakePeriod = 10000000;
+  //                  
+  //              }
+  //          }
+  //      }
 
         static void updateShielded() {
             if (Medic.shielded == null) return;
@@ -271,18 +310,21 @@ namespace TheOtherRoles.Patches {
             Tracker.corpsesTrackingTimer -= dt;
             Ninja.invisibleTimer -= dt;
 			Swooper.swoopTimer -= dt;
+            HideNSeek.timer -= dt;
             foreach (byte key in Deputy.handcuffedKnows.Keys)
                 Deputy.handcuffedKnows[key] -= dt;
         }
 
         public static void miniUpdate() {
-            if (Mini.mini == null || Camouflager.camouflageTimer > 0f || Mini.mini == Morphling.morphling && Morphling.morphTimer > 0f || Mini.mini == Ninja.ninja && Ninja.isInvisble) return;
+            if (Mini.mini == null || Camouflager.camouflageTimer > 0f || Mini.mini == Morphling.morphling && Morphling.morphTimer > 0f || Mini.mini == Ninja.ninja && Ninja.isInvisble || Mini.mini == Swooper.swooper && Swooper.isInvisable || Helpers.isActiveCamoComms()) return;
                 
             float growingProgress = Mini.growingProgress();
             float scale = growingProgress * 0.35f + 0.35f;
             string suffix = "";
             if (growingProgress != 1f)
                 suffix = " <color=#FAD934FF>(" + Mathf.FloorToInt(growingProgress * 18) + ")</color>"; 
+            if (!Mini.isGrowingUpInMeeting && MeetingHud.Instance != null && Mini.ageOnMeetingStart != 0 && !(Mini.ageOnMeetingStart >= 18))
+                suffix = " <color=#FAD934FF>(" + Mini.ageOnMeetingStart + ")</color>";
 
             Mini.mini.cosmetics.nameText.text += suffix;
             if (MeetingHud.Instance != null) {
@@ -308,6 +350,10 @@ namespace TheOtherRoles.Patches {
                 enabled = false;
             else if (Janitor.janitor != null && Janitor.janitor == CachedPlayer.LocalPlayer.PlayerControl)
                 enabled = false;
+            else if (Cultist.cultist != null && Cultist.cultist == CachedPlayer.LocalPlayer.PlayerControl && Cultist.needsFollower)
+		{
+			enabled = false;
+		}
             
             if (enabled) __instance.KillButton.Show();
             else __instance.KillButton.Hide();
@@ -332,7 +378,26 @@ namespace TheOtherRoles.Patches {
         }
 
         static void updateSabotageButton(HudManager __instance) {
-            if (MeetingHud.Instance) __instance.SabotageButton.Hide();
+            if (MeetingHud.Instance) __instance.SabotageButton.Hide();if (MeetingHud.Instance || MapOptionsTor.gameMode == CustomGamemodes.HideNSeek) __instance.SabotageButton.Hide();
+        }
+
+        static void updateMapButton(HudManager __instance) {
+            if (Trapper.trapper == null || !(CachedPlayer.LocalPlayer.PlayerId == Trapper.trapper.PlayerId) || __instance == null || __instance.MapButton.HeldButtonSprite == null) return;
+            __instance.MapButton.HeldButtonSprite.color = Trapper.playersOnMap.Any() ? Trapper.color : Color.white;
+        }
+        static void updatePhantom()
+        {
+            if (PhantomRole.phantomRole == null) return;
+            if (CachedPlayer.LocalPlayer.PlayerId == PhantomRole.phantomRole.PlayerId)
+            {
+                PhantomRole.updateIsMoving();
+                //RPCProcedure.updatePhantom();
+            }
+            PhantomRole.hide();
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.updatePhantom, Hazel.SendOption.Reliable, -1);
+            //writer.Write(PhantomAbility.phantomAbility.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.updatePhantom();
         }
 
         static void Postfix(HudManager __instance)
@@ -342,8 +407,8 @@ namespace TheOtherRoles.Patches {
             //壁抜け
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                if ((AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || AmongUsClient.Instance.GameMode == GameModes.FreePlay)
-                    && player.MyAnim.ClipName is "Idle" or "Walk")
+                if ((AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
+                    && player.CanMove)
                 {
                     player.Collider.offset = new Vector2(0f, 127f);
                 }
@@ -364,12 +429,16 @@ namespace TheOtherRoles.Patches {
             updateShielded();
             setNameTags();
 
+       //     shakeScreenIfReactorSabotage();
+
             // Impostors
             updateImpostorKillButton(__instance);
             // Timer updates
             timerUpdate();
             // Mini
             miniUpdate();
+            //Phantom
+            updatePhantom();
 
             // Deputy Sabotage, Use and Vent Button Disabling
             updateReportButton(__instance);
@@ -378,8 +447,8 @@ namespace TheOtherRoles.Patches {
             updateSabotageButton(__instance);
             updateUseButton(__instance);
             updateBlindReport();
+            updateMapButton(__instance);
 
         }
     }
 }
-

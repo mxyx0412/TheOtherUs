@@ -5,11 +5,13 @@ using UnityEngine;
 using System.Linq;
 using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.GameHistory;
-using static TheOtherRoles.MapOptions;
+using static TheOtherRoles.MapOptionsTor;
 using System.Collections.Generic;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
-
+using TheOtherRoles.Objects;
+using TheOtherRoles.CustomGameModes;
+using PowerTools;
 
 namespace TheOtherRoles.Patches {
 
@@ -113,11 +115,12 @@ namespace TheOtherRoles.Patches {
                 Deputy.setHandcuffedKnows();
                 return false;
             }
+            if (Trapper.playersOnMap.Contains(CachedPlayer.LocalPlayer.PlayerControl)) return false;
 
             bool canUse;
             bool couldUse;
             __instance.CanUse(CachedPlayer.LocalPlayer.Data, out canUse, out couldUse);
-            bool canMoveInVents = CachedPlayer.LocalPlayer.PlayerControl != Spy.spy;
+            bool canMoveInVents = CachedPlayer.LocalPlayer.PlayerControl != Spy.spy && !Trapper.playersOnMap.Contains(CachedPlayer.LocalPlayer.PlayerControl);
             if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
             bool isEnter = !CachedPlayer.LocalPlayer.PlayerControl.inVent;
@@ -144,30 +147,39 @@ namespace TheOtherRoles.Patches {
         }
     }
 
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        class VentButtonVisibilityPatch
-        {
-            static void Postfix(PlayerControl __instance)
-            {
-                if (__instance.AmOwner && Helpers.ShowButtons)
-                {
-                    HudManager.Instance.ImpostorVentButton.Hide();
-                    HudManager.Instance.SabotageButton.Hide();
+	[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+	class VentButtonVisibilityPatch
+	{
+		static void Postfix(PlayerControl __instance)
+		{
+			if (__instance.AmOwner && Helpers.ShowButtons)
+			{
+				HudManager.Instance.ImpostorVentButton.Hide();
+				HudManager.Instance.SabotageButton.Hide();
 
-                    if (Helpers.ShowButtons)
-                    {
-                        if (__instance.roleCanUseVents())
-                            HudManager.Instance.ImpostorVentButton.Show();
+				if (Helpers.ShowButtons)
+				{
+					if (__instance.roleCanUseVents())
+						HudManager.Instance.ImpostorVentButton.Show();
 
-                        if (__instance.roleCanSabotage())
-                        {
-                            HudManager.Instance.SabotageButton.Show();
-                            HudManager.Instance.SabotageButton.gameObject.SetActive(true);
-                        }
-                    }
-                }
-            }
+					if (__instance.roleCanSabotage())
+					{
+						HudManager.Instance.SabotageButton.Show();
+						HudManager.Instance.SabotageButton.gameObject.SetActive(true);
+					}
+				}
+			}
+		}
+	}
+	
+    [HarmonyPatch(typeof(Vent), nameof(Vent.MoveToVent))]
+    public static class MoveToVentPatch {
+        public static bool Prefix(Vent otherVent) {
+            return !Trapper.playersOnMap.Contains(CachedPlayer.LocalPlayer.PlayerControl);
         }
+    }
+
+
 
     [HarmonyPatch(typeof(VentButton), nameof(VentButton.SetTarget))]
     class VentButtonSetTargetPatch {
@@ -183,6 +195,78 @@ namespace TheOtherRoles.Patches {
         }
     }
 
+
+    internal class VisibleVentPatches
+    {
+        public static int ShipAndObjectsMask = LayerMask.GetMask(new string[]
+        {
+            "Ship",
+            "Objects"
+        });
+
+        [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))] //EnterVent
+        public static class EnterVentPatch
+        {
+            public static bool Prefix(Vent __instance, PlayerControl pc) {
+
+                if (!__instance.EnterVentAnim) {
+                    return false;
+                }
+                
+                var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+
+                Vector2 vector = pc.GetTruePosition() - truePosition;
+                var magnitude = vector.magnitude;
+                if (pc.AmOwner || hideVentAnim && magnitude < PlayerControl.LocalPlayer.lightSource.ViewDistance &&
+                    !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude,
+                        ShipAndObjectsMask)) {
+                    __instance.GetComponent<SpriteAnim>().Play(__instance.EnterVentAnim, 1f);
+                }
+
+                if (pc.AmOwner && Constants.ShouldPlaySfx()) //ShouldPlaySfx
+                {
+                    SoundManager.Instance.StopSound(ShipStatus.Instance.VentEnterSound);
+                    SoundManager.Instance.PlaySound(ShipStatus.Instance.VentEnterSound, false, 1f).pitch =
+                        UnityEngine.Random.Range(0.8f, 1.2f);
+                }
+
+                return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))] //ExitVent
+        public static class ExitVentPatch
+        {
+            public static bool Prefix(Vent __instance, PlayerControl pc) {
+                
+                if (!__instance.ExitVentAnim) {
+                    return false;
+                }
+                
+                var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+
+                Vector2 vector = pc.GetTruePosition() - truePosition;
+                var magnitude = vector.magnitude;
+                if (pc.AmOwner || hideVentAnim && magnitude < PlayerControl.LocalPlayer.lightSource.ViewDistance &&
+                    !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude,
+                        ShipAndObjectsMask)) {
+                    __instance.GetComponent<SpriteAnim>().Play(__instance.ExitVentAnim, 1f);
+                }
+
+                if (pc.AmOwner && Constants.ShouldPlaySfx()) //ShouldPlaySfx
+                {
+                    SoundManager.Instance.StopSound(ShipStatus.Instance.VentEnterSound);
+                    SoundManager.Instance.PlaySound(ShipStatus.Instance.VentEnterSound, false, 1f).pitch =
+                        UnityEngine.Random.Range(0.8f, 1.2f);
+                }
+
+                return false;
+            }
+        }
+    }
+
+
+//error exists here in logging console??
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.SetTarget))]
     public static class KillButtonSetTargetPatch
     {
@@ -204,16 +288,16 @@ namespace TheOtherRoles.Patches {
                 }
                 
                 // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
-                MurderAttemptResult res = Helpers.checkMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, __instance.currentTarget);
+                MurderAttemptResult res = Helpers.checkMurderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, __instance.currentTarget);
                 // Handle blank kill
                 if (res == MurderAttemptResult.BlankKill) {
-                    CachedPlayer.LocalPlayer.PlayerControl.killTimer = PlayerControl.GameOptions.KillCooldown;
+                    CachedPlayer.LocalPlayer.PlayerControl.killTimer = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
                     if (CachedPlayer.LocalPlayer.PlayerControl == Cleaner.cleaner)
                         Cleaner.cleaner.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Warlock.warlock)
                         Warlock.warlock.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Mini.mini && Mini.mini.Data.Role.IsImpostor)
-                        Mini.mini.SetKillTimer(PlayerControl.GameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
+                        Mini.mini.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Witch.witch)
                         Witch.witch.killTimer = HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Ninja.ninja)
@@ -237,16 +321,25 @@ namespace TheOtherRoles.Patches {
         }
     }
 
-    [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
+ [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
     public static class SabotageButtonDoClickPatch {
         public static bool Prefix(SabotageButton __instance) {
             // The sabotage button behaves just fine if it's a regular impostor
             if (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
-            DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+			//(Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); } 	);
+//			MapOptions options = DestroyableSingleton<HudManager>.Instance;
+  //          DestroyableSingleton<HudManager>.Instance.ToggleMapVisible((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+			//MapOptionsTor.Mode = MapOptionsTor.Modes.Sabotage;
+			//DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(DestroyableSingleton<MapOptions>.Instance.Modes.Sabotage);
+			
+			DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
+			{
+				Mode = MapOptions.Modes.Sabotage
+			});
+
             return false;
         }
     }
-
 
     [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
     class ReportButtonDoClickPatch {
@@ -271,6 +364,17 @@ namespace TheOtherRoles.Patches {
             if (Jester.jester != null && Jester.jester == CachedPlayer.LocalPlayer.PlayerControl && !Jester.canCallEmergency) {
                 roleCanCallEmergency = false;
                 statusText = "The Jester can't start an emergency meeting";
+            }
+            // Potentially deactivate emergency button for Lawyer/Prosecutor
+            if (Lawyer.lawyer != null && Lawyer.lawyer == CachedPlayer.LocalPlayer.PlayerControl && !Lawyer.canCallEmergency) {
+                roleCanCallEmergency = false;
+                statusText = "The Lawyer can't start an emergency meeting";
+                if (Lawyer.isProsecutor) statusText = "The Prosecutor can't start an emergency meeting";
+            }
+            // Deactivate emergency button for Phantom
+            if (PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl) {
+                roleCanCallEmergency = false;
+                statusText = "The Phantom can't start an emergency meeting";
             }
 
             if (!roleCanCallEmergency) {
@@ -297,12 +401,11 @@ namespace TheOtherRoles.Patches {
     }
 
 
-
     [HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
     public static class ConsoleCanUsePatch {
         public static bool Prefix(ref float __result, Console __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse) {
             canUse = couldUse = false;
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages)
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages || PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl)
                 return !__instance.TaskTypes.Any(x => x == TaskTypes.FixLights || x == TaskTypes.FixComms);
             if (__instance.AllowImpostor) return true;
             if (!Helpers.hasFakeTasks(pc.Object)) return true;
@@ -315,7 +418,7 @@ namespace TheOtherRoles.Patches {
     class CommsMinigameBeginPatch {
         static void Postfix(TuneRadioMinigame __instance) {
             // Block Swapper from fixing comms. Still looking for a better way to do this, but deleting the task doesn't seem like a viable option since then the camera, admin table, ... work while comms are out
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages) {
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages || PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl) {
                 __instance.Close();
             }
         }
@@ -325,13 +428,11 @@ namespace TheOtherRoles.Patches {
     class LightsMinigameBeginPatch {
         static void Postfix(SwitchMinigame __instance) {
             // Block Swapper from fixing lights. One could also just delete the PlayerTask, but I wanted to do it the same way as with coms for now.
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages) {
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages || PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl) {
                 __instance.Close();
             }
         }
     }
-
-
 
     [HarmonyPatch]
     class VitalsMinigamePatch {
@@ -376,7 +477,7 @@ namespace TheOtherRoles.Patches {
                         // Hacker update
                         if (vitalsPanel.IsDead) {
                             DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == player?.PlayerId)?.FirstOrDefault();
-                            if (deadPlayer != null && deadPlayer.timeOfDeath != null && k < hackerTexts.Count && hackerTexts[k] != null) {
+                            if (deadPlayer != null && k < hackerTexts.Count && hackerTexts[k] != null) {
                                 float timeSinceDeath = ((float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds);
                                 hackerTexts[k].gameObject.SetActive(true);
                                 hackerTexts[k].text = Math.Round(timeSinceDeath / 1000) + "s";
@@ -532,6 +633,24 @@ namespace TheOtherRoles.Patches {
         [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
         class SurveillanceMinigameBeginPatch {
             public static void Postfix(SurveillanceMinigame __instance) {
+
+                if (nightVision) { 
+                GameObject gameObject = __instance.Viewables.transform.Find("CloseButton").gameObject;
+                nightOverlay = new List<GameObject>();
+                foreach (MeshRenderer meshRenderer in __instance.ViewPorts) {
+                    GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(gameObject, __instance.Viewables.transform);
+                    gameObject2.name = "NightVisionOverlay";
+                    gameObject2.transform.position = new Vector3(meshRenderer.transform.position.x, meshRenderer.transform.position.y, gameObject2.transform.position.z);
+                    gameObject2.transform.localScale = new Vector3(0.91f, 0.612f, 1f);
+                    gameObject2.GetComponent<SpriteRenderer>().sprite = null;
+                    UnityEngine.Object.Destroy(gameObject2.GetComponent<ButtonBehavior>());
+                    UnityEngine.Object.Destroy(gameObject2.GetComponent<CloseButtonConsoleBehaviour>());
+                    UnityEngine.Object.Destroy(gameObject2.GetComponent<CircleCollider2D>());
+                    nightOverlay.Add(gameObject2);
+                }
+                canNightOverlay = true;
+                removeNightOverlay = true;
+                }
                 // Add securityGuard cameras
                 page = 0;
                 timer = 0;
@@ -588,19 +707,214 @@ namespace TheOtherRoles.Patches {
                         __instance.SabText[j].gameObject.SetActive(true);
                     }
                 }
+                if (nightVision && !PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+                    if (Lighter.lighter != null && PlayerControl.LocalPlayer == Lighter.lighter) return false;
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) {
+                        isLightsOut = false;
+                        if (task.TaskType == TaskTypes.FixLights) {
+                            isLightsOut = true;
+                            if (canNightOverlay) {
+                                foreach (GameObject gameObjecttwo in nightOverlay) {
+                                    gameObjecttwo.GetComponent<SpriteRenderer>().sprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.NightVisionCamera.png", 350f);
+                                }
+                                canNightOverlay = false;
+                                removeNightOverlay = true;
+                            }
+      //                      foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+      //                          player.setLook("", 11, "", "", "", "");
+      //                      }
+                            return false;
+                        }
+                    }
+
+                    if (removeNightOverlay && !isLightsOut) {
+                        foreach (GameObject gameObjecttwo in nightOverlay) {
+                            gameObjecttwo.GetComponent<SpriteRenderer>().sprite = null;
+                        }
+        //                foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+       //                     player.setDefaultLook();
+      //                  }
+                        canNightOverlay = true;
+                        removeNightOverlay = false;
+                    }
+                }
+
                 return false;
             }
         }
-    }
+
+        [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Close))]
+        class SurveillanceMinigameClosePatch
+        {
+
+            public static bool Prefix(SurveillanceMinigame __instance) {
+
+                if (nightVision) {
+                    foreach (GameObject gameObjecttwo in nightOverlay) {
+                        gameObjecttwo.GetComponent<SpriteRenderer>().sprite = null;
+                    }
+        //            foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+       //                 player.setDefaultLook();
+       //             }
+                    canNightOverlay = true;
+                    removeNightOverlay = true;
+                }
+                return true;
+            }
+
+        }
+
+        [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.OnDestroy))]
+        class SurveillanceMinigameOnDestroyPatch
+        {
+
+            public static bool Prefix(SurveillanceMinigame __instance) {
+
+                if (nightVision) {
+                    foreach (GameObject gameObjecttwo in nightOverlay) {
+                        gameObjecttwo.GetComponent<SpriteRenderer>().sprite = null;
+                    }
+     //               foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+      //                  player.setDefaultLook();
+     //               }
+                    canNightOverlay = true;
+                    removeNightOverlay = true;
+                }
+                return true;
+            }
+
+        }
+        
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
+        class PlanetSurveillanceMinigameBeginPatch
+        {
+            public static void Postfix(PlanetSurveillanceMinigame __instance) {
+
+                if (nightVision) {
+                    GameObject gameObject = __instance.Viewables.transform.Find("CloseButton").gameObject;
+                    nightOverlay = new List<GameObject>();
+                    MeshRenderer meshRenderer = __instance.ViewPort;
+                    GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(gameObject, __instance.Viewables.transform);
+                    gameObject2.name = "NightVisionOverlay";
+                    gameObject2.transform.position = new Vector3(meshRenderer.transform.position.x, meshRenderer.transform.position.y, gameObject2.transform.position.z);
+                    gameObject2.transform.localScale = new Vector3(0.915f, 0.585f, 1f);
+                    gameObject2.GetComponent<SpriteRenderer>().sprite = null;
+                    UnityEngine.Object.Destroy(gameObject2.GetComponent<ButtonBehavior>());
+                    UnityEngine.Object.Destroy(gameObject2.GetComponent<CloseButtonConsoleBehaviour>());
+                    UnityEngine.Object.Destroy(gameObject2.GetComponent<CircleCollider2D>());
+                    nightOverlay.Add(gameObject2);
+
+                    canNightOverlay = true;
+                    removeNightOverlay = true;
+                }                
+            }
+        }
+
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Update))]
+        class PlanetSurveillanceMinigameUpdatePatch
+        {
+
+            public static bool Prefix(PlanetSurveillanceMinigame __instance) {
+               
+                if (nightVision && !PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+                    if (Lighter.lighter != null && PlayerControl.LocalPlayer == Lighter.lighter) return false;
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) {
+                        isLightsOut = false;
+                        if (task.TaskType == TaskTypes.FixLights) {
+                            isLightsOut = true;
+                            if (canNightOverlay) {
+                                foreach (GameObject gameObjecttwo in nightOverlay) {
+                                    gameObjecttwo.GetComponent<SpriteRenderer>().sprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.NightVisionCamera.png", 150f);
+                                }
+                                canNightOverlay = false;
+                                removeNightOverlay = true;
+                            }
+   //                         foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+ //                               player.setLook("", 11, "", "", "", "");
+ //                           }
+                            return false;
+                        }
+                    }
+
+                    if (removeNightOverlay && !isLightsOut) {
+                        foreach (GameObject gameObjecttwo in nightOverlay) {
+                            gameObjecttwo.GetComponent<SpriteRenderer>().sprite = null;
+                        }
+          //              foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+         //                   player.setDefaultLook();
+        //                }
+                        canNightOverlay = true;
+                        removeNightOverlay = false;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Close))]
+        class PlanetSurveillanceMinigameClosePatch
+        {
+
+            public static bool Prefix(PlanetSurveillanceMinigame __instance) {
+
+                if (nightVision) {
+                    foreach (GameObject gameObjecttwo in nightOverlay) {
+                        gameObjecttwo.GetComponent<SpriteRenderer>().sprite = null;
+                    }
+      //              foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+     //                   player.setDefaultLook();
+      //              }
+                    canNightOverlay = true;
+                    removeNightOverlay = true;
+                }
+                return true;
+            }
+
+        }
+
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.OnDestroy))]
+        class PlanetSurveillanceMinigameOnDestroyPatch
+        {
+
+            public static bool Prefix(PlanetSurveillanceMinigame __instance) {
+
+                if (nightVision) {
+                    foreach (GameObject gameObjecttwo in nightOverlay) {
+                        gameObjecttwo.GetComponent<SpriteRenderer>().sprite = null;
+                    }
+        //            foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+      //                  player.setDefaultLook();
+      //              }
+                    canNightOverlay = true;
+                    removeNightOverlay = true;
+                }
+                return true;
+            }
+
+        }
+    
+
 
     [HarmonyPatch(typeof(MedScanMinigame), nameof(MedScanMinigame.FixedUpdate))]
     class MedScanMinigameFixedUpdatePatch {
         static void Prefix(MedScanMinigame __instance) {
-            if (MapOptions.allowParallelMedBayScans) {
+            if (MapOptionsTor.allowParallelMedBayScans) {
                 __instance.medscan.CurrentUser = CachedPlayer.LocalPlayer.PlayerId;
                 __instance.medscan.UsersList.Clear();
             }
         }
     }
 
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
+    class ShowSabotageMapPatch {
+        static bool Prefix(MapBehaviour __instance) {
+            if (HideNSeek.isHideNSeekGM) 
+                return HideNSeek.canSabotage;
+
+            return true;
+        }
+    }
+
+    }
 }

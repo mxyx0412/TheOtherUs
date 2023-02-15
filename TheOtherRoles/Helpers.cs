@@ -12,6 +12,10 @@ using HarmonyLib;
 using Hazel;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
+using System.Threading.Tasks;
+using System.Net;
+using TheOtherRoles.CustomGameModes;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles {
 
@@ -22,6 +26,12 @@ namespace TheOtherRoles {
         SuppressKill,
         BlankKill,
         BodyGuardKill
+    }
+
+    public enum CustomGamemodes {
+        Classic,
+        Guesser,
+        HideNSeek
     }
 
 	public enum SabatageTypes {
@@ -38,9 +48,10 @@ namespace TheOtherRoles {
 
         public static Dictionary<string, Sprite> CachedSprites = new();
         public static Sprite teamJackalChat = null;
+        public static Sprite teamCultistChat = null;
         public static Sprite teamLoverChat = null;
 
-        public static bool gameStarted
+        public static bool gameStarted //new
         {
             get
             {
@@ -48,17 +59,34 @@ namespace TheOtherRoles {
             }
         }
 
-            public static Sprite getTeamJackalChatButtonSprite() {
-                if (teamJackalChat) return teamJackalChat;
-                teamJackalChat = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.TeamJackalChat.png", 115f);
-                return teamJackalChat;
-            }
+            public static Sprite getTeamJackalChatButtonSprite()
+            {
+		if (teamJackalChat != null)
+		{
+			return teamJackalChat;
+		}
+		teamJackalChat = loadSpriteFromResources("TheOtherRoles.Resources.TeamJackalChat.png", 115f);
+		return teamJackalChat;
+	}
+
+            public static Sprite getTeamCultistChatButtonSprite()
+	{
+		if (teamCultistChat != null)
+		{
+			return teamCultistChat;
+		}
+		teamCultistChat = loadSpriteFromResources("TheOtherRoles.Resources.TeamJackalChat.png", 115f);
+		return teamCultistChat;
+	}
 
             public static Sprite getLoversChatButtonSprite() {
-                if (teamLoverChat) return teamLoverChat;
-                teamLoverChat = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.LoversChat.png", 115f);
-                return teamLoverChat;
-            }
+		if (teamLoverChat != null)
+		{
+			return teamLoverChat;
+		}
+		teamLoverChat = loadSpriteFromResources("TheOtherRoles.Resources.LoversChat.png", 150f);
+		return teamLoverChat;
+	}
 
 
         public static void enableCursor(bool initalSetCursor) {
@@ -77,9 +105,49 @@ namespace TheOtherRoles {
         }
 
 
-                public static int flipBitwise(int bit) {
-                    return -(Math.Abs(bit - 1));
-                }
+                public static bool flipBitwise(bool bit)
+	{
+		if (!bit)
+		{
+			return true;
+		}
+		return false;
+	}
+/*
+        public static PlayerControl getPartner(this PlayerControl player)
+	{
+		if (player == null)
+		{
+			return null;
+		}
+		if (Lovers.lover1 == player)
+		{
+			return Lovers.lover2;
+		}
+		if (Lovers.lover2 == player)
+		{
+			return Lovers.lover1;
+		}
+		return null;
+	}
+    */
+
+    public static PlayerControl getCultistPartner(this PlayerControl player)
+	{
+		if (player == null)
+		{
+			return null;
+		}
+		if (Cultist.cultist == player)
+		{
+			return Follower.follower;
+		}
+		if (Follower.follower == player)
+		{
+			return Cultist.cultist;
+		}
+		return null;
+	}
 
 
         public static bool roleCanSabotage(this PlayerControl player) {
@@ -95,6 +163,9 @@ namespace TheOtherRoles {
         }
 
         public static bool isRoleAlive(PlayerControl role) {
+            if (Mimic.mimic != null) {
+				if (role == Mimic.mimic) return false;
+			}
             return (role != null && isAlive(role));
         }
 
@@ -107,11 +178,19 @@ namespace TheOtherRoles {
             if (isRoleAlive(Veteren.veteren)) powerCrewAlive = true;
             if (isRoleAlive(Mayor.mayor)) powerCrewAlive = true;
             if (isRoleAlive(Swapper.swapper)) powerCrewAlive = true;
+            if (isRoleAlive(Guesser.niceGuesser)) powerCrewAlive = true;
 
             return powerCrewAlive;
         }
-
-        public static bool isNeutral(PlayerControl p) {
+        public static bool isNeutral(PlayerControl player) {
+            RoleInfo roleInfo = RoleInfo.getRoleInfoForPlayer(player, false).FirstOrDefault();
+            if (roleInfo != null)
+                return roleInfo.isNeutral;
+            return false;
+        }
+		// The above func is probably better?
+		
+        public static bool isNeutralForPhantom(PlayerControl p) {
             if (p == Jester.jester) return true;
             if (p == Werewolf.werewolf) return true;
             if (p == Prosecutor.prosecutor) return true;
@@ -123,9 +202,10 @@ namespace TheOtherRoles {
             if (p == Vulture.vulture) return true;
             if (p == Lawyer.lawyer) return true;
             if (p == Pursuer.pursuer) return true;
+            if (p == Thief.thief) return true;
             return false;
         }
- 
+		
 
 		public static SabatageTypes getActiveSabo() {
 			foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks.GetFastEnumerator()) {
@@ -146,13 +226,13 @@ namespace TheOtherRoles {
 
                 public static void resetKill(byte playerId) {
                     PlayerControl player = playerById(playerId);
-                    player.killTimer = PlayerControl.GameOptions.KillCooldown;
+                    player.killTimer = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
                         if (player == Cleaner.cleaner)
                             Cleaner.cleaner.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
                         else if (player == Warlock.warlock)
                             Warlock.warlock.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
                         else if (player == Mini.mini && Mini.mini.Data.Role.IsImpostor)
-                            Mini.mini.SetKillTimer(PlayerControl.GameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
+                            Mini.mini.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
                         else if (player == Witch.witch)
                             Witch.witch.killTimer = HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
                         else if (player == Ninja.ninja)
@@ -185,29 +265,67 @@ public static bool isPlayerLover(PlayerControl player) {
      return !(player == null) && (player == Lovers.lover1 || player == Lovers.lover2);
 }
 
+public static bool isTeamCultist(PlayerControl player)
+	{
+		return !(player == null) && (player == Cultist.cultist || player == Follower.follower);
+	}
+
         public static PlayerControl getChatPartner(this PlayerControl player)
         {
-            if (!Jackal.hasChat || Sidekick.sidekick == null) return Lovers.getPartner(player);
+        //     if (!Jackal.hasChat || Sidekick.sidekick == null) return Lovers.getPartner(player);
 
-            if (isPlayerLover(player) && !isTeamJackal(player))
-                return Lovers.getPartner(player);
-            if (isTeamJackal(player) && !isPlayerLover(player)) {
-              if (Jackal.jackal == player) return Sidekick.sidekick;
-              if (Sidekick.sidekick == player) return Jackal.jackal;
-            }
-            if (isPlayerLover(player) && isTeamJackal(player)) {
-              if (Jackal.jackal == player) {
-                if (Jackal.chatTarget == 1) return Sidekick.sidekick;
-                else return Lovers.getPartner(player);
-              }
+        //     if (isPlayerLover(player) && !isTeamJackal(player))
+        //         return Lovers.getPartner(player);
+        //     if (isTeamJackal(player) && !isPlayerLover(player)) {
+        //       if (Jackal.jackal == player) return Sidekick.sidekick;
+        //       if (Sidekick.sidekick == player) return Jackal.jackal;
+        //     }
+        //     if (isPlayerLover(player) && isTeamJackal(player)) {
+        //       if (Jackal.jackal == player) {
+        //         if (Jackal.chatTarget == 1) return Sidekick.sidekick;
+        //         else return Lovers.getPartner(player);
+        //       }
 
-              if (Sidekick.sidekick == player) {
-                if (Sidekick.chatTarget == 1) return Jackal.jackal;
-                else return Lovers.getPartner(player);
-              }
-            } 
-            return null;
-        }
+        //       if (Sidekick.sidekick == player) {
+        //         if (Sidekick.chatTarget == 1) return Jackal.jackal;
+        //         else return Lovers.getPartner(player);
+        //       }
+        //     } 
+        //     return null;
+        // }
+
+        if (!player.isLover())
+		{
+			return player.getCultistPartner();
+		}
+		if (!player.isTeamCultist())
+		{
+			return player.getPartner();
+		}
+		if (player == Cultist.cultist)
+		{
+			if (Cultist.chatTarget)
+			{
+				return Follower.follower;
+			}
+			if (!Cultist.chatTarget)
+			{
+				return player.getPartner();
+			}
+		}
+		if (player == Follower.follower)
+		{
+			if (Follower.chatTarget)
+			{
+				return Cultist.cultist;
+			}
+			if (!Follower.chatTarget)
+			{
+				return player.getPartner();
+			}
+		}
+		return null;
+	}
 
 		public static bool isSaboActive() {
 			return !(Helpers.getActiveSabo() == SabatageTypes.None);
@@ -235,7 +353,7 @@ public static bool isPlayerLover(PlayerControl player) {
 
 
 		public static bool isCamoComms() {
-			return (isCommsActive() && MapOptions.camoComms);
+			return (isCommsActive() && MapOptionsTor.camoComms);
 		}
 
 
@@ -286,7 +404,6 @@ public static bool isPlayerLover(PlayerControl player) {
             foreach (var player2 in PlayerControl.AllPlayerControls) {
                 if (player2.Data.Role.IsImpostor && CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor) {
                     player.cosmetics.nameText.color = Palette.White;
-                    player.RemoveInfected(); //testing cultist
                 }
             }
 
@@ -307,8 +424,8 @@ public static bool isPlayerLover(PlayerControl player) {
 
         public static void turnToImpostor(PlayerControl player) {
             player.Data.Role.TeamType = RoleTeamTypes.Impostor;
-            RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
-            player.SetKillTimer(PlayerControl.GameOptions.KillCooldown);
+            RoleManager.Instance.SetRole(player, AmongUs.GameOptions.RoleTypes.Impostor);
+            player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
 
             System.Console.WriteLine("PROOF I AM IMP VANILLA ROLE: "+player.Data.Role.IsImpostor);
 
@@ -335,11 +452,13 @@ public static bool isPlayerLover(PlayerControl player) {
                 else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) text = defaultText; // set to default if trickster ability is active
                 else if (Morphling.morphling != null && Morphling.morphTarget != null && target == Morphling.morphling && Morphling.morphTimer > 0) text = Morphling.morphTarget.Data.PlayerName;  // set to morphed player
                 else if (target == Swooper.swooper && Swooper.isInvisable) text = defaultText;
+                else if (target == PhantomRole.phantomRole) text = defaultText;
                 else if (target == null) text = defaultText; // Set text to defaultText if no target
                 else text = target.Data.PlayerName; // Set text to playername
                 showTargetNameOnButtonExplicit(null, button, text);
             }
         }
+        
 
 
         public static void showTargetNameOnButtonExplicit(PlayerControl target, CustomButton button, string defaultText) {
@@ -349,6 +468,15 @@ public static bool isPlayerLover(PlayerControl player) {
             button.actionButton.OverrideText(text);
             button.showButtonText = true;
         }
+
+        public static bool isInvisible(PlayerControl player)
+	{
+		if (Swooper.swooper != null && Swooper.swooper == player && Swooper.isInvisable)
+		{
+			return true;
+		}
+		return false;
+	}
 
 
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit) {
@@ -441,7 +569,7 @@ public static bool isPlayerLover(PlayerControl player) {
 
         public static void handleVampireBiteOnBodyReport() {
             // Murder the bitten player and reset bitten (regardless whether the kill was successful or not)
-            Helpers.checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
+            Helpers.checkMurderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
             writer.Write(byte.MaxValue);
             writer.Write(byte.MaxValue);
@@ -540,11 +668,11 @@ public static bool isPlayerLover(PlayerControl player) {
 
 
         public static bool hasFakeTasks(this PlayerControl player) {
-            return (player == Prosecutor.prosecutor || player == Werewolf.werewolf || player == Jester.jester || player == Amnisiac.amnisiac || player == Swooper.swooper|| player == Jackal.jackal || player == Sidekick.sidekick || player == Arsonist.arsonist || player == Vulture.vulture || Jackal.formerJackals.Contains(player));
+            return (player == Prosecutor.prosecutor || player == Werewolf.werewolf || player == Jester.jester || player == Amnisiac.amnisiac || player == Swooper.swooper|| player == Jackal.jackal || player == Sidekick.sidekick || player == Arsonist.arsonist || player == Vulture.vulture || Jackal.formerJackals.Any(x => x == player));
         }
 
         public static bool canBeErased(this PlayerControl player) {
-            return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Contains(player) && player != Swooper.swooper && player != Werewolf.werewolf);
+            return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Any(x => x == player) && player != Swooper.swooper && player != Werewolf.werewolf);
         }
 
         public static void clearAllTasks(this PlayerControl player) {
@@ -599,42 +727,43 @@ public static bool isPlayerLover(PlayerControl player) {
         }
 
         public static bool hidePlayerName(PlayerControl source, PlayerControl target) {
-//
-            if (source == target) return false; // Player sees his own name
-            if (source == null || target == null) return true;
-            if (source.isDead()) return false;
-            if (target.isDead()) return true;
-//
             if (Camouflager.camouflageTimer > 0f) return true; // No names are visible
-       //     else if (Helpers.isCamoComms() && !Helpers.isActiveCamoComms()) return true;  // testing
-            else if (Ninja.isInvisble && Ninja.ninja == target) return true; 
-            else if (Swooper.isInvisable && Swooper.swooper == target) return true; 
-            if (MapOptions.hideOutOfSightNametags && gameStarted && MapUtilities.CachedShipStatus != null && source.transform != null && target.transform != null)
-            {
-                float distMod = 1.025f;
-                float distance = Vector3.Distance(source.transform.position, target.transform.position);
-                bool anythingBetween = PhysicsHelpers.AnythingBetween(source.GetTruePosition(), target.GetTruePosition(), Constants.ShadowMask, false);
-
-                if (distance > MapUtilities.CachedShipStatus.CalculateLightRadius(source.Data) * distMod || anythingBetween) return true;
-            }
-            else if (!MapOptions.hidePlayerNames || source.Data.IsDead) return false; // All names are visible
-            else if (source == null || target == null) return true;
-            else if (source == target) return false; // Player sees his own name
-            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.spy || target == Sidekick.sidekick && Sidekick.wasTeamRed || target == Jackal.jackal && Jackal.wasTeamRed)) return false; // Members of team Impostors see the names of Impostors/Spies
-            else if ((source == Lovers.lover1 || source == Lovers.lover2) && (target == Lovers.lover1 || target == Lovers.lover2)) return false; // Members of team Lovers see the names of each other
-            else if ((source == Jackal.jackal || source == Sidekick.sidekick) && (target == Jackal.jackal || target == Sidekick.sidekick || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
-			else if ((source == Prosecutor.prosecutor) && (target == Prosecutor.target)) return false; // Prosecutor can always see target name
-            else if (Deputy.knowsSheriff && (source == Sheriff.sheriff || source == Deputy.deputy) && (target == Sheriff.sheriff || target == Deputy.deputy)) return false; // Sheriff & Deputy see the names of each other
+			 if (isActiveCamoComms()) return true;
+             if (Ninja.isInvisble && Ninja.ninja == target) return true; 
+             if (Swooper.isInvisable && Swooper.swooper == target) return true;
+      //       if (PhantomRole.phantomRole == target) return true;  
+             if (MapOptionsTor.hideOutOfSightNametags && gameStarted && ShipStatus.Instance != null && source.transform != null && target.transform != null && !source.Data.IsDead)
+		{
+			float num = (isLightsActive() ? 2f : 1.25f);
+			float num2 = Vector3.Distance(source.transform.position, target.transform.position);
+			if (PhysicsHelpers.AnythingBetween(source.GetTruePosition(), target.GetTruePosition(), Constants.ShadowMask, useTriggers: false))
+			{
+				return true;
+			}
+		}
+            if (!MapOptionsTor.hidePlayerNames)
+		{
+			return false;
+		}
+		if (source == null || target == null)
+		{
+			return true;
+		}
+		if (source.Data.IsDead)
+		{
+			return false;
+		}
+		if (source == target)
+		{
+			return false;
+		}
+             if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.spy || target == Sidekick.sidekick && Sidekick.wasTeamRed || target == Jackal.jackal && Jackal.wasTeamRed)) return false; // Members of team Impostors see the names of Impostors/Spies
+             if ((source == Lovers.lover1 || source == Lovers.lover2) && (target == Lovers.lover1 || target == Lovers.lover2)) return false; // Members of team Lovers see the names of each other
+             if ((source == Jackal.jackal || source == Sidekick.sidekick) && (target == Jackal.jackal || target == Sidekick.sidekick || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
+			 if ((source == Prosecutor.prosecutor) && (target == Prosecutor.target)) return false; // Prosecutor can always see target name
+             if (Deputy.knowsSheriff && (source == Sheriff.sheriff || source == Deputy.deputy) && (target == Sheriff.sheriff || target == Deputy.deputy)) return false; // Sheriff & Deputy see the names of each other
             return true;
         }
-
-        internal static bool ImpostorCriteria(PlayerControl source, PlayerControl target)
-        {
-            if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor) && CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor &&
-                MapOptions.ImpostorSeeRoles) return true;
-            return false;
-        }
-
 
         public static void setDefaultLook(this PlayerControl target) {
             target.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
@@ -650,14 +779,16 @@ public static bool isPlayerLover(PlayerControl player) {
             PlayerPhysics playerPhysics = target.MyPhysics;
             AnimationClip clip = null;
             var spriteAnim = playerPhysics.myPlayer.cosmetics.skin.animator;
-            var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
-            if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim) clip = nextSkin.RunAnim;
-            else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim) clip = nextSkin.SpawnAnim;
-            else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.EnterVentAnim) clip = nextSkin.EnterVentAnim;
-            else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.ExitVentAnim) clip = nextSkin.ExitVentAnim;
-            else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.IdleAnim) clip = nextSkin.IdleAnim;
+            var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+
+
+            if (currentPhysicsAnim == playerPhysics.Animations.group.RunAnim) clip = nextSkin.RunAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim) clip = nextSkin.SpawnAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.EnterVentAnim) clip = nextSkin.EnterVentAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.IdleAnim) clip = nextSkin.IdleAnim;
             else clip = nextSkin.IdleAnim;
-            float progress = playerPhysics.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            float progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             playerPhysics.myPlayer.cosmetics.skin.skin = nextSkin;
             playerPhysics.myPlayer.cosmetics.skin.UpdateMaterial();
             spriteAnim.Play(clip, 1f);
@@ -670,6 +801,8 @@ public static bool isPlayerLover(PlayerControl player) {
             target.cosmetics.currentPet.Source = target;
             target.cosmetics.currentPet.Visible = target.Visible;
             target.SetPlayerMaterialColors(target.cosmetics.currentPet.rend);
+
+            Chameleon.update();  // so that morphling and camo wont make the chameleons visible
         }
 
         public static void showFlash(Color color, float duration=1f, bool fade = true, float opacity = 100f) {
@@ -694,6 +827,15 @@ public static bool isPlayerLover(PlayerControl player) {
             })));
         }
 
+        public static void checkWatchFlash(PlayerControl target) {
+			if (CachedPlayer.LocalPlayer.PlayerControl == PrivateInvestigator.watching) {
+				MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.PrivateInvestigatorWatchFlash, Hazel.SendOption.Reliable, -1);
+                writer.Write(target.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.privateInvestigatorWatchFlash(target.PlayerId);
+			}
+		}
+
         public static bool roleCanUseVents(this PlayerControl player) {
             bool roleCouldUse = false;
             if (Engineer.engineer != null && Engineer.engineer == player)
@@ -712,6 +854,8 @@ public static bool isPlayerLover(PlayerControl player) {
                 roleCouldUse = true;
             else if (Undertaker.deadBodyDraged != null && !Undertaker.canDragAndVent && Undertaker.undertaker== player)
                 roleCouldUse = false;
+            else if (Thief.canUseVents &&  Thief.thief != null && Thief.thief == player)
+                roleCouldUse = true;
             else if (player.Data?.Role != null && player.Data.Role.CanVent)  {
                 if (Janitor.janitor != null && Janitor.janitor == CachedPlayer.LocalPlayer.PlayerControl)
                     roleCouldUse = false;
@@ -733,13 +877,15 @@ public static bool isPlayerLover(PlayerControl player) {
         }
 
         public static MurderAttemptResult checkMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false) {
+            var targetRole = RoleInfo.getRoleInfoForPlayer(target, false).FirstOrDefault();
+
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
             if (killer == null || killer.Data == null || killer.Data.IsDead || killer.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow non Impostor kills compared to vanilla code
             if (target == null || target.Data == null || target.Data.IsDead || target.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow killing players in vents compared to vanilla code
 
             // Handle first kill attempt
-            if (MapOptions.shieldFirstKill && MapOptions.firstKillPlayer == target) return MurderAttemptResult.SuppressKill;
+            if (MapOptionsTor.shieldFirstKill && MapOptionsTor.firstKillPlayer == target) return MurderAttemptResult.SuppressKill;
 
             // Handle blank shot
             if (Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId)) {
@@ -777,7 +923,17 @@ public static bool isPlayerLover(PlayerControl player) {
 
 
             // Block impostor shielded kill
-            if (Medic.shielded != null && Medic.shielded == target) {
+            if (!Medic.unbreakableShield && Medic.shielded != null && Medic.shielded == target) {
+                MessageWriter write = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetBlanked, Hazel.SendOption.Reliable, -1);
+                write.Write(killer.PlayerId);
+                write.Write((byte)0);
+                AmongUsClient.Instance.FinishRpcImmediately(write);
+                RPCProcedure.setBlanked(killer.PlayerId, 0);
+                Medic.shielded = null;
+
+                return MurderAttemptResult.BlankKill;
+            }
+            else if (Medic.shielded != null && Medic.shielded == target) {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -799,7 +955,6 @@ public static bool isPlayerLover(PlayerControl player) {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.timeMasterRewindTime();
-                    
                 }
                 MessageWriter write = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetBlanked, Hazel.SendOption.Reliable, -1);
                 write.Write(killer.PlayerId);
@@ -821,40 +976,60 @@ public static bool isPlayerLover(PlayerControl player) {
 
 				return MurderAttemptResult.BlankKill;
 			}
+
+            else if (Cultist.cultist != null && !target.Data.Role.IsImpostor && killer == Cultist.cultist) {
+                MessageWriter writer3 = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShowCultistFlash, Hazel.SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer3);
+                RPCProcedure.showCultistFlash();
+			}
+
+            else if (Follower.follower != null && !target.Data.Role.IsImpostor && killer == Follower.follower) {
+                MessageWriter writer3 = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShowFollowerFlash, Hazel.SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer3);
+                RPCProcedure.showFollowerFlash();
+			}
 				
 				
 			
+
+            // Thief if hit crew only kill if setting says so, but also kill the thief.
+            else if (killer == Thief.thief && !target.Data.Role.IsImpostor && !new List<RoleInfo> {RoleInfo.jackal, Thief.canKillSheriff ? RoleInfo.sheriff : null, RoleInfo.sidekick, RoleInfo.swooper, RoleInfo.werewolf, RoleInfo.bodyguard, RoleInfo.veteren }.Contains(targetRole)) {
+                Thief.suicideFlag = true;
+                return MurderAttemptResult.SuppressKill;
+            }
+
+            // Block hunted with time shield kill
+            else if (Hunted.timeshieldActive.Contains(target.PlayerId)) {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.HuntedRewindTime, Hazel.SendOption.Reliable, -1);
+                writer.Write(target.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.huntedRewindTime(target.PlayerId);
+
+                return MurderAttemptResult.SuppressKill;
+            }
+
             return MurderAttemptResult.PerformKill;
         }
 
-       //         }
-       //         return MurderAttemptResult.SuppressKill;
-      //      }
-		//	
-	//		else if (Cursed.cursed != null && Cursed.cursed == target && killer.Data.Role.IsImpostor) {
-//                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetBlanked, Hazel.SendOption.Reliable, -1);
-     //           writer.Write(killer.PlayerId);
-    //            writer.Write((byte)0);
-    //            AmongUsClient.Instance.FinishRpcImmediately(writer);
-    //            RPCProcedure.setBlanked(killer.PlayerId, 0);
-//
-	//			turnToImpostorRPC(target);
-//
-	//			return MurderAttemptResult.BlankKill;
-	//		}
-	//			
-				
-	//		
-   //         return MurderAttemptResult.PerformKill;
-   //     }
-
-        public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)  {
+		public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)  {
+			return checkMurderAttemptAndKill(killer, target, isMeetingStart, showAnimation);
+		}
+	
+        public static MurderAttemptResult checkMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)  {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             MurderAttemptResult murder = checkMuderAttempt(killer, target, isMeetingStart);
 
             if (murder == MurderAttemptResult.PerformKill) {
+                if (killer == Poucher.poucher) Poucher.killed.Add(target);
+				
+				if (Mimic.mimic != null && killer == Mimic.mimic && !Mimic.hasMimic) {
+					MessageWriter writerMimic = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.MimicMimicRole, Hazel.SendOption.Reliable, -1);
+					writerMimic.Write(target.PlayerId);
+					AmongUsClient.Instance.FinishRpcImmediately(writerMimic);
+					RPCProcedure.mimicMimicRole(target.PlayerId);
+				}
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 writer.Write(target.PlayerId);
@@ -930,9 +1105,10 @@ public static bool isPlayerLover(PlayerControl player) {
         }
 
 
+
+
         public static bool zoomOutStatus = false;
         public static void toggleZoom(bool reset=false) {
-            TheOtherRolesPlugin.Logger.LogMessage(Camera.main.orthographicSize);
             float orthographicSize = reset || zoomOutStatus ? 3f : 12f;
 
             zoomOutStatus = !zoomOutStatus && !reset;
@@ -944,6 +1120,44 @@ public static bool isPlayerLover(PlayerControl player) {
             HudManagerStartPatch.zoomOutButton.Sprite = zoomOutStatus ? Helpers.loadSpriteFromResources("TheOtherRoles.Resources.PlusButton.png", 75f) : Helpers.loadSpriteFromResources("TheOtherRoles.Resources.MinusButton.png", 150f);
             HudManagerStartPatch.zoomOutButton.PositionOffset = zoomOutStatus ? new Vector3(0f, 3f, 0) : new Vector3(0.4f, 2.8f, 0);
             ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height); // This will move button positions to the correct position.
+        }
+
+        public static async Task checkBeta() {
+            if (TheOtherRolesPlugin.betaDays > 0) {
+                TheOtherRolesPlugin.Logger.LogMessage($"Beta check");
+                var compileTime = new DateTime(Builtin.CompileTime, DateTimeKind.Utc);  // This may show as an error, but it is not, compilation will work!
+                DateTime? now;
+                // Get time from the internet, so no-one can cheat it (so easily).
+                try {
+                    var client = new System.Net.Http.HttpClient();
+                    using var response = await client.GetAsync("http://www.google.com/");
+                    if (response.IsSuccessStatusCode)
+                        now = response.Headers.Date?.UtcDateTime;
+                    else {
+                        TheOtherRolesPlugin.Logger.LogMessage($"Could not get time from server: {response.StatusCode}");
+                        now = DateTime.UtcNow; //In case something goes wrong. 
+                    }
+                } catch (System.Net.Http.HttpRequestException) {
+                    now = DateTime.UtcNow;
+                }
+                 if ((now - compileTime)?.TotalDays > TheOtherRolesPlugin.betaDays) {
+                    TheOtherRolesPlugin.Logger.LogMessage($"Beta expired!");
+                    BepInExUpdater.MessageBoxTimeout(BepInExUpdater.GetForegroundWindow(), "BETA is expired. You cannot play this version anymore.", "The Other Roles Beta", 0,0, 10000);
+                    Application.Quit();
+
+                } else TheOtherRolesPlugin.Logger.LogMessage($"Beta will remain runnable for {TheOtherRolesPlugin.betaDays - (now - compileTime)?.TotalDays} days!");
+            }
+        }
+
+        public static bool hasImpVision(GameData.PlayerInfo player) {
+            return player.Role.IsImpostor
+                || ((Jackal.jackal != null && Jackal.jackal.PlayerId == player.PlayerId || Jackal.formerJackals.Any(x => x.PlayerId == player.PlayerId)) && Jackal.hasImpostorVision)
+                || (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == player.PlayerId && Sidekick.hasImpostorVision)
+                || (Spy.spy != null && Spy.spy.PlayerId == player.PlayerId && Spy.hasImpostorVision)
+                || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision)
+                || (Thief.thief != null && Thief.thief.PlayerId == player.PlayerId && Thief.hasImpostorVision)
+                || (Werewolf.werewolf != null && Werewolf.werewolf.PlayerId == player.PlayerId && Werewolf.hasImpostorVision)
+                || (Swooper.swooper != null && Swooper.swooper.PlayerId == player.PlayerId && Swooper.hasImpVision);
         }
         
         public static object TryCast(this Il2CppObjectBase self, Type type)

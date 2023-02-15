@@ -5,10 +5,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using AmongUs.Data;
 using BepInEx;
 using BepInEx.Bootstrap;
-using BepInEx.IL2CPP;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP;
+using BepInEx.Unity.IL2CPP.Utils;
 using Mono.Cecil;
 using Newtonsoft.Json.Linq;
 using TMPro;
@@ -109,6 +110,23 @@ namespace TheOtherRoles.Modules
             var isSubmerged = TORUpdate == null;
             var announcement = $"<size=150%>A new <color=#FC0303>{(isSubmerged ? "Submerged" : "THE OTHER US")}</color> update to {(isSubmerged ? SubmergedUpdate.Tag : TORUpdate.Tag)} is available</size>\n{(isSubmerged ? SubmergedUpdate.Content : TORUpdate.Content)}";
             var mgr = FindObjectOfType<MainMenuManager>(true);
+
+            if (!isSubmerged) {
+                try {
+                    string updateVersion = TORUpdate.Content[^5..];
+                    if (Version.Parse(TheOtherRolesPlugin.VersionString).BaseVersion() < Version.Parse(updateVersion).BaseVersion()) {
+                        passiveButton.OnClick.RemoveAllListeners();
+                        passiveButton.OnClick = new Button.ButtonClickedEvent();
+                        passiveButton.OnClick.AddListener((Action)(() => {
+                            mgr.StartCoroutine(CoShowAnnouncement($"<size=150%><color=#FC0303>A MANUAL UPDATE IS REQUIRED</color></size>"));
+                        }));
+                    }
+                } catch {  
+                    TheOtherRolesPlugin.Logger.LogError("parsing version for auto updater failed :(");
+                }
+
+            }
+
             if (isSubmerged && !SubmergedCompatibility.Loaded) showPopUp = false;
             if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement));
             showPopUp = false;
@@ -144,7 +162,7 @@ namespace TheOtherRoles.Modules
             var popUp = Instantiate(FindObjectOfType<AnnouncementPopUp>(true));
             popUp.gameObject.SetActive(true);
             yield return popUp.Init();
-            var last = SaveManager.LastAnnouncement;
+            var last = DataManager.Announcements.LastViewedAnnouncement;
             last.Id = 1;
             last.Text = announcement;
             SelectableHyperLinkHelper.DestroyGOs(popUp.selectableHyperLinks, name);
@@ -169,6 +187,7 @@ namespace TheOtherRoles.Modules
                 if (submergedUpdateCheck.Result != null && (!SubmergedCompatibility.Loaded || submergedUpdateCheck.Result.IsNewer(SubmergedCompatibility.Version)))
                 {
                     Instance.SubmergedUpdate = submergedUpdateCheck.Result;
+                    if (Instance.SubmergedUpdate.Tag.Equals("2022.10.26")) Instance.SubmergedUpdate = null;
                 }
             }
             
@@ -181,12 +200,17 @@ namespace TheOtherRoles.Modules
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "TheOtherRoles Updater");
 
-            var req = await client.GetAsync($"https://api.github.com/repos/{owner}/{repo}/releases/latest", HttpCompletionOption.ResponseContentRead);
+            try {
+                var req = await client.GetAsync($"https://api.github.com/repos/{owner}/{repo}/releases/latest", HttpCompletionOption.ResponseContentRead);
+
             if (!req.IsSuccessStatusCode) return null;
 
-            var dataString = await req.Content.ReadAsStringAsync();
-            JObject data = JObject.Parse(dataString);
-            return new UpdateData(data);
+                var dataString = await req.Content.ReadAsStringAsync();
+                JObject data = JObject.Parse(dataString);
+                return new UpdateData(data);
+            } catch (HttpRequestException) {
+                return null;
+            }
         }
 
         private bool TryUpdateSubmergedInternally()

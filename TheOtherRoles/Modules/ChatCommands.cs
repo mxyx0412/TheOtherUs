@@ -3,6 +3,8 @@ using HarmonyLib;
 using System.Linq;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Modules {
     [HarmonyPatch]
@@ -39,7 +41,7 @@ namespace TheOtherRoles.Modules {
                     }
                 }
                 
-                if (AmongUsClient.Instance.GameMode == GameModes.FreePlay) {
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) {
                     if (text.ToLower().Equals("/murder")) {
                         CachedPlayer.LocalPlayer.PlayerControl.Exiled();
                         FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(CachedPlayer.LocalPlayer.Data, CachedPlayer.LocalPlayer.Data);
@@ -66,12 +68,19 @@ namespace TheOtherRoles.Modules {
                 }
 
 
-                if (text.ToLower().StartsWith("/team")) {
-                    if (CachedPlayer.LocalPlayer.PlayerControl.isLover() && CachedPlayer.LocalPlayer.PlayerControl.isTeamJackal() && Jackal.hasChat) {
-                        if (Sidekick.sidekick == CachedPlayer.LocalPlayer.PlayerControl) Sidekick.chatTarget = Helpers.flipBitwise(Sidekick.chatTarget);
-                        if (Jackal.jackal == CachedPlayer.LocalPlayer.PlayerControl) Jackal.chatTarget = Helpers.flipBitwise(Jackal.chatTarget);
-                        handled = true;
-                    }
+                if (text.ToLower().StartsWith("/team") && CachedPlayer.LocalPlayer.PlayerControl.isLover() && CachedPlayer.LocalPlayer.PlayerControl.isTeamCultist())
+			{
+				if (Cultist.cultist == CachedPlayer.LocalPlayer.PlayerControl)
+				{
+					Cultist.chatTarget = Helpers.flipBitwise(Cultist.chatTarget);
+				}
+				if (Follower.follower == CachedPlayer.LocalPlayer.PlayerControl)
+				{
+					Follower.chatTarget = Helpers.flipBitwise(Follower.chatTarget);
+				}
+				handled = true;
+            
+                    
                 }
 
                 if (handled) {
@@ -83,13 +92,42 @@ namespace TheOtherRoles.Modules {
         }
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public static class EnableChat {
-            public static void Postfix(HudManager __instance) {
-                PlayerControl player = CachedPlayer.LocalPlayer.PlayerControl;
-                if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (CachedPlayer.LocalPlayer.PlayerControl.isLover() && Lovers.enableChat)))
-                    __instance.Chat.SetVisible(true);
+            private static void Postfix(HudManager __instance)
+		{
+			
+				if (!__instance.Chat.isActiveAndEnabled && (CachedPlayer.LocalPlayer.PlayerControl.isLover() || CachedPlayer.LocalPlayer.PlayerControl.isTeamCultist()))
+				{
+					__instance.Chat.SetVisible(visible: true);
+				}
+			
 
-                if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (CachedPlayer.LocalPlayer.PlayerControl.isTeamJackal() && Jackal.hasChat)))
-                    __instance.Chat.SetVisible(true);
+                if ((Multitasker.multitasker.FindAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId).Count > 0) || MapOptionsTor.transparentTasks
+         /*   && Jester.jester != CachedPlayer.LocalPlayer.PlayerControl
+            && Werewolf.werewolf != CachedPlayer.LocalPlayer.PlayerControl
+            && Prosecutor.prosecutor != CachedPlayer.LocalPlayer.PlayerControl
+            && Swooper.swooper != CachedPlayer.LocalPlayer.PlayerControl
+            && Jackal.jackal != CachedPlayer.LocalPlayer.PlayerControl
+            && Sidekick.sidekick != CachedPlayer.LocalPlayer.PlayerControl
+            && Arsonist.arsonist != CachedPlayer.LocalPlayer.PlayerControl
+            && Amnisiac.amnisiac != CachedPlayer.LocalPlayer.PlayerControl
+            && Vulture.vulture != CachedPlayer.LocalPlayer.PlayerControl
+            && Lawyer.lawyer != CachedPlayer.LocalPlayer.PlayerControl
+            && Pursuer.pursuer != CachedPlayer.LocalPlayer.PlayerControl
+            && Thief.thief != CachedPlayer.LocalPlayer.PlayerControl
+            */) {
+                if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
+                if (!Minigame.Instance) return;
+
+                var Base = Minigame.Instance as MonoBehaviour;
+            SpriteRenderer[] rends = Base.GetComponentsInChildren<SpriteRenderer>();
+            for (int i = 0; i < rends.Length; i++)
+            {
+                var oldColor1 = rends[i].color[0];
+                var oldColor2 = rends[i].color[1];
+                var oldColor3 = rends[i].color[2];
+                rends[i].color = new Color(oldColor1, oldColor2, oldColor3, 0.5f);
+            }
+        }
             }
         }
 
@@ -103,17 +141,39 @@ namespace TheOtherRoles.Modules {
 
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
         public static class AddChat {
-            public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer) {
-                if (__instance != FastDestroyableSingleton<HudManager>.Instance.Chat)
-                    return true;
-                PlayerControl localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-                bool isTeamJackalWithChat = CachedPlayer.LocalPlayer.PlayerControl.isTeamJackal() && Jackal.hasChat;
-                return localPlayer == null || 
-                    (MeetingHud.Instance != null || LobbyBehaviour.Instance != null ||
-                    localPlayer.Data.IsDead || (int)sourcePlayer.PlayerId == (int)CachedPlayer.LocalPlayer.PlayerId ||
-                    (localPlayer.isLover() && Lovers.enableChat && Helpers.getChatPartner(sourcePlayer) == localPlayer) || 
-                    (isTeamJackalWithChat && Helpers.getChatPartner(sourcePlayer) == localPlayer));
-            }
-        }
+            public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer)
+		{
+			PlayerControl playerControl = CachedPlayer.LocalPlayer.PlayerControl;
+			bool flag = MeetingHud.Instance != null || LobbyBehaviour.Instance != null || playerControl.Data.IsDead || sourcePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+			if (__instance != FastDestroyableSingleton<HudManager>.Instance.Chat)
+			{
+				return true;
+			}
+			if (playerControl == null)
+			{
+				return true;
+			}
+            /* brb
+			if (playerControl == Detective.detective)
+			{
+				return flag;
+			}
+            */
+			if (!playerControl.isTeamCultist() && !playerControl.isLover())
+			{
+				return flag;
+			}
+			if (playerControl.isTeamCultist() || playerControl.isLover())
+			{
+				return sourcePlayer.getChatPartner() == playerControl || playerControl.getChatPartner() == playerControl == (bool)sourcePlayer || flag;
+			}
+			return flag;
+		}
+	}
+
+	public static bool isTeamCultist(this PlayerControl player)
+	{
+		return !(player == null) && (player == Cultist.cultist || player == Follower.follower) && Cultist.cultist != null && Follower.follower != null;
+	}
     }
 }

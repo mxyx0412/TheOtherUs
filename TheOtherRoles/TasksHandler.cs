@@ -12,7 +12,7 @@ namespace TheOtherRoles {
             if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
                 playerInfo.Object &&
                 playerInfo.Role && playerInfo.Role.TasksCountTowardProgress &&
-                !playerInfo.Object.hasFakeTasks()
+                !playerInfo.Object.hasFakeTasks() && !playerInfo.Role.IsImpostor
                 ) {
                 foreach (var playerInfoTask in playerInfo.Tasks.GetFastEnumerator())
                 {
@@ -38,6 +38,7 @@ namespace TheOtherRoles {
                         || playerInfo.PlayerId == Lawyer.lawyer?.PlayerId // Tasks of the Lawyer do not count
                         || playerInfo.PlayerId == Swooper.swooper?.PlayerId // Tasks of the Swooper do not count
                         || (playerInfo.PlayerId == Pursuer.pursuer?.PlayerId && Pursuer.pursuer.Data.IsDead) // Tasks of the Pursuer only count, if he's alive
+                        || playerInfo.PlayerId == Thief.thief?.PlayerId // Thief's tasks only count after joining crew team as sheriff (and then the thief is not the thief anymore)
                        )
                         continue;
                     var (playerCompleted, playerTotal) = taskInfo(playerInfo);

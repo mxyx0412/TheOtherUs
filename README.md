@@ -15,10 +15,11 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [![Discord](./Images/TOR_server.png)](https://discord.gg/yspVyP5meR)
 ![eisbison infographic](./Images/TOR_Roles.png)
 
+# Note: This repository is an unofficial continuation of [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [Town of Us](https://github.com/eDonnes124/Town-Of-Us-R), as well as [The Other Roles Community Edition](https://github.com/JustASysAdmin/TheOtherRoles2).
 
 # The Other Us
 
-Credit to [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [The Other Roles Community Edition](https://github.com/JustASysAdmin/TheOtherRoles2) for everything. This wouldn't be possible without them. 
+Credit to [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [The Other Roles Community Edition](https://github.com/JustASysAdmin/TheOtherRoles2) for everything. This wouldn't be possible without them. Also Credit to [Town of Us](https://github.com/eDonnes124/Town-Of-Us-R)
 
 **The Other Us**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
 Even more roles are coming soon. :)

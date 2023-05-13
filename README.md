@@ -4,8 +4,9 @@
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>
 
 <p align="center">
-Credit to The Other Roles and The Other Roles Community Edition for everything. This wouldn't be possible without them. </p>
+Credit to The Other Roles, Town of Us, and The Other Roles Community Edition for everything. This wouldn't be possible without them. </p>
 The Other Roles: https://github.com/TheOtherRolesAU/TheOtherRoles </p>
+Town of Us: https://github.com/eDonnes124/Town-Of-Us-R </p>
 The Other Roles Community Edition: https://github.com/JustASysAdmin/TheOtherRoles2 </p>
 
 <p align="center">

@@ -2,6 +2,9 @@
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>
 
 <p align="center">
+Credit to [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [The Other Roles](https://github.com/JustASysAdmin/TheOtherRoles2) for everything. This wouldn't be possible without them. 
+
+<p align="center">
 The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.</p>
 
 <p align="center">

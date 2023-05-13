@@ -3,7 +3,7 @@
 
 <p align="center">
 Credit to The Other Roles and The Other Roles Community Edition for everything. This wouldn't be possible without them. </p>
-The Other Roles: https://github.com/TheOtherRolesAU/TheOtherRoles
+The Other Roles: https://github.com/TheOtherRolesAU/TheOtherRoles </p>
 The Other Roles Community Edition: https://github.com/JustASysAdmin/TheOtherRoles2
 
 <p align="center">

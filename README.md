@@ -2,7 +2,9 @@
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>
 
 <p align="center">
-Credit to [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [The Other Roles](https://github.com/JustASysAdmin/TheOtherRoles2) for everything. This wouldn't be possible without them. 
+Credit to The Other Roles and The Other Roles Community Edition for everything. This wouldn't be possible without them. 
+The Other Roles: https://github.com/TheOtherRolesAU/TheOtherRoles
+The Other Roles Community Edition: https://github.com/JustASysAdmin/TheOtherRoles2
 
 <p align="center">
 The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.</p>
@@ -15,6 +17,8 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 
 # The Other Us
+
+Credit to [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [The Other Roles Community Edition](https://github.com/JustASysAdmin/TheOtherRoles2) for everything. This wouldn't be possible without them. 
 
 **The Other Us**, is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
 Even more roles are coming soon. :)

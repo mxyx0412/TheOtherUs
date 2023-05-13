@@ -4,7 +4,7 @@
 <p align="center">
 Credit to The Other Roles and The Other Roles Community Edition for everything. This wouldn't be possible without them. </p>
 The Other Roles: https://github.com/TheOtherRolesAU/TheOtherRoles </p>
-The Other Roles Community Edition: https://github.com/JustASysAdmin/TheOtherRoles2
+The Other Roles Community Edition: https://github.com/JustASysAdmin/TheOtherRoles2 </p>
 
 <p align="center">
 The Other Us Is a project created to expand on the Open Source mod "The Other Roles". It does this in the form of expanding on existing settings, adding new settings, adding/removing roles, balancing roles for competitive viability, and fixing bugs.</p>

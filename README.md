@@ -1,4 +1,4 @@
-# Note: This repository is an unofficial continuation of [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [Town of Us](https://github.com/eDonnes124/Town-Of-Us-R), as well as [The Other Roles Community Edition](https://github.com/JustASysAdmin/TheOtherRoles2).
+## Note: This repository is an unofficial continuation of [The Other Roles](https://github.com/TheOtherRolesAU/TheOtherRoles) and [Town of Us](https://github.com/eDonnes124/Town-Of-Us-R), as well as [The Other Roles Community Edition](https://github.com/JustASysAdmin/TheOtherRoles2).
 
 ![TOU_Logo](https://user-images.githubusercontent.com/113001912/192659417-85c94f28-d9b9-454a-a6b4-6679fe9dca91.png)
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>

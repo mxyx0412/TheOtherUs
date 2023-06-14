@@ -172,7 +172,7 @@ namespace TheOtherRoles.Patches {
 		}
 	}
 	
-    [HarmonyPatch(typeof(Vent), nameof(Vent.MoveToVent))]
+    [HarmonyPatch(typeof(Vent), nameof(Vent.TryMoveToVent))]
     public static class MoveToVentPatch {
         public static bool Prefix(Vent otherVent) {
             return !Trapper.playersOnMap.Contains(CachedPlayer.LocalPlayer.PlayerControl);

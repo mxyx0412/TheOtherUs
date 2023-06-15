@@ -59,8 +59,8 @@ namespace TheOtherRoles.Patches {
                 } else if (Trickster.lightsOutTimer < 0.5) {
                     lerpValue = Mathf.Clamp01(Trickster.lightsOutTimer * 2);
                 }
-
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1 - lerpValue) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
+                return false;
             }
 
             // If player is Lawyer, apply Lawyer vision modifier

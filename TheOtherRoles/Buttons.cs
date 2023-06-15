@@ -678,6 +678,7 @@ namespace TheOtherRoles
             morphlingButton = new CustomButton(
                 () => {
                     if (Morphling.sampledTarget != null) {
+                        if (Helpers.isActiveCamoComms()) return;
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.MorphlingMorph, Hazel.SendOption.Reliable, -1);
                         writer.Write(Morphling.sampledTarget.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);

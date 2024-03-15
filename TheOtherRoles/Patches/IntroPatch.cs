@@ -451,11 +451,19 @@ namespace TheOtherRoles.Patches {
         }
     }
 
-    [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+    /* HorsesMod is broken in AmongUs2024.3.5 - So I del this
+     * [HarmonyPatch(typeof(AprilFoolsMode), nameof(AprilFoolsMode.ShouldHorseAround))]
     public static class ShouldAlwaysHorseAround {
         public static bool Prefix(ref bool __result) {
-            __result = EventUtility.isEnabled && !EventUtility.disableHorses;
+            __result = EventUtility.isEnabled && !EventUtility.disableEventMode;
             return false;
+        }
+    }*/
+
+    [HarmonyPatch(typeof(AprilFoolsMode), nameof(AprilFoolsMode.ShouldShowAprilFoolsToggle))]
+    public static class ShouldShowAprilFoolsToggle {
+        public static void Postfix(ref bool __result) {
+            __result = __result || EventUtility.isEventDate || EventUtility.canBeEnabled;  // Extend it to a 7 day window instead of just 1st day of the Month
         }
     }
 }

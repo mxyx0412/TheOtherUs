@@ -21,8 +21,9 @@ namespace TheOtherRoles {
         public static CustomOption modifiersCountMin;
         public static CustomOption modifiersCountMax;
 
-        public static CustomOption enableCodenameHorsemode;
-        public static CustomOption enableCodenameDisableHorses;
+        //public static CustomOption enableCodenameHorsemode;
+        //public static CustomOption enableCodenameDisableHorses;
+        public static CustomOption enableEventMode;
 
         public static CustomOption cultistSpawnRate;
 
@@ -374,7 +375,9 @@ namespace TheOtherRoles {
         public static CustomOption modifierMultitaskerQuantity;
 
         public static CustomOption modifierDisperser;
-        
+        public static CustomOption modifierDisperserCooldown;
+        public static CustomOption modifierDisperserNumberOfUses;
+
         public static CustomOption modifierMini;
         public static CustomOption modifierMiniGrowingUpDuration;
         public static CustomOption modifierMiniGrowingUpInMeeting;
@@ -547,8 +550,9 @@ namespace TheOtherRoles {
             presetSelection = CustomOption.Create(0, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Preset"), presets, null, true);
             activateRoles = CustomOption.Create(1, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Enable Mod Roles And Block Vanilla Roles"), true, null, true);
 
-            if (Utilities.EventUtility.canBeEnabled) enableCodenameHorsemode = CustomOption.Create(10423, Types.General, cs(Color.green, "Enable Codename Horsemode"), true, null, true);
-            if (Utilities.EventUtility.canBeEnabled) enableCodenameDisableHorses = CustomOption.Create(10424, Types.General, cs(Color.green, "Disable Horses"), false, enableCodenameHorsemode, false);
+            //if (Utilities.EventUtility.canBeEnabled) enableCodenameHorsemode = CustomOption.Create(10423, Types.General, cs(Color.green, "Enable Codename Horsemode"), true, null, true);
+            //if (Utilities.EventUtility.canBeEnabled) enableCodenameDisableHorses = CustomOption.Create(10424, Types.General, cs(Color.green, "Disable Horses"), false, enableCodenameHorsemode, false);
+            if (Utilities.EventUtility.canBeEnabled) enableEventMode = CustomOption.Create(10423, Types.General, cs(Color.green, "Enable Special Mode"), true, null, true);
 
             // Using new id's for the options to not break compatibilty with older versions
             crewmateRolesCountMin = CustomOption.Create(300, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Crewmate Roles"), 15f, 0f, 15f, 1f, null, true);
@@ -890,7 +894,9 @@ namespace TheOtherRoles {
             // Modifier (1000 - 1999)
             modifiersAreHidden = CustomOption.Create(1009, Types.Modifier, cs(Color.yellow, "Hide After Death Modifiers"), true, null, true);
 
-            modifierDisperser = CustomOption.Create(200220, Types.Modifier, cs(Color.red, "Disperser"), rates, null, true);
+            modifierDisperser = CustomOption.Create(1110, Types.Modifier, cs(Color.red, "Disperser"), rates, null, true);
+            modifierDisperserCooldown = CustomOption.Create(1112, Types.Modifier, "Disperser Cooldown", 30f, 10f, 60f, 2.5f, modifierDisperser);
+            modifierDisperserNumberOfUses = CustomOption.Create(1111, Types.Modifier, "Number Of Uses", 1, 1, 5, 1, modifierDisperser);
 
             modifierBloody = CustomOption.Create(1000, Types.Modifier, cs(Color.yellow, "Bloody"), rates, null, true);
             modifierBloodyQuantity = CustomOption.Create(1001, Types.Modifier, cs(Color.yellow, "Bloody Quantity"), ratesModifier, modifierBloody);

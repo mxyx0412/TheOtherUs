@@ -21,6 +21,8 @@ namespace TheOtherRoles {
         public static CustomOption modifiersCountMin;
         public static CustomOption modifiersCountMax;
 
+        public static CustomOption anyPlayerCanStopStart;
+
         //public static CustomOption enableCodenameHorsemode;
         //public static CustomOption enableCodenameDisableHorses;
         public static CustomOption enableEventMode;
@@ -461,6 +463,7 @@ namespace TheOtherRoles {
         public static CustomOption guesserGamemodeNeutralNumber;
         public static CustomOption guesserGamemodeImpNumber;
         public static CustomOption guesserForceJackalGuesser;
+        public static CustomOption guesserGamemodeSidekickIsAlwaysGuesser;
         public static CustomOption guesserForceThiefGuesser;
         public static CustomOption guesserGamemodeHaveModifier;
         public static CustomOption guesserGamemodeNumberOfShots;
@@ -549,6 +552,7 @@ namespace TheOtherRoles {
             // Role Options
             presetSelection = CustomOption.Create(0, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Preset"), presets, null, true);
             activateRoles = CustomOption.Create(1, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Enable Mod Roles And Block Vanilla Roles"), true, null, true);
+            anyPlayerCanStopStart = CustomOption.Create(2, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Any Player Can Stop The Start"), false, null, false);
 
             //if (Utilities.EventUtility.canBeEnabled) enableCodenameHorsemode = CustomOption.Create(10423, Types.General, cs(Color.green, "Enable Codename Horsemode"), true, null, true);
             //if (Utilities.EventUtility.canBeEnabled) enableCodenameDisableHorses = CustomOption.Create(10424, Types.General, cs(Color.green, "Disable Horses"), false, enableCodenameHorsemode, false);
@@ -967,6 +971,7 @@ namespace TheOtherRoles {
             guesserGamemodeNeutralNumber = CustomOption.Create(2002, Types.Guesser, cs(Guesser.color, "Number of Neutral Guessers"), 15f, 1f, 15f, 1f, null, true);
             guesserGamemodeImpNumber = CustomOption.Create(2003, Types.Guesser, cs(Guesser.color, "Number of Impostor Guessers"), 15f, 1f, 15f, 1f, null, true);
             guesserForceJackalGuesser = CustomOption.Create(2007, Types.Guesser, "Force Jackal Guesser", false, null, true);
+            guesserGamemodeSidekickIsAlwaysGuesser = CustomOption.Create(2012, Types.Guesser, "Sidekick Is Always Guesser", false, null);
             guesserForceThiefGuesser = CustomOption.Create(2011, Types.Guesser, "Force Thief Guesser", false, null, true);
             guesserGamemodeHaveModifier = CustomOption.Create(2004, Types.Guesser, "Guessers Can Have A Modifier", true, null);
             guesserGamemodeNumberOfShots = CustomOption.Create(2005, Types.Guesser, "Guesser Number Of Shots", 3f, 1f, 15f, 1f, null);

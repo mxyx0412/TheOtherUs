@@ -124,6 +124,7 @@ namespace TheOtherRoles
         DynamicMapOption,
         SetGameStarting,
         ShareGamemode,
+        StopStart,
 
         // Role functionality
 
@@ -278,6 +279,15 @@ namespace TheOtherRoles
 
         public static void shareGamemode(byte gm) {
             TORMapOptions.gameMode = (CustomGamemodes) gm;
+        }
+
+        public static void stopStart(byte playerId)
+        {
+            if (AmongUsClient.Instance.AmHost && CustomOptionHolder.anyPlayerCanStopStart.getBool())
+            {
+                GameStartManager.Instance.ResetStartState();
+                PlayerControl.LocalPlayer.RpcSendChat($"{Helpers.playerById(playerId).Data.PlayerName} stopped the game start!");
+            }
         }
 
         public static void workaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -1476,10 +1486,7 @@ namespace TheOtherRoles
             if (Lawyer.target == player && Lawyer.isProsecutor && Lawyer.lawyer != null && !Lawyer.lawyer.Data.IsDead) Lawyer.isProsecutor = false;
 
             if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) {
-                if (Jackal.killFakeImpostor) {
-					uncheckedMurderPlayer(Jackal.jackal.PlayerId, player.PlayerId, 1);
-				} else
-					Jackal.fakeSidekick = player;
+                Jackal.fakeSidekick = player;
             } else {
                 bool wasSpy = Spy.spy != null && player == Spy.spy;
                 bool wasImpostor = player.Data.Role.IsImpostor;  // This can only be reached if impostors can be sidekicked.
@@ -1497,6 +1504,8 @@ namespace TheOtherRoles
                 Sidekick.wasSpy = wasSpy;
                 Sidekick.wasImpostor = wasImpostor;
                 if (player == CachedPlayer.LocalPlayer.PlayerControl) SoundEffectsManager.play("jackalSidekick");
+                if (HandleGuesser.isGuesserGm && CustomOptionHolder.guesserGamemodeSidekickIsAlwaysGuesser.getBool() && !HandleGuesser.isGuesser(targetId))
+                    setGuesserGm(targetId);
             }
             Jackal.canCreateSidekick = false;
         }
@@ -2373,6 +2382,8 @@ namespace TheOtherRoles
             if (target == Sidekick.sidekick) {
                 Sidekick.sidekick = thief;
                 Jackal.formerJackals.Add(target);
+                if (HandleGuesser.isGuesserGm && CustomOptionHolder.guesserGamemodeSidekickIsAlwaysGuesser.getBool() && !HandleGuesser.isGuesser(thief.PlayerId))
+                    setGuesserGm(thief.PlayerId);
             }
             //if (target == Guesser.evilGuesser) Guesser.evilGuesser = thief;
             if (target == Godfather.godfather) Godfather.godfather = thief;
@@ -2945,6 +2956,9 @@ namespace TheOtherRoles
                 case (byte)CustomRPC.ShareGamemode:
                     byte gm = reader.ReadByte();
                     RPCProcedure.shareGamemode(gm);
+                    break;
+                case (byte)CustomRPC.StopStart:
+                    RPCProcedure.stopStart(reader.ReadByte());
                     break;
 
                 // Game mode

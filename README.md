@@ -2073,6 +2073,41 @@ can only use them, if the previous player did not use them before)
 | Shifter Spawn Chance | -
 -----------------------
 
+## Watcher
+
+The Watcher modifier allows the player to see everyone's votes during meetings.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Watcher Spawn Chance | -
+-----------------------
+
+## Multitasker
+
+The Multitasker modifier is a Crewmate only modifier. This modifiers makes all the players tasks transparent.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Multitasker Spawn Chance | -
+| Multitasker Quantity | -
+-----------------------
+
+## Disperser
+
+The Disperser modifier is an Impostor only modifier. This modifier gives the impostor a 1 time use ability to send all players to a random location on the map.\
+\
+**NOTE:**
+- Players with Anti Teleport are not effected by a disperse.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Disperser Spawn Chance | -
+
+-----------------------
+
 # Gamemodes
 Gamemodes can be switched when creating a lobby or inside the lobby by using a command in the chat:
 `/gm <gamemode>`. Use the following gamemodes: `guess` or `gm`,`prophunt` or `ph`, `hidenseek` or `hns`. If `/gm` is used without argument or the argument can't be parsed, the lobby will switch to classic mode.

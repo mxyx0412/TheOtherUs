@@ -1,4 +1,4 @@
-![mod banner](./Images/TOU_logo.png)
+![mod banner](./Images/TOU_Logo.png)
 <p align="center"><a href="https://github.com/SpexGH/TheOtherUs/releases/"><img src="https://badgen.net/github/release/SpexGH/theotherus"></a></p>
 
 

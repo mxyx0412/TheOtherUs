@@ -828,7 +828,7 @@ Github Contributors:
 Alex2911    amsyarasyiq    MaximeGillot
 Psynomit    probablyadnf    JustASysAdmin
 
-[Discord](https://discord.gg/77RkMJHWsM]Discord) Moderators:</b>
+[Discord](https://discord.gg/yspVyP5meR) Moderators:</b>
 Draco Cordraconis    Streamblox (formerly)
 Thanks to all our discord helpers!
 

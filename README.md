@@ -2105,6 +2105,8 @@ The Disperser modifier is an Impostor only modifier. This modifier gives the imp
 | Name | Description
 |----------|:-------------:|
 | Disperser Spawn Chance | -
+| Disperser Cooldown | -
+| Number Of Uses | -
 
 -----------------------
 

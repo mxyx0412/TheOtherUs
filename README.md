@@ -28,7 +28,7 @@ Even more roles are coming soon. :)
 | [Cleaner](#cleaner) | [Swapper](#swapper) | [Thief](#thief) | [Invert](#invert) |
 | [Warlock](#warlock) | [Seer](#seer) |  | [Chameleon](#chameleon) |
 | [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) |  | [Shifter](#shifter)
-| [Witch](#witch) | [Tracker](#tracker) |  |  |
+| [Witch](#witch) | [Tracker](#tracker) |  |  [Disperser](#disperser) |
 | [Ninja](#ninja) | [Snitch](#snitch) |  |  |
 | [Bomber](#bomber) | [Spy](#spy) |  |  |
 | [Evil Guesser](#guesser) | [Portalmaker](#portalmaker) |  |  |

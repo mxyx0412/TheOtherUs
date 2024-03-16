@@ -85,7 +85,7 @@ namespace TheOtherRoles.Modules {
 
             var button = popup.transform.GetChild(2).gameObject;
             button.SetActive(false);
-            popup.TextAreaTMP.text = $"Updating TOR\nPlease wait...";
+            popup.TextAreaTMP.text = $"Updating TOU\nPlease wait...";
 
             var asset = release.Assets.Find(FilterPluginAsset);
             var www = new UnityWebRequest();
@@ -96,7 +96,7 @@ namespace TheOtherRoles.Modules {
 
             while (!operation.isDone) {
                 int stars = Mathf.CeilToInt(www.downloadProgress * 10);
-                string progress = $"Updating TOR\nPlease wait...\nDownloading...\n{new String((char)0x25A0, stars) + new String((char)0x25A1, 10 - stars)}";
+                string progress = $"Updating TOU\nPlease wait...\nDownloading...\n{new String((char)0x25A0, stars) + new String((char)0x25A1, 10 - stars)}";
                 popup.TextAreaTMP.text = progress;
                 yield return new WaitForEndOfFrame();
             }
@@ -105,7 +105,7 @@ namespace TheOtherRoles.Modules {
                 popup.TextAreaTMP.text = "Update wasn't successful\nTry again later,\nor update manually.";
                 yield break;
             }
-            popup.TextAreaTMP.text = $"Updating TOR\nPlease wait...\n\nDownload complete\ncopying file...";
+            popup.TextAreaTMP.text = $"Updating TOU\nPlease wait...\n\nDownload complete\ncopying file...";
 
             var filePath = Path.Combine(Paths.PluginPath, asset.Name);
 
@@ -127,7 +127,7 @@ namespace TheOtherRoles.Modules {
             www.Dispose();
 
             if (!hasError) {
-                popup.TextAreaTMP.text = $"TheOtherRoles\nupdated successfully\nPlease restart the game.";
+                popup.TextAreaTMP.text = $"TheOtherUs\nupdated successfully\nPlease restart the game.";
             }
             button.SetActive(true);
             _busy = false;
@@ -173,19 +173,19 @@ namespace TheOtherRoles.Modules {
             }));
 
             var text = button.transform.GetComponentInChildren<TMPro.TMP_Text>();
-            string t = "Update TOR";
+            string t = "Update TOU";
             StartCoroutine(Effects.Lerp(0.1f, (System.Action<float>)(p => text.SetText(t))));
             passiveButton.OnMouseOut.AddListener((Action)(() => text.color = Color.red));
             passiveButton.OnMouseOver.AddListener((Action)(() => text.color = Color.white));
-            var announcement = $"<size=150%>A new THE OTHER ROLES update to {latestRelease.Tag} is available</size>\n{latestRelease.Description}";
+            var announcement = $"<size=150%>A new THE OTHER US update to {latestRelease.Tag} is available</size>\n{latestRelease.Description}";
             var mgr = FindObjectOfType<MainMenuManager>(true);
-            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "TOR Update", date : latestRelease.PublishedAt)) ;
+            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "TOU Update", date : latestRelease.PublishedAt)) ;
             showPopUp = false;
 
         }
 
         [HideFromIl2Cpp]
-        public IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "TOR Update", string title = "", string date = "") {
+        public IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "TOU Update", string title = "", string date = "") {
             var mgr = FindObjectOfType<MainMenuManager>(true);
             var popUpTemplate = UnityEngine.Object.FindObjectOfType<AnnouncementPopUp>(true);
             if (popUpTemplate == null) {
@@ -197,10 +197,10 @@ namespace TheOtherRoles.Modules {
             popUp.gameObject.SetActive(true);
 
             Assets.InnerNet.Announcement creditsAnnouncement = new() {
-                Id = "torAnnouncement",
+                Id = "touAnnouncement",
                 Language = 0,
                 Number = 6969,
-                Title = title == "" ? "The Other Roles Announcement" : title,
+                Title = title == "" ? "The Other Us Announcement" : title,
                 ShortTitle = shortTitle,
                 SubTitle = "",
                 PinState = false,

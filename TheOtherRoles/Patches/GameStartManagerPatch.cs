@@ -8,7 +8,6 @@ using System;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using System.Linq;
-using static TheOtherRoles.TheOtherRoles;
 using Reactor.Utilities.Extensions;
 
 namespace TheOtherRoles.Patches {
@@ -75,18 +74,18 @@ namespace TheOtherRoles.Patches {
                         continue;
                     else if (!playerVersions.ContainsKey(client.Id))  {
                         versionMismatch = true;
-                        message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of The Other Roles\n</color>";
+                        message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of The Other Us\n</color>";
                     } else {
                         PlayerVersion PV = playerVersions[client.Id];
                         int diff = TheOtherRolesPlugin.Version.CompareTo(PV.version);
                         if (diff > 0) {
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of The Other Roles (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
                         } else if (diff < 0) {
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of The Other Roles (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
                         } else if (!PV.GuidMatches()) { // version presumably matches, check if Guid matches
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOR v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOU v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
                             versionMismatch = true;
                         }
                     }
@@ -149,7 +148,7 @@ namespace TheOtherRoles.Patches {
                             SceneChanger.ChangeScene("MainMenu");
                         }
 
-                        __instance.GameStartText.text = $"<color=#FF0000FF>The host has no or a different version of The Other Roles\nYou will be kicked in {Math.Round(10 - kickingTimer)}s</color>";
+                        __instance.GameStartText.text = $"<color=#FF0000FF>The host has no or a different version of The Other Us\nYou will be kicked in {Math.Round(10 - kickingTimer)}s</color>";
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                     } else if (versionMismatch) {
                         __instance.GameStartText.text = $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
@@ -254,21 +253,7 @@ namespace TheOtherRoles.Patches {
                         writer.Write(mapId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.dynamicMapOption(mapId);
-                    }       
-
-                    if (Cultist.isCultistGame)  {
-                       GameOptionsManager.Instance.currentNormalGameOptions.NumImpostors = 2;
-                       Cultist.isCultistGame = false;
-                    }
-                    bool cultistCheck = CustomOptionHolder.cultistSpawnRate.getSelection() != 0 && (rnd.Next(1, 101) <= CustomOptionHolder.cultistSpawnRate.getSelection() * 10);
-                    if (cultistCheck) {
-                      // We should have Custist (Cultist is only supported on 2 Impostors)
-                      Cultist.isCultistGame = true;
-                      GameOptionsManager.Instance.currentNormalGameOptions.NumImpostors = 1;
-                    } else if (cultistCheck){
-                      Cultist.isCultistGame = false;
-                    }
-
+                    }            
                     else if (CustomOptionHolder.dynamicMap.getBool() && continueStart) {
                         // 0 = Skeld
                         // 1 = Mira HQ

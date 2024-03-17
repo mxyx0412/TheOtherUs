@@ -54,7 +54,7 @@ namespace TheOtherRoles.Modules {
             _busy = true;
             var www = new UnityWebRequest();
             www.SetMethod(UnityWebRequest.UnityWebRequestMethod.Get);
-            www.SetUrl($"https://api.github.com/repos/{RepositoryOwner}/{RepositoryName}/releases");
+            www.SetUrl($"https://api.github.com/repos/{RepositoryOwner}/{RepositoryName}/releases/latest");
             www.downloadHandler = new DownloadHandlerBuffer();
             var operation = www.SendWebRequest();
 

@@ -372,6 +372,7 @@ namespace TheOtherRoles {
 
         public static CustomOption modifierTorch;
         public static CustomOption modifierTorchQuantity;
+        public static CustomOption modifierTorchVision;
 
         public static CustomOption modifierMultitasker;
         public static CustomOption modifierMultitaskerQuantity;
@@ -379,6 +380,7 @@ namespace TheOtherRoles {
         public static CustomOption modifierDisperser;
         public static CustomOption modifierDisperserCooldown;
         public static CustomOption modifierDisperserNumberOfUses;
+        public static CustomOption modifierDisperserDispersesToVent;
 
         public static CustomOption modifierMini;
         public static CustomOption modifierMiniGrowingUpDuration;
@@ -900,7 +902,8 @@ namespace TheOtherRoles {
 
             modifierDisperser = CustomOption.Create(1110, Types.Modifier, cs(Color.red, "Disperser"), rates, null, true);
             modifierDisperserCooldown = CustomOption.Create(1112, Types.Modifier, "Disperser Cooldown", 30f, 10f, 60f, 2.5f, modifierDisperser);
-            modifierDisperserNumberOfUses = CustomOption.Create(1111, Types.Modifier, "Number Of Uses", 1, 1, 5, 1, modifierDisperser);
+            modifierDisperserNumberOfUses = CustomOption.Create(1114, Types.Modifier, "Number Of Uses", 1, 1, 5, 1, modifierDisperser);
+            modifierDisperserDispersesToVent = CustomOption.Create(1113, Types.Modifier, "Disperser To Vent", true, modifierDisperser);
 
             modifierBloody = CustomOption.Create(1000, Types.Modifier, cs(Color.yellow, "Bloody"), rates, null, true);
             modifierBloodyQuantity = CustomOption.Create(1001, Types.Modifier, cs(Color.yellow, "Bloody Quantity"), ratesModifier, modifierBloody);
@@ -928,6 +931,7 @@ namespace TheOtherRoles {
 
             modifierTorch = CustomOption.Create(1053, Types.Modifier, cs(Color.yellow, "Torch"), rates, null, true);
             modifierTorchQuantity = CustomOption.Create(1054, Types.Modifier, cs(Color.yellow, "Torch Quantity"), ratesModifier, modifierTorch);
+            modifierTorchVision = CustomOption.Create(1055, Types.Modifier, cs(Color.yellow, "Vision With Torch"), 1.5f, 1f, 3f, 0.125f, modifierTorch);
 
             modifierMultitasker = CustomOption.Create(10523233, Types.Modifier, cs(Color.yellow, "Multitasker"), rates, null, true);
             modifierMultitaskerQuantity = CustomOption.Create(10232354, Types.Modifier, cs(Color.yellow, "Multitasker Quantity"), ratesModifier, modifierMultitasker);
@@ -1050,7 +1054,7 @@ namespace TheOtherRoles {
             shieldFirstKill = CustomOption.Create(8, Types.General, "Shield Last Game First Kill", false);
             hideOutOfSightNametags = CustomOption.Create(6006, Types.General, "Hide Obstructed Player Names", false);
             hideVentAnimOnShadows = CustomOption.Create(822445, Types.General, "Hide Vent Animation Out Of Vision", false);
-            finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(9, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
+            finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(13, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
             camsNightVision = CustomOption.Create(11, Types.General, "Cams Switch To Night Vision If Lights Are Off", false, null, true);
             camsNoNightVisionIfImpVision = CustomOption.Create(12, Types.General, "Impostor Vision Ignores Night Vision Cams", false, camsNightVision, false);
             impostorSeeRoles = CustomOption.Create(9, Types.General, "Impostors Can See The Roles Of Their Team", false);

@@ -109,7 +109,7 @@ namespace TheOtherRoles.Patches
                     for (int k = 0; k < __instance.vitals.Length; k++)
                     {
                         VitalsPanel vitalsPanel = __instance.vitals[k];
-                        GameData.PlayerInfo player = GameData.Instance.AllPlayers[k];
+                        GameData.PlayerInfo player = GameData.Instance.AllPlayers.Get(k);
 
                         // Hacker update
                         if (vitalsPanel.IsDead)

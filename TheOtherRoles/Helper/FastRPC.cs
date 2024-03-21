@@ -35,59 +35,72 @@ internal class FastRpcWriter(MessageWriter writer)
     {
         var writer = StartNew(option, mode, TargetId, targetObjectId);
         writer.SetRpcCallId(rpc);
-        writer.StartDataAllMessage();
+        
+        if (mode == RPCSendMode.SendToAll)
+            writer.StartDataAllMessage();
+
+        if (mode == RPCSendMode.SendToPlayer)
+            writer.StartDataToPlayerMessage();
+        
         writer.StartRPCMessage();
         return writer;
     }
 
-    public void StartSendAllRPCWriter()
+    public FastRpcWriter StartSendAllRPCWriter()
     {
         Clear();
         writer = MessageWriter.Get(Option);
         StartDataAllMessage();
         StartRPCMessage();
+        return this;
     }
 
-    public void StartSendToPlayerRPCWriter()
+    public FastRpcWriter StartSendToPlayerRPCWriter()
     {
         Clear();
         writer = MessageWriter.Get(Option);
         StartDataToPlayerMessage();
         StartRPCMessage();
+        return this;
     }
 
-    public void SetSendOption(SendOption option)
+    public FastRpcWriter SetSendOption(SendOption option)
     {
         Option = option;
+        return this;
     }
 
-    public void SetTargetObjectId(uint id)
+    public FastRpcWriter SetTargetObjectId(uint id)
     {
         if (targetObjectId == 255)
         {
             targetObjectId = CachedPlayer.LocalPlayer.PlayerControl.NetId;
-            return;
+            return this;
         }
 
         targetObjectId = id;
+        return this;
     }
     
-    public void SetRpcCallId(CustomRPC id)
+    public FastRpcWriter SetRpcCallId(CustomRPC id)
     {
         CallId = (byte)id;
+        return this;
     }
 
-    public void SetRpcCallId(byte id)
+    public FastRpcWriter SetRpcCallId(byte id)
     {
         CallId = id;
+        return this;
     }
 
-    public void SetTargetId(int id)
+    public FastRpcWriter SetTargetId(int id)
     {
         if (id == -1)
-            return;
+            return this;
         
         SendTargetId = id;
+        return this;
     }
 
     public void Clear()

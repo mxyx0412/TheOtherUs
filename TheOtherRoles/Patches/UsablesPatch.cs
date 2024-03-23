@@ -563,7 +563,7 @@ namespace TheOtherRoles.Patches {
                         }
                         else
                         {
-                            Debug.LogWarning("Couldn't find counter for:" + counterArea.RoomType);
+                            Warn("Couldn't find counter for:" + counterArea.RoomType);
                         }
                     }
                     else

@@ -826,7 +826,7 @@ namespace TheOtherRoles.Patches {
                 case RoleId.EvilGuesser:
                     selection = CustomOptionHolder.modifierAssassin.getSelection();
                     if (!Cultist.isCultistGame){
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
+                        if (multiplyQuantity) selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
                     }
                     break; 
             }

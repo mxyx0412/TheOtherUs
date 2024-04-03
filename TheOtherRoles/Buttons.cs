@@ -1403,7 +1403,8 @@ namespace TheOtherRoles
                 Miner.getMineButtonSprite(),
                 CustomButton.ButtonPositions.upperRowLeft, //brb
                 __instance,
-                KeyCode.V
+                KeyCode.V,
+                buttonText:"Mine"
             );
 
             bomber2BombButton = new CustomButton(

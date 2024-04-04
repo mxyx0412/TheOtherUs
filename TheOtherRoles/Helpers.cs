@@ -521,7 +521,16 @@ namespace TheOtherRoles {
         }
 
         public static bool hasFakeTasks(this PlayerControl player) {
-            return (player == Werewolf.werewolf || player == Jester.jester || player == Amnisiac.amnisiac || player == Jackal.jackal || player == Sidekick.sidekick || player == Arsonist.arsonist || player == Vulture.vulture || Jackal.formerJackals.Any(x => x == player));
+            return (player == Werewolf.werewolf 
+                    //|| player == Juggernaut.juggernaut
+                    || player == Jester.jester 
+                    || player == Jackal.jackal 
+                    || player == Sidekick.sidekick 
+                    || player == Arsonist.arsonist
+                    || player == Pursuer.pursuer
+                    || player == Lawyer.lawyer
+                    || player == Vulture.vulture 
+                    || Jackal.formerJackals.Any(x => x == player));
         }
 
         public static bool canBeErased(this PlayerControl player) {

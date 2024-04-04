@@ -33,7 +33,8 @@ namespace TheOtherRoles.Patches {
                     p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
                     player.SetSkin(data.DefaultOutfit.SkinId, data.DefaultOutfit.ColorId);
                     player.cosmetics.SetHat(data.DefaultOutfit.HatId, data.DefaultOutfit.ColorId);
-                   // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
+                    CachedPlayer.LocalPlayer.PlayerControl.SetKillTimer(ResetButtonCooldown.killCooldown);
+                    // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
                     player.cosmetics.nameText.text = data.PlayerName;
                     player.SetFlipX(true);
                     TORMapOptions.playerIcons[p.PlayerId] = player;

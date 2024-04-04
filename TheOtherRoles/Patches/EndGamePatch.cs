@@ -492,7 +492,7 @@ namespace TheOtherRoles.Patches {
 
         private static bool CheckAndEndGameForTaskWin(ShipStatus __instance) {
             if (HideNSeek.isHideNSeekGM && !HideNSeek.taskWinPossible || PropHunt.isPropHuntGM) return false;
-            if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks) {
+            if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks && !PreventTaskEnd.Enable) {
                 //__instance.enabled = false;
                 GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;

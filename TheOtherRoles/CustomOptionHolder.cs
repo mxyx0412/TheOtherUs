@@ -438,6 +438,7 @@ namespace TheOtherRoles {
         public static CustomOption impostorSeeRoles;
         public static CustomOption transparentTasks;
         public static CustomOption randomGameStartPosition;
+        public static CustomOption randomGameStartToVents;
         public static CustomOption allowModGuess;
         public static CustomOption finishTasksBeforeHauntingOrZoomingOut;
         public static CustomOption camsNightVision;
@@ -1095,6 +1096,7 @@ namespace TheOtherRoles {
             showButtonTarget = CustomOption.Create(9994, Types.General, "Show Button Target", true);
             blockGameEnd = CustomOption.Create(9995, Types.General, "Block Game End If Power Crew Is Alive", false);
             randomGameStartPosition = CustomOption.Create(9041, Types.General, "Random Spawn Location", false);
+            randomGameStartToVents = CustomOption.Create(9042, Types.General, "Random Spawn To Vents", false, randomGameStartPosition);
             allowModGuess = CustomOption.Create(9043, Types.General, "Allow Guessing Some Modifiers", false);
             preventTaskEnd = CustomOption.Create(43, Types.General, "Prevent Task End Game", false, null, true);
 

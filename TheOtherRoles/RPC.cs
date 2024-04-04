@@ -94,6 +94,7 @@ namespace TheOtherRoles
         Swooper,
         Sunglasses,
         Torch,
+        Flash,
         Multitasker,
         Mini,
         Vip,
@@ -531,10 +532,12 @@ namespace TheOtherRoles
                 case RoleId.Torch:
                     Torch.torch.Add(player);
                     break;
+                case RoleId.Flash:
+                    Flash.flash.Add(player);
+                    break;
                 case RoleId.Slueth:
                     Slueth.slueth = player;
                     break;
-                
                 case RoleId.Cursed:
                     Cursed.cursed = player;
                     break;
@@ -1597,6 +1600,7 @@ namespace TheOtherRoles
                 if (AntiTeleport.antiTeleport.Any(x => x.PlayerId == player.PlayerId)) AntiTeleport.antiTeleport.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (Sunglasses.sunglasses.Any(x => x.PlayerId == player.PlayerId)) Sunglasses.sunglasses.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (Torch.torch.Any(x => x.PlayerId == player.PlayerId)) Torch.torch.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (Flash.flash.Any(x => x.PlayerId == player.PlayerId)) Flash.flash.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (Multitasker.multitasker.Any(x => x.PlayerId == player.PlayerId)) Multitasker.multitasker.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (player == Tiebreaker.tiebreaker) Tiebreaker.clearAndReload();
                 if (player == Mini.mini) Mini.clearAndReload();

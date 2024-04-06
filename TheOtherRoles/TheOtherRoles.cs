@@ -77,8 +77,6 @@ namespace TheOtherRoles
             Miner.clearAndReload();
             Trapper.clearAndReload();
             Bomber.clearAndReload();
-            //Guesser.clearAndReload();
-            //Swooper.clearAndReload();
 
             // Modifier
             Bait.clearAndReload();

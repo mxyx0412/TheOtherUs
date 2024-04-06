@@ -6,7 +6,6 @@ using static TheOtherRoles.TheOtherRoles;
 using TheOtherRoles.Objects;
 using System.Linq;
 using System.Collections.Generic;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
 using TheOtherRoles.Patches;
@@ -111,7 +110,7 @@ namespace TheOtherRoles
                     createButtonsPostfix(HudManager.Instance);
                 } 
                 catch {
-                    TheOtherRolesPlugin.Logger.LogWarning("Button cooldowns not set, either the gamemode does not require them or there's something wrong.");
+                    Warn("Button cooldowns not set, either the gamemode does not require them or there's something wrong.");
                     return;
                 }
             }

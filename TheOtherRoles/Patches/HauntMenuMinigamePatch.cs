@@ -1,12 +1,12 @@
 ﻿using HarmonyLib;
 using AmongUs.GameOptions;
-using System.Collections.Generic;
 using System.Linq;
-using TheOtherRoles.Players;
 using System;
 using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch]
     public static class HauntMenuMinigamePatch {
 

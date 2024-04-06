@@ -1,19 +1,17 @@
-﻿using AmongUs.Data;
-using AmongUs.GameOptions;
+﻿using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherRoles.Patches;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TMPro;
 using UnityEngine;
 
-namespace TheOtherRoles.CustomGameModes {
+namespace TheOtherRoles.CustomGameModes
+{
     [HarmonyPatch]
     class PropHunt {
         public static bool isPropHuntGM = false;
@@ -128,11 +126,11 @@ namespace TheOtherRoles.CustomGameModes {
             if (debug) {
                 allNames = Helpers.readTextFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Props.txt");
             }
-            TheOtherRolesPlugin.Logger.LogMessage($"after debug");
+            Message($"after debug");
             whitelistedObjects = allNames.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).ToList();
-            TheOtherRolesPlugin.Logger.LogMessage($"after split");
-            
-            TheOtherRolesPlugin.Logger.LogMessage($"Last element: {whitelistedObjects.Last()}");
+            Message($"after split");
+
+            Message($"Last element: {whitelistedObjects.Last()}");
         }
 
 
@@ -362,7 +360,7 @@ namespace TheOtherRoles.CustomGameModes {
                 }
                 foreach (Collider2D collider in Physics2D.OverlapCircleAll(origin.transform.position, radius)) {
                     if (verbose) {
-                        TheOtherRolesPlugin.Logger.LogMessage($"Nearby Object: {collider.gameObject.name}");
+                        Message($"Nearby Object: {collider.gameObject.name}");
                     }
                     bool whiteListed = false;
                     foreach (var whiteListedWord in whitelistedObjects) {

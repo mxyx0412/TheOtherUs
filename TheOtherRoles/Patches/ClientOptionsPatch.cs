@@ -8,7 +8,7 @@ using UnityEngine.Events;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
-namespace TheOtherRoles.Patches 
+namespace TheOtherRoles.Patches
 {
     [HarmonyPatch]
     public static class ClientOptionsPatch

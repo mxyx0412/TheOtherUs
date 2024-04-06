@@ -3,7 +3,8 @@ using System;
 using UnityEngine;
 using System.Linq;
 
-namespace TheOtherRoles {
+namespace TheOtherRoles
+{
     public class DeadPlayer
     {
         public enum CustomDeathReason {

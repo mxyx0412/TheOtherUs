@@ -1,8 +1,6 @@
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
-using static TheOtherRoles.TheOtherRoles;
-using TheOtherRoles.Players;
 
 
 namespace TheOtherRoles.Patches
@@ -116,7 +114,7 @@ namespace TheOtherRoles.Patches
             }
             else
             {
-                Helpers.Log("Couldn't move elements as not all of them have been fetched.");
+                Error("Couldn't move elements as not all of them have been fetched.");
             }
 
             if (CustomOptionHolder.movePolusVents.getBool()) AdjustVents(); // Programed
@@ -238,7 +236,7 @@ namespace TheOtherRoles.Patches
             }
             else
             {
-                Helpers.Log("Couldn't adjust Vents as not all objects have been fetched.");
+                Error("Couldn't adjust Vents as not all objects have been fetched.");
             }
         }
 

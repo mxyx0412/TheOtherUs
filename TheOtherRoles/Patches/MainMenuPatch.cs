@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
-using TheOtherRoles.Patches;
 using UnityEngine.SceneManagement;
-using TheOtherRoles.Utilities;
 using AmongUs.Data;
 using Assets.InnerNet;
-using System.Linq;
 
-namespace TheOtherRoles.Modules {
+namespace TheOtherRoles.Modules
+{
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class MainMenuPatch {
         private static bool horseButtonState = TORMapOptions.enableHorseMode;
@@ -71,7 +67,7 @@ namespace TheOtherRoles.Modules {
                 if (popUp != null) Object.Destroy(popUp);
                 var popUpTemplate = Object.FindObjectOfType<AnnouncementPopUp>(true);
                 if (popUpTemplate == null) {
-                    TheOtherRolesPlugin.Logger.LogError("couldnt show credits, popUp is null");
+                    Error("couldnt show credits, popUp is null");
                     return;
                 }
                 popUp = Object.Instantiate(popUpTemplate);

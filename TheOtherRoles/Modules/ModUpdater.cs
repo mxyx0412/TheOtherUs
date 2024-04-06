@@ -14,9 +14,9 @@ using UnityEngine.SceneManagement;
 using AmongUs.Data;
 using Assets.InnerNet;
 using Twitch;
-using static StarGen;
 
-namespace TheOtherRoles.Modules {
+namespace TheOtherRoles.Modules
+{
     public class ModUpdater : MonoBehaviour {
         public const string RepositoryOwner = "SpexGH";
         public const string RepositoryName = "TheOtherUs";
@@ -189,7 +189,7 @@ namespace TheOtherRoles.Modules {
             var mgr = FindObjectOfType<MainMenuManager>(true);
             var popUpTemplate = UnityEngine.Object.FindObjectOfType<AnnouncementPopUp>(true);
             if (popUpTemplate == null) {
-                TheOtherRolesPlugin.Logger.LogError("couldnt show credits, popUp is null");
+                Error("couldnt show credits, popUp is null");
                 yield return null;
             }
             var popUp = UnityEngine.Object.Instantiate(popUpTemplate);

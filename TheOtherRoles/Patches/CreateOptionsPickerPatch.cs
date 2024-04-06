@@ -1,12 +1,10 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
-using static UnityEngine.UI.Button;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch(typeof(CreateOptionsPicker))]
     class CreateOptionsPickerPatch {
         private static List<SpriteRenderer> renderers = new List<SpriteRenderer>();

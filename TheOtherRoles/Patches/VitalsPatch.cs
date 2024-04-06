@@ -4,10 +4,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.GameHistory;
-using System.Reflection;
-using TheOtherRoles.Players;
+using TheOtherRoles.Utilities;
 
 namespace TheOtherRoles.Patches
 {
@@ -100,36 +98,27 @@ namespace TheOtherRoles.Patches
                 return true;
             }
 
-            static void Postfix(VitalsMinigame __instance)
+            private static void Postfix(VitalsMinigame __instance)
             {
-
                 // Hacker show time since death
-                if (Hacker.hacker != null && Hacker.hacker == CachedPlayer.LocalPlayer.PlayerControl && Hacker.hackerTimer > 0)
-                {
-                    for (int k = 0; k < __instance.vitals.Length; k++)
+                if (Hacker.hacker != null && Hacker.hacker == CachedPlayer.LocalPlayer.PlayerControl &&
+                    Hacker.hackerTimer > 0)
+                    for (var k = 0; k < __instance.vitals.Length; k++)
                     {
-                        VitalsPanel vitalsPanel = __instance.vitals[k];
-                        GameData.PlayerInfo player = GameData.Instance.AllPlayers[k];
+                        var vitalsPanel = __instance.vitals[k];
+                        var player = GameData.Instance.AllPlayers.Get(k);
 
                         // Hacker update
-                        if (vitalsPanel.IsDead)
-                        {
-                            DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == player?.PlayerId)?.FirstOrDefault();
-                            if (deadPlayer != null && deadPlayer.timeOfDeath != null && k < hackerTexts.Count && hackerTexts[k] != null)
-                            {
-                                float timeSinceDeath = ((float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds);
-                                hackerTexts[k].gameObject.SetActive(true);
-                                hackerTexts[k].text = Math.Round(timeSinceDeath / 1000) + "s";
-                            }
-                        }
+                        if (!vitalsPanel.IsDead) continue;
+                        var deadPlayer = deadPlayers?.Where(x => x.player.PlayerId == player?.PlayerId)?.FirstOrDefault();
+                        if (deadPlayer == null || k >= hackerTexts.Count || hackerTexts[k] == null) continue;
+                        var timeSinceDeath = (float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds;
+                        hackerTexts[k].gameObject.SetActive(true);
+                        hackerTexts[k].text = Math.Round(timeSinceDeath / 1000) + "s";
                     }
-                }
                 else
-                {
-                    foreach (TMPro.TextMeshPro text in hackerTexts)
-                        if (text != null && text.gameObject != null)
-                            text.gameObject.SetActive(false);
-                }
+                    foreach (var text in hackerTexts.Where(text => text != null && text.gameObject != null))
+                        text.gameObject.SetActive(false);
             }
         }
     }

@@ -5,11 +5,11 @@ using System.Linq;
 using static TheOtherRoles.TheOtherRoles;
 using TheOtherRoles.Objects;
 using System;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using UnityEngine;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
     [HarmonyPriority(Priority.First)]
     class ExileControllerBeginPatch {

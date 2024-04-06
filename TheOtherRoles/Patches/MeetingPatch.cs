@@ -6,13 +6,12 @@ using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.TORMapOptions;
 using TheOtherRoles.Objects;
 using System;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using UnityEngine;
-using Innersloth.Assets;
 using Reactor.Utilities;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch]
     class MeetingHudPatch {
         static bool[] selections;
@@ -204,7 +203,7 @@ namespace TheOtherRoles.Patches {
                         MeetingHud.VoterState voterState = states[j];
                         GameData.PlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
                         if (playerById == null) {
-                            Debug.LogError(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId));
+                            Error(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId));
                         } else if (i == 0 && voterState.SkippedVote && !playerById.IsDead) {
                             __instance.BloopAVoteIcon(playerById, num, __instance.SkippedVoting.transform);
                             num++;

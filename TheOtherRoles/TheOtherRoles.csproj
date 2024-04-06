@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Version>1.3.6</Version>
+		<AssemblyName>TheOtherRoles</AssemblyName>
         <Description>TheOtherUs</Description>
         <Authors>Spex</Authors>
 		<LangVersion>latest</LangVersion>
@@ -17,6 +18,7 @@
    
 	<ItemGroup>
 		<PackageReference Include="AmongUs.GameLibs.Steam" Version="2024.3.5" />
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
 		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.688" />
 		<PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" />
         <PackageReference Include="Reactor" Version="2.2.0" />
@@ -31,6 +33,6 @@
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="Exists('$(AmongUsLatest)/BepInEx/plugins/')">
         <Message Text="Second occurrence" />
-        <Copy SourceFiles="$(ProjectDir)\bin\$(Configuration)\net6.0\TheOtherRoles.dll" DestinationFolder="$(AmongUsLatest)/BepInEx/plugins/" />
+        <Copy SourceFiles="$(ProjectDir)\bin\$(Configuration)\net6.0\$(AssemblyName).dll" DestinationFolder="$(AmongUsLatest)/BepInEx/plugins/" />
     </Target>
 </Project>

@@ -1,12 +1,10 @@
 using Hazel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using UnityEngine;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
     public class Bomb {
         public GameObject bomb;
         public GameObject background;

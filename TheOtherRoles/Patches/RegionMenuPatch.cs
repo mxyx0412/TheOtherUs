@@ -30,7 +30,8 @@ using System;
 using TheOtherRoles.Utilities;
 using UnityEngine.Events;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch(typeof(RegionMenu), nameof(RegionMenu.Open))]
     public static class RegionMenuOpenPatch
     {

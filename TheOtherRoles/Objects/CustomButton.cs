@@ -1,13 +1,13 @@
-using Il2CppSystem.Runtime.ExceptionServices;
 using System;
 using System.Collections.Generic;
-using TheOtherRoles.Players;
+using TheOtherRoles.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static TheOtherRoles.TheOtherRoles;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
     public class CustomButton {
         public static List<CustomButton> buttons = new List<CustomButton>();
         public ActionButton actionButton;

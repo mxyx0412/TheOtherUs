@@ -1,4 +1,4 @@
-  
+
 using HarmonyLib;
 using static TheOtherRoles.TheOtherRoles;
 using System.Collections.Generic;
@@ -6,11 +6,11 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Text;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     enum CustomGameOverReason {
         LoversWin = 10,
         TeamJackalWin = 11,

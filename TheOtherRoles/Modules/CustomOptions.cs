@@ -6,9 +6,7 @@ using System.IO;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
-using System.Reflection;
 using System.Text;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.CustomOption;
@@ -16,9 +14,9 @@ using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP;
 using BepInEx;
-using static ShipStatus;
 
-namespace TheOtherRoles {
+namespace TheOtherRoles
+{
     public class CustomOption {
         public enum CustomOptionType {
             General,
@@ -227,7 +225,7 @@ namespace TheOtherRoles {
                     CustomOption option = CustomOption.options.First(option => option.id == id);
                     option.updateSelection(selection);
                 } catch (Exception e) {
-                    TheOtherRolesPlugin.Logger.LogWarning($"{e}: while deserializing - tried to paste invalid settings!");
+                    Warn($"{e}: while deserializing - tried to paste invalid settings!");
                 }
             }
         }
@@ -250,7 +248,7 @@ namespace TheOtherRoles {
                 loadVanillaOptions();
                 return true;
             } catch (Exception e) {
-                TheOtherRolesPlugin.Logger.LogWarning($"{e}: tried to paste invalid settings!");
+                Warn($"{e}: tried to paste invalid settings!");
                 SoundEffectsManager.Load();
                 SoundEffectsManager.play("fail");
                 return false;
@@ -788,7 +786,7 @@ namespace TheOtherRoles {
 
         private static void setOptions (List<GameOptionsMenu> menus, List<List<OptionBehaviour>> options, List<GameObject> settings) {
             if (!(menus.Count == options.Count && options.Count == settings.Count)) {
-                TheOtherRolesPlugin.Logger.LogError("List counts are not equal");
+                Error("List counts are not equal");
                 return;
             }
             for (int i = 0; i < menus.Count; i++) {

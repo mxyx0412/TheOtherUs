@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TheOtherRoles.CustomGameModes;
+﻿using TheOtherRoles.CustomGameModes;
 using UnityEngine;
 
-namespace TheOtherRoles.Utilities {
+namespace TheOtherRoles.Utilities
+{
     public static class HandleGuesser {
         private static Sprite targetSprite;
         public static bool isGuesserGm = false;

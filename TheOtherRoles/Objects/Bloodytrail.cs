@@ -4,7 +4,8 @@ using TheOtherRoles.Utilities;
 using UnityEngine;
 using static TheOtherRoles.TheOtherRoles;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
     class Bloodytrail {
         private static List<Bloodytrail> bloodytrail = new List<Bloodytrail>();
         private static List<Sprite> sprites = new List<Sprite>();

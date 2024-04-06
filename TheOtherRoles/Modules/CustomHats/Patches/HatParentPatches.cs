@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using HarmonyLib;
 using PowerTools;
-using TheOtherRoles;
 using TheOtherRoles.Modules.CustomHats.Extensions;
 using UnityEngine;
 
@@ -262,7 +261,7 @@ internal static class HatParentPatches
         }
         catch (Exception err)
         {
-            TheOtherRolesPlugin.Logger.LogWarning($"Unable to create test hat \n{err}");
+            Warn($"Unable to create test hat \n{err}");
             return true;
         }
 

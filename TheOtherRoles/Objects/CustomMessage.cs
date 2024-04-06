@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System;
 using TheOtherRoles.Utilities;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
 
     public class CustomMessage {
 

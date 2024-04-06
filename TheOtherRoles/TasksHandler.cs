@@ -1,8 +1,8 @@
 using HarmonyLib;
 using System;
-using TheOtherRoles.Utilities;
 
-namespace TheOtherRoles {
+namespace TheOtherRoles
+{
     [HarmonyPatch]
     public static class TasksHandler {
 

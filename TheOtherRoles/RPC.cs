@@ -1827,9 +1827,9 @@ namespace TheOtherRoles
             if  (AntiTeleport.antiTeleport.FindAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerControl.PlayerId).Count == 0 && !CachedPlayer.LocalPlayer.Data.IsDead) {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers){
                     if (MapBehaviour.Instance)
-                MapBehaviour.Instance.Close();
-            if (Minigame.Instance)
-                Minigame.Instance.ForceClose();
+                        MapBehaviour.Instance.Close();
+                    if (Minigame.Instance)
+                        Minigame.Instance.ForceClose();
                     if (PlayerControl.LocalPlayer.inVent)
                 {
                     PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
@@ -1837,30 +1837,21 @@ namespace TheOtherRoles
                 };
                     if (Disperser.dispersesToVent)
                     {
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = FindVentPoss.findVentPoss()[rnd.Next(FindVentPoss.findVentPoss().Count)];
+                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = MapData.FindVentSpawnPositions().Random();
                     }
-                    else {
-                        switch (GameOptionsManager.Instance.currentNormalGameOptions.MapId)
-                        {
-                            case 0:
-                                CachedPlayer.LocalPlayer.PlayerControl.transform.position = skeldSpawn[rnd.Next(skeldSpawn.Count)];
-                                break;
-                            case 1:
-                                CachedPlayer.LocalPlayer.PlayerControl.transform.position = miraSpawn[rnd.Next(miraSpawn.Count)];
-                                break;
-                            case 2:
-                                CachedPlayer.LocalPlayer.PlayerControl.transform.position = polusSpawn[rnd.Next(polusSpawn.Count)];
-                                break;
-                            case 3:
-                                CachedPlayer.LocalPlayer.PlayerControl.transform.position = dleksSpawn[rnd.Next(dleksSpawn.Count)];
-                                break;
-                            case 4:
-                                CachedPlayer.LocalPlayer.PlayerControl.transform.position = airshipSpawn[rnd.Next(airshipSpawn.Count)];
-                                break;
-                            case 5:
-                                CachedPlayer.LocalPlayer.PlayerControl.transform.position = fungleSpawn[rnd.Next(fungleSpawn.Count)];
-                                break;
-                        }
+                    else
+                    {
+                        CachedPlayer.LocalPlayer.PlayerControl.transform.position =
+                            GameOptionsManager.Instance.currentNormalGameOptions.MapId switch
+                            {
+                                0 => MapData.SkeldSpawnPosition.Random(),
+                                1 => MapData.MiraSpawnPosition.Random(),
+                                2 => MapData.PolusSpawnPosition.Random(),
+                                3 => MapData.DleksSpawnPosition.Random(),
+                                4 => MapData.AirshipSpawnPosition.Random(),
+                                5 => MapData.FungleSpawnPosition.Random(),
+                                _ => CachedPlayer.LocalPlayer.PlayerControl.transform.position
+                            };
                     }
                 }
                 Disperser.remainingDisperses--;

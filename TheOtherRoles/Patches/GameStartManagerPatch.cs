@@ -13,6 +13,7 @@ using Object = UnityEngine.Object;
 
 namespace TheOtherRoles.Patches;
 
+[HarmonyPatch]
 public class GameStartManagerPatch  
 {
     public static float timer = 600f;
@@ -98,7 +99,7 @@ public class GameStartManagerPatch
                     RPCProcedure.setGameStarting();
 
                     // Activate Stop-Button
-                    copiedStartButton = GameObject.Instantiate(__instance.StartButton.gameObject, __instance.StartButton.gameObject.transform.parent);
+                    copiedStartButton = Object.Instantiate(__instance.StartButton.gameObject, __instance.StartButton.gameObject.transform.parent);
                     copiedStartButton.transform.localPosition = __instance.StartButton.transform.localPosition;
                     copiedStartButton.GetComponent<SpriteRenderer>().sprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.StopClean.png", 180f);
                     copiedStartButton.SetActive(true);

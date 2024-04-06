@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Hazel;
+using InnerNet;
 using TheOtherRoles.Patches;
 using TheOtherRoles.Players;
 
@@ -9,6 +11,8 @@ namespace TheOtherRoles.Helper;
 
 public static class HandshakeHelper
 {
+    public static readonly Dictionary<int, PlayerVersion> playerVersions = new();
+    
     public enum ShareMode
     {
         Guid = 0,
@@ -23,12 +27,63 @@ public static class HandshakeHelper
             .Write((byte)TORMapOptions.gameMode)
             .RPCSend();
     }
+
+    #nullable enable
+    public static bool GetVersionHandshake(out ClientData[]? players, out string message)
+    {
+        players = null;
+        message = string.Empty;
+#if DEBUG
+        return false;
+#endif
+        var versionMismatch = false;
+        foreach (var client in AmongUsClient.Instance.allClients.ToArray().Where(data => data.Id != AmongUsClient.Instance.ClientId)) {
+                if (client.Character == null) continue;
+                var dummyComponent = client.Character.GetComponent<DummyBehaviour>();
+                if (dummyComponent != null && dummyComponent.enabled)
+                    continue;
+                
+                if (!playerVersions.ContainsKey(client.Id))  
+                {
+                    againSend(client.Id, ShareMode.Again);
+                    versionMismatch = true;
+                    message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of The Other Us\n</color>";
+                } 
+                else 
+                {
+                    var PV = playerVersions[client.Id];
+                    var diff = Main.Version.CompareTo(PV.version);
+                    if (PV.guid == null)
+                    {
+                        againSend(client.Id, ShareMode.Guid);
+                        continue;
+                    }
+                    
+                    switch (diff)
+                    {
+                        case > 0:
+                            versionMismatch = false;
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                            break;
+                        case < 0:
+                            versionMismatch = false;
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                            break;
+                        default:
+                        {
+                            versionMismatch = PV.GuidMatches();
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOU v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
+                            break;
+                        }
+                    }
+                }
+        }
+        return versionMismatch;
+    }
+    #nullable disable
     
     public static void shareGameVersion()
     {
-        versionHandshake(Main.Version.Major, Main.Version.Minor,
-            Main.Version.Build, Main.Version.Revision, AmongUsClient.Instance.ClientId);
-
         var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshake)
             .WritePacked(AmongUsClient.Instance.ClientId)
             .Write(Main.Version.Major)
@@ -42,7 +97,7 @@ public static class HandshakeHelper
     public static void versionHandshake(int major, int minor, int build, int revision, int clientId)
     {
         var ver = revision < 0 ? new Version(major, minor, build) : new Version(major, minor, build, revision);
-        GameStartManagerPatch.playerVersions[clientId] = new PlayerVersion(ver)
+        playerVersions[clientId] = new PlayerVersion(ver)
         {
             PlayerId = clientId
         };
@@ -68,7 +123,7 @@ public static class HandshakeHelper
         {
             var length = reader.ReadInt32();
             var bytes = reader.ReadBytes(length);
-            GameStartManagerPatch.playerVersions[clientId].guid = new Guid(bytes);
+            playerVersions[clientId].guid = new Guid(bytes);
         }
 
         void Again()
@@ -91,7 +146,7 @@ public static class HandshakeHelper
     {
         var clientId = AmongUsClient.Instance.ClientId;
         var bytes = Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
-        GameStartManagerPatch.playerVersions[clientId].guid = new Guid(bytes);
+        playerVersions[clientId].guid = new Guid(bytes);
 
         var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx)
             .WritePacked(AmongUsClient.Instance.ClientId)

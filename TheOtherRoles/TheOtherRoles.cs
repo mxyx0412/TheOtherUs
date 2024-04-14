@@ -6,6 +6,7 @@ using System.Linq;
 using TheOtherRoles.CustomGameModes;
 using TheOtherRoles.Objects;
 using TheOtherRoles.Utilities;
+using TMPro;
 using UnityEngine;
 using static TheOtherRoles.TheOtherRoles;
 
@@ -1100,7 +1101,7 @@ namespace TheOtherRoles
             garlicButton = CustomOptionHolder.vampireGarlicButton.getBool();
         }
     }
-
+    /*
     public static class Snitch {
         public static PlayerControl snitch;
         public static Color color = new Color32(184, 251, 79, byte.MaxValue);
@@ -1133,6 +1134,58 @@ namespace TheOtherRoles
             needsUpdate = true;
             mode = (Mode) CustomOptionHolder.snitchMode.getSelection();
             targets = (Targets) CustomOptionHolder.snitchTargets.getSelection();
+        }
+    }
+    */
+
+    public static class Snitch
+    {
+        public static PlayerControl snitch;
+        public static Color color = new Color32(184, 251, 79, byte.MaxValue);
+
+        public static List<Arrow> localArrows = new List<Arrow>();
+        public static int taskCountForReveal = 1;
+        public static bool seeInMeeting = false;
+        public static bool canSeeRoles = false;
+        //public static bool includeTeamJackal = false;
+        //public static bool includeNeutralTeam = false;
+        public static bool teamNeutraUseDifferentArrowColor = true;
+        public static bool needsUpdate = true;
+
+        public enum includeNeutralTeam
+        {
+            NoIncNeutral = 0,
+            KillNeutral = 1,
+            EvilNeutral = 2,
+            AllNeutral = 3
+        }
+
+        public static includeNeutralTeam Team = includeNeutralTeam.KillNeutral;
+        public static TextMeshPro text;
+        public static bool isRevealed;
+
+
+        public static void clearAndReload()
+        {
+            if (localArrows != null)
+            {
+                foreach (Arrow arrow in localArrows)
+                    if (arrow?.arrow != null)
+                        UnityEngine.Object.Destroy(arrow.arrow);
+            }
+            localArrows = new List<Arrow>();
+            taskCountForReveal = Mathf.RoundToInt(CustomOptionHolder.snitchLeftTasksForReveal.getFloat());
+            seeInMeeting = CustomOptionHolder.snitchSeeMeeting.getBool();
+            isRevealed = false;
+            if (text != null) UnityEngine.Object.Destroy(text);
+            text = null;
+            needsUpdate = true;
+
+            canSeeRoles = CustomOptionHolder.snitchCanSeeRoles.getBool();
+            //includeNeutralTeam = CustomOptionHolder.snitchIncludeNeutralTeam.getBool();
+            Team = (includeNeutralTeam)CustomOptionHolder.snitchIncludeNeutralTeam.getSelection();
+            teamNeutraUseDifferentArrowColor = CustomOptionHolder.snitchTeamNeutraUseDifferentArrowColor.getBool();
+            snitch = null;
         }
     }
 

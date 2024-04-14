@@ -210,7 +210,7 @@ namespace TheOtherRoles
         MayorSetVoteTwice,
         PlaceBomb,
         DefuseBomb,
-        ShareRoom,
+        //ShareRoom,
 
         // Gamemode
         SetGuesserGm,
@@ -2635,12 +2635,13 @@ namespace TheOtherRoles
             bomberButton.isEffectActive = false;
             bomberButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }
-
+        /*
         public static void shareRoom(byte playerId, byte roomId)
         {
             if (Snitch.playerRoomMap.ContainsKey(playerId)) Snitch.playerRoomMap[playerId] = roomId;
             else Snitch.playerRoomMap.Add(playerId, roomId);
         }
+        */
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -3026,11 +3027,13 @@ namespace TheOtherRoles
                 case CustomRPC.ShareGhostInfo:
                     RPCProcedure.receiveGhostInfo(reader.ReadByte(), reader);
                     break;
+                    /*
                 case CustomRPC.ShareRoom:
                     byte roomPlayer = reader.ReadByte();
                     byte roomId = reader.ReadByte();
                     RPCProcedure.shareRoom(roomPlayer, roomId);
                     break;
+                    */
             }
         }
     }

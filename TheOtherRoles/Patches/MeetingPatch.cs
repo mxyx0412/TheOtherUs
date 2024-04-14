@@ -244,10 +244,11 @@ namespace TheOtherRoles.Patches
                 // Mini
                 if (!Mini.isGrowingUpInMeeting) Mini.timeOfGrowthStart = Mini.timeOfGrowthStart.Add(DateTime.UtcNow.Subtract(Mini.timeOfMeetingStart)).AddSeconds(10);
 
+                /*
                 // Snitch
                 if (Snitch.snitch != null && !Snitch.needsUpdate && Snitch.snitch.Data.IsDead && Snitch.text != null) {
                     UnityEngine.Object.Destroy(Snitch.text);
-                }
+                }*/
             }
         }
 
@@ -454,7 +455,7 @@ namespace TheOtherRoles.Patches
                 if (Snitch.snitch != null && HandleGuesser.guesserCantGuessSnitch) {
                     var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
                     int numberOfLeftTasks = playerTotal - playerCompleted;
-                    if (numberOfLeftTasks <= 0 && roleInfo.roleId == RoleId.Snitch) continue;
+                    if (numberOfLeftTasks <= Snitch.taskCountForReveal && roleInfo.roleId == RoleId.Snitch) continue;
                 }
 
                 Transform buttonParent = (new GameObject()).transform;
@@ -570,7 +571,7 @@ namespace TheOtherRoles.Patches
                     swapperButtonList[i] = button;
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    button.OnClick.AddListener((System.Action)(() => swapperOnClick(copiedIndex, __instance)));
+                    button.OnClick.AddListener((Action)(() => swapperOnClick(copiedIndex, __instance)));
                     
                     selections[i] = false;
                     renderers[i] = renderer;
@@ -697,17 +698,20 @@ namespace TheOtherRoles.Patches
         class StartMeetingPatch {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)]GameData.PlayerInfo meetingTarget) {
                 RoomTracker roomTracker = FastDestroyableSingleton<HudManager>.Instance?.roomTracker;
-                byte roomId = Byte.MinValue;
+                byte roomId = byte.MinValue;
                 if (roomTracker != null && roomTracker.LastRoom != null) {
                     roomId = (byte)roomTracker.LastRoom?.RoomId;
                 }
-                if (Snitch.snitch != null && roomTracker != null) {
-                    MessageWriter roomWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareRoom, Hazel.SendOption.Reliable, -1);
+                /*
+                if (Snitch.snitch != null && roomTracker != null)
+                {
+                    var roomWriter = AmongUsClient.Instance.StartRpcImmediately(
+                        CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareRoom, SendOption.Reliable);
                     roomWriter.Write(CachedPlayer.LocalPlayer.PlayerId);
                     roomWriter.Write(roomId);
                     AmongUsClient.Instance.FinishRpcImmediately(roomWriter);
                 }
-
+                */
                 // Resett Bait list
                 Bait.active = new Dictionary<DeadPlayer, float>();
                 // Save AntiTeleport position, if the player is able to move (i.e. not on a ladder or a gap thingy)
@@ -729,7 +733,7 @@ namespace TheOtherRoles.Patches
                 if (meetingTarget == null) meetingsCount++;
                 // Save the meeting target
                 target = meetingTarget;
-                TORMapOptions.isRoundOne = false;
+                isRoundOne = false;
 
                 if (Blackmailer.blackmailed == CachedPlayer.LocalPlayer.PlayerControl) { Coroutines.Start(Helpers.BlackmailShhh()); }
 
@@ -758,7 +762,7 @@ namespace TheOtherRoles.Patches
                         foreach (PlayerControl p in trap.trappedPlayer) {
                             if (Trapper.infoType == 0) message += RoleInfo.GetRolesString(p, false, false, true) + "\n";
                             else if (Trapper.infoType == 1) {
-                                if (Helpers.isNeutral(p) || p.Data.Role.IsImpostor) message += "Evil Role \n";
+                                if (Helpers.isEvil(p) || p.Data.Role.IsImpostor) message += "Evil Role \n";
                                 else message += "Good Role \n";
                             }
                             else message += p.Data.PlayerName + "\n";
@@ -766,10 +770,10 @@ namespace TheOtherRoles.Patches
                         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Trapper.trapper, $"{message}");
                     }
                 }
-
+                
                 // Add Snitch info
                 string output = "";
-
+                /*
                 if (Snitch.snitch != null && Snitch.mode != Snitch.Mode.Map && (CachedPlayer.LocalPlayer.PlayerControl == Snitch.snitch || Helpers.shouldShowGhostInfo()) && !Snitch.snitch.Data.IsDead) {
                     var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
                     int numberOfTasks = playerTotal - playerCompleted;
@@ -794,11 +798,11 @@ namespace TheOtherRoles.Patches
                         })));
                     }
                 }
-
+                */
                 if (CachedPlayer.LocalPlayer.Data.IsDead && output != "") FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, $"{output}");
 
                 Trapper.playersOnMap = new List<PlayerControl>();
-                Snitch.playerRoomMap = new Dictionary<byte, byte>();
+                //Snitch.playerRoomMap = new Dictionary<byte, byte>();
 
                 // Remove revealed traps
                 Trap.clearRevealedTraps();

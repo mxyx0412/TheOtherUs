@@ -54,7 +54,8 @@ namespace TheOtherRoles.Patches
 					UnityEngine.Object.Destroy(s.Value);
 					herePoints.Remove(s.Key);
 				}
-			} else if (Snitch.snitch != null && CachedPlayer.LocalPlayer.PlayerId == Snitch.snitch.PlayerId && !Snitch.snitch.Data.IsDead && Snitch.mode != Snitch.Mode.Chat) {
+			} 
+			/*else if (Snitch.snitch != null && CachedPlayer.LocalPlayer.PlayerId == Snitch.snitch.PlayerId && !Snitch.snitch.Data.IsDead && Snitch.mode != Snitch.Mode.Chat) {
 				var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
 				int numberOfTasks = playerTotal - playerCompleted;
 
@@ -89,7 +90,7 @@ namespace TheOtherRoles.Patches
 					}
 				}
 			}
-
+			*/
 			foreach (var vent in MapUtilities.CachedShipStatus.AllVents) {
 				if ((vent.name.StartsWith("JackInThe") && !(PlayerControl.LocalPlayer == Trickster.trickster || PlayerControl.LocalPlayer.Data.IsDead))) continue; //for trickster vents
 

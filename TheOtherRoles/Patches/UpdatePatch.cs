@@ -1,4 +1,5 @@
 using AmongUs.GameOptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherRoles.CustomGameModes;
@@ -159,6 +160,50 @@ namespace TheOtherRoles.Patches
             } else if (Pursuer.pursuer != null && Pursuer.pursuer == localPlayer) {
                 setPlayerNameColor(Pursuer.pursuer, Pursuer.color);
             }*/
+
+            if (Snitch.snitch != null)
+            {
+                var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
+                int numberOfTasks = playerTotal - playerCompleted;
+                var snitchIsDead = Snitch.snitch.Data.IsDead;
+
+                bool forImp = localPlayer.Data.Role.IsImpostor;
+                bool forKillerTeam = Snitch.Team == Snitch.includeNeutralTeam.KillNeutral && Helpers.isKiller(localPlayer);
+                bool forEvilTeam = Snitch.Team == Snitch.includeNeutralTeam.EvilNeutral && Helpers.isEvil(localPlayer);
+                bool forNeutraTeam = Snitch.Team == Snitch.includeNeutralTeam.AllNeutral && Helpers.isNeutral(localPlayer);
+                if (numberOfTasks <= Snitch.taskCountForReveal)
+                {
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        if (forImp || forKillerTeam || forEvilTeam || forNeutraTeam)
+                        {
+                            setPlayerNameColor(Snitch.snitch, Snitch.color);
+                        }
+                    }
+                }
+                if (numberOfTasks == 0 && Snitch.seeInMeeting && !snitchIsDead)
+                {
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        bool TargetsImp = p.Data.Role.IsImpostor;
+                        bool TargetsKillerTeam = Snitch.Team == Snitch.includeNeutralTeam.KillNeutral && Helpers.isKiller(p);
+                        bool TargetsEvilTeam = Snitch.Team == Snitch.includeNeutralTeam.EvilNeutral && Helpers.isEvil(p);
+                        bool TargetsNeutraTeam = Snitch.Team == Snitch.includeNeutralTeam.AllNeutral && Helpers.isNeutral(p);
+                        var targetsRole = RoleInfo.getRoleInfoForPlayer(p, false).FirstOrDefault();
+                        if (localPlayer == Snitch.snitch && (TargetsImp || TargetsKillerTeam || TargetsEvilTeam || TargetsNeutraTeam))
+                        {
+                            if (Snitch.teamNeutraUseDifferentArrowColor)
+                            {
+                                setPlayerNameColor(p, targetsRole.color);
+                            }
+                            else
+                            {
+                                setPlayerNameColor(p, Palette.ImpostorRed);
+                            }
+                        }
+                    }
+                }
+            }
 
             // No else if here, as a Lover of team Jackal needs the colors
             if (Sidekick.sidekick != null && Sidekick.sidekick == localPlayer) {

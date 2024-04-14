@@ -237,11 +237,18 @@ namespace TheOtherRoles
         public static CustomOption trackerCanTrackCorpses;
         public static CustomOption trackerCorpsesTrackingCooldown;
         public static CustomOption trackerCorpsesTrackingDuration;
-
+        /*
         public static CustomOption snitchSpawnRate;
         public static CustomOption snitchLeftTasksForReveal;
         public static CustomOption snitchMode;
         public static CustomOption snitchTargets;
+        */
+        public static CustomOption snitchSpawnRate;
+        public static CustomOption snitchLeftTasksForReveal;
+        public static CustomOption snitchSeeMeeting;
+        public static CustomOption snitchCanSeeRoles;
+        public static CustomOption snitchIncludeNeutralTeam;
+        public static CustomOption snitchTeamNeutraUseDifferentArrowColor;
 
         public static CustomOption spySpawnRate;
         public static CustomOption spyCanDieToSheriff;
@@ -908,11 +915,19 @@ namespace TheOtherRoles
             trackerCanTrackCorpses = CustomOption.Create(30163, Types.Crewmate, "Tracker Can Track Corpses", true, trackerSpawnRate);
             trackerCorpsesTrackingCooldown = CustomOption.Create(30164, Types.Crewmate, "Corpses Tracking Cooldown", 30f, 5f, 120f, 5f, trackerCanTrackCorpses);
             trackerCorpsesTrackingDuration = CustomOption.Create(30165, Types.Crewmate, "Corpses Tracking Duration", 5f, 2.5f, 30f, 2.5f, trackerCanTrackCorpses);
-
+            /*
             snitchSpawnRate = CustomOption.Create(30170, Types.Crewmate, cs(Snitch.color, "Snitch"), rates, null, true);
             snitchLeftTasksForReveal = CustomOption.Create(30171, Types.Crewmate, "Task Count Where The Snitch Will Be Revealed", 5f, 0f, 25f, 1f, snitchSpawnRate);
             snitchMode = CustomOption.Create(30172, Types.Crewmate, "Information Mode", new string[] { "Chat", "Map", "Chat & Map" }, snitchSpawnRate);
             snitchTargets = CustomOption.Create(30173, Types.Crewmate, "Targets", new string[] { "All Evil Players", "Killing Players" }, snitchSpawnRate);
+            */
+
+            snitchSpawnRate = CustomOption.Create(30170, Types.Crewmate, cs(Snitch.color, "Snitch"), rates, null, true);
+            snitchLeftTasksForReveal = CustomOption.Create(30171, Types.Crewmate, "Task Count Where The Snitch Will Be Revealed", 1f, 0f, 10f, 1f, snitchSpawnRate);
+            snitchSeeMeeting = CustomOption.Create(30172, Types.Crewmate, "Show Roles In Meeting", false, snitchSpawnRate);
+            snitchCanSeeRoles = CustomOption.Create(30173, Types.Crewmate, "Can See Roles", false, snitchSpawnRate);
+            snitchIncludeNeutralTeam = CustomOption.Create(30174, Types.Crewmate, "Include Team Neutral", ["Off", "Killer", "Evil", "All"], snitchSpawnRate);
+            snitchTeamNeutraUseDifferentArrowColor = CustomOption.Create(30175, Types.Crewmate, "Use Different Color For Neutra Team", true, snitchIncludeNeutralTeam);
 
             spySpawnRate = CustomOption.Create(30180, Types.Crewmate, cs(Spy.color, "Spy"), rates, null, true);
             spyCanDieToSheriff = CustomOption.Create(30181, Types.Crewmate, "Spy Can Die To Sheriff", false, spySpawnRate);

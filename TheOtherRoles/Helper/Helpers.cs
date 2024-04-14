@@ -1262,19 +1262,19 @@ namespace TheOtherRoles.Helper
 
         public static bool isKiller(PlayerControl player)
         {
-            return player.Data.Role.IsImpostor ||
-                isNeutral(player) &&
-                player != Jester.jester &&
-                player != Arsonist.arsonist &&
-                player != Vulture.vulture &&
-                player != Lawyer.lawyer &&
-                player != Pursuer.pursuer;
-
+            return isNeutral(player) &&
+                    player == Werewolf.werewolf &&
+                    player == Swooper.swooper &&
+                    player == Arsonist.arsonist &&
+                    player == Jackal.jackal &&
+                    player == Sidekick.sidekick;
         }
 
         public static bool isEvil(PlayerControl player)
         {
-            return player.Data.Role.IsImpostor || isNeutral(player);
+            return isNeutral(player) &&
+                    player != Amnisiac.amnisiac &&
+                    player != Pursuer.pursuer;
         }
 
         public static bool zoomOutStatus = false;

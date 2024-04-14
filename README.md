@@ -134,8 +134,9 @@ Even more roles are coming soon. :)
 | 2021.3.5s          | v1.3        | [Download](https://github.com/Eisbison/TheOtherRoles/releases/download/v1.3/TheOtherRoles.zip) |
 | 2020.12.19s        | v1.1        | [Download](https://github.com/Eisbison/TheOtherRoles/releases/download/v1.1/TheOtherRoles.zip) |
 | 2020.12.19s        | v1.0        | [Download](https://github.com/Eisbison/TheOtherRoles/files/6097191/TheOtherRoles.zip) |
-| </details>         |             |                                                              |
 
+ </details> 
+ 
 # Changelog
 
 <details>

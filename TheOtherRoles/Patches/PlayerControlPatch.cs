@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using Assets.CoreScripts;
 using Hazel;
-using Reactor.Utilities.Extensions;
 using Sentry.Internal.Extensions;
 using System;
 using System.Collections.Generic;

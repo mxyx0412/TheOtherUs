@@ -1262,12 +1262,12 @@ namespace TheOtherRoles.Helper
 
         public static bool isKiller(PlayerControl player)
         {
-            return isNeutral(player) &&
-                    player == Werewolf.werewolf &&
-                    player == Swooper.swooper &&
-                    player == Arsonist.arsonist &&
-                    player == Jackal.jackal &&
-                    player == Sidekick.sidekick;
+            return isNeutral(player) && 
+                    (player == Werewolf.werewolf ||
+                    player == Swooper.swooper ||
+                    player == Arsonist.arsonist ||
+                    player == Jackal.jackal ||
+                    player == Sidekick.sidekick);
         }
 
         public static bool isEvil(PlayerControl player)

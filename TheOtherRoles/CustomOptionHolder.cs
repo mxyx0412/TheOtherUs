@@ -619,17 +619,16 @@ namespace TheOtherRoles
             blockGameEnd = CustomOption.Create(30, Types.General, "Block Game End If Power Crew Is Alive", false);
             allowModGuess = CustomOption.Create(31, Types.General, "Allow Guessing Some Modifiers", false);
 
-            transparentTasks = CustomOption.Create(32, Types.General, "Tasks Are Transparent", false);
-            disableMedbayWalk = CustomOption.Create(33, Types.General, "Disable MedBay Animations", false, null, false);
+            transparentTasks = CustomOption.Create(32, Types.General, "Tasks Are Transparent", false, null, true);
+            disableMedbayWalk = CustomOption.Create(33, Types.General, "Disable MedBay Animations", false);
             allowParallelMedBayScans = CustomOption.Create(34, Types.General, "Allow Parallel MedBay Scans", false);
             finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(35, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
-            //preventTaskEnd = CustomOption.Create(36, Types.General, "Prevent Task End Game", false, null, true);
+            //preventTaskEnd = CustomOption.Create(36, Types.General, "Prevent Task End Game", false);
 
             //Map options
-            randomGameStartPosition = CustomOption.Create(50, Types.General, "Random Spawn Location", false);
+            randomGameStartPosition = CustomOption.Create(50, Types.General, "Random Spawn Location", false, null, true);
             randomGameStartToVents = CustomOption.Create(51, Types.General, "Random Spawn To Vents", false, randomGameStartPosition);
-
-            enableBetterPolus = CustomOption.Create(60, Types.General, "Enable Better Polus", false, null, false);
+            enableBetterPolus = CustomOption.Create(60, Types.General, "Enable Better Polus", false);
             movePolusVents = CustomOption.Create(61, Types.General, "Adjust Vents", false, enableBetterPolus, false);
             movePolusVitals = CustomOption.Create(62, Types.General, "Move Vitals To Labs", false, enableBetterPolus, false);
             swapNavWifi = CustomOption.Create(63, Types.General, "Swap Reboot And Chart Course", false, enableBetterPolus, false);

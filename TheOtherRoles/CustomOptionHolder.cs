@@ -894,7 +894,6 @@ namespace TheOtherRoles
             swapperSwapsNumber = CustomOption.Create(30124, Types.Crewmate, "Initial Swap Charges", 1f, 0f, 5f, 1f, swapperSpawnRate);
             swapperRechargeTasksNumber = CustomOption.Create(30125, Types.Crewmate, "Number Of Tasks Needed For Recharging", 2f, 1f, 10f, 1f, swapperSpawnRate);
 
-
             seerSpawnRate = CustomOption.Create(30140, Types.Crewmate, cs(Seer.color, "Seer"), rates, null, true);
             seerMode = CustomOption.Create(30141, Types.Crewmate, "Seer Mode", new string[] { "Show Death Flash + Souls", "Show Death Flash", "Show Souls" }, seerSpawnRate);
             seerLimitSoulDuration = CustomOption.Create(30142, Types.Crewmate, "Seer Limit Soul Duration", false, seerSpawnRate);

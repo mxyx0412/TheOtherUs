@@ -126,7 +126,7 @@ public class GameStartManagerPatch
                 {
                     HandshakeHelper.againSend(client.Id, HandshakeHelper.ShareMode.Again);
                     versionMismatch = true;
-                    message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} 安装了不同版本的TheOtherUs\n</color>";
+                    message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of The Other Us\n</color>";
                 }
                 else
                 {
@@ -142,12 +142,12 @@ public class GameStartManagerPatch
                     {
                         case > 0:
                             message +=
-                                $"<color=#FF0000FF>{client.Character.Data.PlayerName} 安装了旧版本的TheOtherUs (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                                $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
                             break;
                         case < 0:
                             message +=
-                                $"<color=#FF0000FF>{client.Character.Data.PlayerName} 安装了较新版本的TheOtherUs (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                                $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
                             break;
                         default:
@@ -156,7 +156,7 @@ public class GameStartManagerPatch
                                 {
                                     // version presumably matches, check if Guid matches
                                     message +=
-                                        $"<color=#FF0000FF>{client.Character.Data.PlayerName} 安装了修改过的TheOtherUs v{playerVersions[client.Id].version.ToString()}\n<size=40%>({PV.guid.ToString()})</size>\n</color>";
+                                        $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOU v{playerVersions[client.Id].version.ToString()}\n<size=40%>({PV.guid.ToString()})</size>\n</color>";
                                     versionMismatch = true;
                                 }
 
@@ -233,12 +233,12 @@ public class GameStartManagerPatch
                         SceneChanger.ChangeScene("MainMenu");
                     }
 
-                    __instance.GameStartText.text = $"<color=#FF0000FF>房主没有或不同版本的TheOtherUs\n即将被踢出房间 {Math.Round(10 - kickingTimer)}s</color>";
+                    __instance.GameStartText.text = $"<color=#FF0000FF>The host has no or a different version of The Other Us\nYou will be kicked in {Math.Round(10 - kickingTimer)}s</color>";
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
                 else if (versionMismatch)
                 {
-                    __instance.GameStartText.text = $"<color=#FF0000FF>装了不同版本模组的玩家:\n</color>" + message;
+                    __instance.GameStartText.text = $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
                 else

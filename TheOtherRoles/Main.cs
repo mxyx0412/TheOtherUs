@@ -23,7 +23,7 @@ namespace TheOtherRoles
     public class TheOtherRolesPlugin : BasePlugin
     {
         public const string Id = "Spex.TheOtherUs.Options";
-        public const string ModName = "TheOtherUs";
+        public const string ModName = MyPluginInfo.PLUGIN_NAME;
         public const string VersionString = MyPluginInfo.PLUGIN_VERSION;
         public static uint betaDays = 0;  // amount of days for the build to be usable (0 for infinite!)
 

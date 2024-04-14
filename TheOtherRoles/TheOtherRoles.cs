@@ -1224,6 +1224,7 @@ namespace TheOtherRoles
         public static bool hasImpostorVision = false;
         public static bool killFakeImpostor = false;
         public static bool wasTeamRed;
+        public static bool ImpostorCanFindSidekick;
         public static bool canSabotage = false;
         public static bool wasImpostor;
         public static bool wasSpy;
@@ -1269,6 +1270,7 @@ namespace TheOtherRoles
             canCreateSidekickFromImpostor = CustomOptionHolder.jackalCanCreateSidekickFromImpostor.getBool();
             killFakeImpostor = CustomOptionHolder.jackalKillFakeImpostor.getBool();
             swoopCooldown = CustomOptionHolder.swooperCooldown.getFloat();
+            ImpostorCanFindSidekick = CustomOptionHolder.jackalImpostorCanFindSidekick.getBool();
             duration = CustomOptionHolder.swooperDuration.getFloat();
             formerJackals.Clear();
             hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.getBool();

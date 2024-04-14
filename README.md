@@ -7,8 +7,6 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
   To other mod devs: for usage of our code, please read and respect the <a href="#license">license</a></p>
 
 [![Discord](./Images/TOR_server.png)](https://discord.gg/yspVyP5meR)
-![eisbison infographic](./Images/TOR_Roles.png)
-
 
 # The Other Roles
 
@@ -42,7 +40,7 @@ Even more roles are coming soon. :)
 |                  |            |       Trapper       |              |
 |                  |            |                     |              |
 
-The [Role Assignment](#role-assignment) section explains how the roles are being distributed among the players.
+该 [Role Assignment](#role-assignment) section explains how the roles are being distributed among the players.
 
 # Releases
 | Among Us - Version | Mod Version | Link                                                         |

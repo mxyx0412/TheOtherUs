@@ -1,12 +1,12 @@
-using HarmonyLib;
+using Hazel;
+using Reactor.Utilities.Extensions;
 using System;
-using static TheOtherRoles.TheOtherRoles;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Patches
 {
@@ -33,7 +33,8 @@ namespace TheOtherRoles.Patches
                     p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
                     player.SetSkin(data.DefaultOutfit.SkinId, data.DefaultOutfit.ColorId);
                     player.cosmetics.SetHat(data.DefaultOutfit.HatId, data.DefaultOutfit.ColorId);
-                   // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
+                    CachedPlayer.LocalPlayer.PlayerControl.SetKillTimer(ResetButtonCooldown.killCooldown);
+                    // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
                     player.cosmetics.nameText.text = data.PlayerName;
                     player.SetFlipX(true);
                     TORMapOptions.playerIcons[p.PlayerId] = player;
@@ -273,27 +274,23 @@ namespace TheOtherRoles.Patches
                 };
 
                 List<Vector3> airshipSpawn = new List<Vector3>() { }; //no spawns since it already has random spawns
-
-                switch (GameOptionsManager.Instance.currentNormalGameOptions.MapId)
+                if (CustomOptionHolder.randomGameStartToVents.getBool())
                 {
-                    case 0: 
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = skeldSpawn[rnd.Next(skeldSpawn.Count)];
-                        break;
-                    case 1:
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = miraSpawn[rnd.Next(miraSpawn.Count)];
-                        break;
-                    case 2:
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = polusSpawn[rnd.Next(polusSpawn.Count)];
-                        break;
-                    case 3:
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = dleksSpawn[rnd.Next(dleksSpawn.Count)];
-                        break;
-                    case 4:
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = airshipSpawn[rnd.Next(airshipSpawn.Count)];
-                        break;
-                    case 5:
-                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = fungleSpawn[rnd.Next(fungleSpawn.Count)];
-                        break;
+                    CachedPlayer.LocalPlayer.PlayerControl.transform.position = MapData.FindVentSpawnPositions().Random();
+                }
+                else
+                {
+                    CachedPlayer.LocalPlayer.PlayerControl.transform.position =
+                            GameOptionsManager.Instance.currentNormalGameOptions.MapId switch
+                            {
+                                0 => MapData.SkeldSpawnPosition.Random(),
+                                1 => MapData.MiraSpawnPosition.Random(),
+                                2 => MapData.PolusSpawnPosition.Random(),
+                                3 => MapData.DleksSpawnPosition.Random(),
+                                4 => MapData.AirshipSpawnPosition.Random(),
+                                5 => MapData.FungleSpawnPosition.Random(),
+                                _ => CachedPlayer.LocalPlayer.PlayerControl.transform.position
+                            };
                 }
             }
 

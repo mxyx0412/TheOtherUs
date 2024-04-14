@@ -1,17 +1,16 @@
-using HarmonyLib;
-using System;
-using Hazel;
-using UnityEngine;
-using System.Linq;
-using static TheOtherRoles.TheOtherRoles;
-using static TheOtherRoles.GameHistory;
-using static TheOtherRoles.TORMapOptions;
-using System.Collections.Generic;
-using TheOtherRoles.Utilities;
-using TheOtherRoles.CustomGameModes;
-using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
+using Hazel;
 using PowerTools;
+using Reactor.Utilities.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.GameHistory;
+using static TheOtherRoles.TheOtherRoles;
+using static TheOtherRoles.TORMapOptions;
 
 namespace TheOtherRoles.Patches
 {
@@ -405,7 +404,7 @@ namespace TheOtherRoles.Patches
     class CommsMinigameBeginPatch {
         static void Postfix(TuneRadioMinigame __instance) {
             // Block Swapper from fixing comms. Still looking for a better way to do this, but deleting the task doesn't seem like a viable option since then the camera, admin table, ... work while comms are out
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl) {
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages) {
                 __instance.Close();
             }
         }
@@ -415,7 +414,7 @@ namespace TheOtherRoles.Patches
     class LightsMinigameBeginPatch {
         static void Postfix(SwitchMinigame __instance) {
             // Block Swapper from fixing lights. One could also just delete the PlayerTask, but I wanted to do it the same way as with coms for now.
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl) {
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages) {
                 __instance.Close();
             }
         }

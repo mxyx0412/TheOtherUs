@@ -1,23 +1,17 @@
-﻿global using Il2CppInterop.Runtime;
-global using Il2CppInterop.Runtime.Attributes;
-global using Il2CppInterop.Runtime.InteropTypes;
-global using Il2CppInterop.Runtime.InteropTypes.Arrays;
-global using Il2CppInterop.Runtime.Injection;
-
+﻿using AmongUs.Data;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
-using HarmonyLib;
 using Hazel;
+using Reactor.Networking.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using UnityEngine;
+using System.Text;
 using TheOtherRoles.Modules;
-using TheOtherRoles.Utilities;
-using Reactor.Networking.Attributes;
-using AmongUs.Data;
 using TheOtherRoles.Modules.CustomHats;
+using TheOtherRoles.Utilities;
+using UnityEngine;
 
 namespace TheOtherRoles
 {
@@ -28,7 +22,7 @@ namespace TheOtherRoles
     
     public class TheOtherRolesPlugin : BasePlugin
     {
-        public const string Id = "me.spex.theotherus";
+        public const string Id = "Spex.TheOtherUs.Options";
         public const string ModName = "TheOtherUs";
         public const string VersionString = MyPluginInfo.PLUGIN_VERSION;
         public static uint betaDays = 0;  // amount of days for the build to be usable (0 for infinite!)
@@ -87,6 +81,8 @@ namespace TheOtherRoles
         }
 
         public override void Load() {
+
+            if (ConsoleManager.ConsoleEnabled) System.Console.OutputEncoding = Encoding.UTF8;
             SetLogSource(Log);
             Instance = this;
   

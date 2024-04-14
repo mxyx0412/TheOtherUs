@@ -1,3 +1,5 @@
+using BepInEx;
+using BepInEx.Unity.IL2CPP.Utils;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -6,9 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using BepInEx;
-using BepInEx.Unity.IL2CPP.Utils;
-using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Networking;
 

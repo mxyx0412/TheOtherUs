@@ -1,5 +1,4 @@
 ﻿using AmongUs.GameOptions;
-using HarmonyLib;
 using Hazel;
 using Reactor.Utilities.Extensions;
 using System;

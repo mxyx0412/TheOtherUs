@@ -1,14 +1,13 @@
-using System.Linq;
-using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using TheOtherRoles.Objects;
-using TheOtherRoles.Utilities;
-using TheOtherRoles.CustomGameModes;
-using static TheOtherRoles.TheOtherRoles;
 using AmongUs.Data;
 using Hazel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Objects;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles
 {
@@ -18,6 +17,7 @@ namespace TheOtherRoles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
 
         public static void clearAndReloadRoles() {
+            ResetButtonCooldown.clearAndReload();
             Jester.clearAndReload();
             Mayor.clearAndReload();
             Portalmaker.clearAndReload();
@@ -88,6 +88,7 @@ namespace TheOtherRoles
             Torch.clearAndReload();
             Blind.clearAndReload();
             Watcher.clearAndReload();
+            Flash.clearAndReload();
             Radar.clearAndReload();
             Tunneler.clearAndReload();
             Multitasker.clearAndReload();
@@ -104,6 +105,24 @@ namespace TheOtherRoles
             HideNSeek.clearAndReload();
             PropHunt.clearAndReload();
 
+        }
+        /*
+        public static class PreventTaskEnd
+        {
+            public static bool Enable = false;
+            public static void clearAndReload()
+            {
+                Enable = CustomOptionHolder.preventTaskEnd.getBool();
+            }
+        }
+        */
+        public static class ResetButtonCooldown
+        {
+            public static float killCooldown;
+            public static void clearAndReload()
+            {
+                killCooldown = CustomOptionHolder.resteButtonCooldown.getFloat();
+            }
         }
 
         public static class Jester {
@@ -222,8 +241,8 @@ namespace TheOtherRoles
             public static bool chatTarget2 = true;
             public static bool isCultistGame = false;
             public static bool needsFollower = true;
-     //      public static PlayerControl currentFollower;
-                public static Sprite buttonSprite;
+            //public static PlayerControl currentFollower;
+            public static Sprite buttonSprite;
 
 
             public static Sprite getSidekickButtonSprite() {
@@ -241,7 +260,7 @@ namespace TheOtherRoles
             localArrows = new List<Arrow>();
                 cultist = null;
                 currentTarget = null;
-    //            currentFollower = null;
+                //currentFollower = null;
                 needsFollower = true;
                 chatTarget = true;
                 chatTarget2 = true;
@@ -2583,6 +2602,18 @@ namespace TheOtherRoles
         public static void clearAndReload() {
             torch = new List<PlayerControl>();
             vision = CustomOptionHolder.modifierTorchVision.getFloat();
+        }
+    }
+
+    public static class Flash
+    {
+        public static List<PlayerControl> flash = new();
+        public static float speed = 1f;
+
+        public static void clearAndReload()
+        {
+            flash = new List<PlayerControl>();
+            speed = CustomOptionHolder.modifierFlashSpeed.getFloat();
         }
     }
 

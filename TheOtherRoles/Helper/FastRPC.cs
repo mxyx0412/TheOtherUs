@@ -1,5 +1,6 @@
 using Hazel;
 using TheOtherRoles.Utilities;
+using UnityEngine;
 
 namespace TheOtherRoles.Helper;
 
@@ -138,27 +139,62 @@ internal class FastRpcWriter(MessageWriter writer)
         writer?.Write(value);
         return this;
     }
+    public FastRpcWriter Write(byte[] value)
+    {
+        writer?.Write(value);
+        return this;
+    }
 
+    public FastRpcWriter Write(Vector2 value)
+    {
+        writer?.Write(value.x);
+        writer?.Write(value.y);
+        return this;
+    }
+
+    public FastRpcWriter Write(Vector3 value)
+    {
+        writer?.Write(value.x);
+        writer?.Write(value.y);
+        writer?.Write(value.z);
+        return this;
+    }
+
+    public FastRpcWriter Write(Rect value)
+    {
+        writer?.Write(value.x);
+        writer?.Write(value.y);
+        writer?.Write(value.width);
+        writer?.Write(value.height);
+        return this;
+    }
     public FastRpcWriter Write(params object[] objects)
     {
         if (objects == null) return this;
         
         foreach (var obj in objects)
         {
-            if (obj is byte _byte)
-                writer.Write(_byte);
-            
-            if (obj is string _string)
-                writer.Write(_string);
-            
-            if (obj is float _float)
-                writer.Write(_float);
-            
-            if (obj is int _int)
-                writer.Write(_int);
-            
-            if (obj is bool _bool)
-                writer.Write(_bool);
+            switch (obj)
+            {
+                case byte _byte:
+                    writer.Write(_byte);
+                    break;
+                case string _string:
+                    writer.Write(_string);
+                    break;
+                case float _float:
+                    writer.Write(_float);
+                    break;
+                case int _int:
+                    writer.Write(_int);
+                    break;
+                case bool _bool:
+                    writer.Write(_bool);
+                    break;
+                case byte[] _bytes:
+                    writer.Write(_bytes);
+                    break;
+            }
         }
         return this;
     }
@@ -225,6 +261,33 @@ internal class FastRpcWriter(MessageWriter writer)
         EndAllMessage();
         AmongUsClient.Instance.SendOrDisconnect(writer);
         Recycle();
+    }
+}
+
+public static class FastRPCExtension
+{
+    public static Vector2 ReadVector2(this MessageReader reader)
+    {
+        var x = reader.ReadSingle();
+        var y = reader.ReadSingle();
+        return new Vector2(x, y);
+    }
+
+    public static Vector3 ReadVector3(this MessageReader reader)
+    {
+        var x = reader.ReadSingle();
+        var y = reader.ReadSingle();
+        var z = reader.ReadSingle();
+        return new Vector3(x, y, z);
+    }
+
+    public static Rect ReadRect(this MessageReader reader)
+    {
+        var x = reader.ReadSingle();
+        var y = reader.ReadSingle();
+        var width = reader.ReadSingle();
+        var height = reader.ReadSingle();
+        return new Rect(x, y, width, height);
     }
 }
 

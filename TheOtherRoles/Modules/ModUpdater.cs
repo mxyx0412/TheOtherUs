@@ -1,19 +1,19 @@
-﻿using System;
+﻿using AmongUs.Data;
+using Assets.InnerNet;
+using BepInEx;
+using BepInEx.Unity.IL2CPP.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BepInEx;
-using BepInEx.Unity.IL2CPP.Utils;
+using Twitch;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using AmongUs.Data;
-using Assets.InnerNet;
-using Twitch;
+using UnityEngine.UI;
 
 namespace TheOtherRoles.Modules
 {

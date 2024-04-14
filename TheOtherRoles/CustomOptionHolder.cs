@@ -6,9 +6,9 @@ using Types = TheOtherRoles.CustomOption.CustomOptionType;
 namespace TheOtherRoles
 {
     public class CustomOptionHolder {
-        public static string[] rates = new string[]{"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
-        public static string[] ratesModifier = new string[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
-        public static string[] presets = new string[]{"Preset 1", "Preset 2", "Random Preset Skeld", "Random Preset Mira HQ", "Random Preset Polus", "Random Preset Airship", "Random Preset Submerged" };
+        public static string[] rates = ["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"];
+        public static string[] ratesModifier = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
+        public static string[] presets = ["Preset 1", "Preset 2", "Preset 3", "Random Preset Skeld", "Random Preset Mira HQ", "Random Preset Polus", "Random Preset Airship", "Random Preset Fungle", "Random Preset Submerged"];
 
         public static CustomOption presetSelection;
         public static CustomOption activateRoles;
@@ -47,6 +47,7 @@ namespace TheOtherRoles
 
         public static CustomOption undertakerSpawnRate;
         public static CustomOption undertakerDragingDelaiAfterKill;
+        public static CustomOption undertakerDragingAfterVelocity;
         public static CustomOption undertakerCanDragAndVent;
 
         public static CustomOption camouflagerSpawnRate;
@@ -375,6 +376,10 @@ namespace TheOtherRoles
         public static CustomOption modifierTorchQuantity;
         public static CustomOption modifierTorchVision;
 
+        public static CustomOption modifierFlash;
+        public static CustomOption modifierFlashQuantity;
+        public static CustomOption modifierFlashSpeed;
+
         public static CustomOption modifierMultitasker;
         public static CustomOption modifierMultitaskerQuantity;
 
@@ -416,7 +421,11 @@ namespace TheOtherRoles
         public static CustomOption modifierChameleonFadeDuration;
         public static CustomOption modifierChameleonMinVisibility;
 
+
         public static CustomOption modifierShifter;
+
+        //public static CustomOption preventTaskEnd; 
+        public static CustomOption resteButtonCooldown;
 
         public static CustomOption maxNumberOfMeetings;
         public static CustomOption blockSkippingInEmergencyMeetings;
@@ -432,6 +441,7 @@ namespace TheOtherRoles
         public static CustomOption impostorSeeRoles;
         public static CustomOption transparentTasks;
         public static CustomOption randomGameStartPosition;
+        public static CustomOption randomGameStartToVents;
         public static CustomOption allowModGuess;
         public static CustomOption finishTasksBeforeHauntingOrZoomingOut;
         public static CustomOption camsNightVision;
@@ -555,22 +565,82 @@ namespace TheOtherRoles
             // Role Options
             presetSelection = CustomOption.Create(0, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Preset"), presets, null, true);
             activateRoles = CustomOption.Create(1, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Enable Mod Roles And Block Vanilla Roles"), true, null, true);
+                
             anyPlayerCanStopStart = CustomOption.Create(2, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Any Player Can Stop The Start"), false, null, false);
 
-            //if (Utilities.EventUtility.canBeEnabled) enableCodenameHorsemode = CustomOption.Create(10423, Types.General, cs(Color.green, "Enable Codename Horsemode"), true, null, true);
-            //if (Utilities.EventUtility.canBeEnabled) enableCodenameDisableHorses = CustomOption.Create(10424, Types.General, cs(Color.green, "Disable Horses"), false, enableCodenameHorsemode, false);
             if (Utilities.EventUtility.canBeEnabled) enableEventMode = CustomOption.Create(10423, Types.General, cs(Color.green, "Enable Special Mode"), true, null, true);
 
             // Using new id's for the options to not break compatibilty with older versions
-            crewmateRolesCountMin = CustomOption.Create(300, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Crewmate Roles"), 15f, 0f, 15f, 1f, null, true);
-            crewmateRolesCountMax = CustomOption.Create(301, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Crewmate Roles"), 15f, 0f, 15f, 1f);
-            crewmateRolesFill = CustomOption.Create(308, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Fill Crewmate Roles\n(Ignores Min/Max)"), false);
-            neutralRolesCountMin = CustomOption.Create(302, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Neutral Roles"), 15f, 0f, 15f, 1f);
-            neutralRolesCountMax = CustomOption.Create(303, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Neutral Roles"), 15f, 0f, 15f, 1f);
-            impostorRolesCountMin = CustomOption.Create(304, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Impostor Roles"), 15f, 0f, 15f, 1f);
-            impostorRolesCountMax = CustomOption.Create(305, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Impostor Roles"), 15f, 0f, 15f, 1f);
-            modifiersCountMin = CustomOption.Create(306, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Modifiers"), 15f, 0f, 15f, 1f);
-            modifiersCountMax = CustomOption.Create(307, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Modifiers"), 15f, 0f, 15f, 1f);
+            crewmateRolesCountMin = CustomOption.Create(300, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Crewmate Roles"), 15f, 0f, 15f, 1f, null, true);
+            crewmateRolesCountMax = CustomOption.Create(301, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Crewmate Roles"), 15f, 0f, 15f, 1f);
+            crewmateRolesFill = CustomOption.Create(308, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Fill Crewmate Roles\n(Ignores Min/Max)"), false);
+            neutralRolesCountMin = CustomOption.Create(302, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Neutral Roles"), 15f, 0f, 15f, 1f);
+            neutralRolesCountMax = CustomOption.Create(303, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Neutral Roles"), 15f, 0f, 15f, 1f);
+            impostorRolesCountMin = CustomOption.Create(304, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Impostor Roles"), 15f, 0f, 15f, 1f);
+            impostorRolesCountMax = CustomOption.Create(305, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Impostor Roles"), 15f, 0f, 15f, 1f);
+            modifiersCountMin = CustomOption.Create(306, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Modifiers"), 15f, 0f, 15f, 1f);
+            modifiersCountMax = CustomOption.Create(307, Types.General, 
+                cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Modifiers"), 15f, 0f, 15f, 1f);
+
+            //-------------------------- Other options 1 - 599 -------------------------- //
+
+            resteButtonCooldown = CustomOption.Create(15220, Types.General, "Game Start CoolDown", 10f, 2.5f, 30f, 2.5f, null, true);
+
+            maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true);
+            blockSkippingInEmergencyMeetings = CustomOption.Create(4, Types.General, "Block Skipping In Emergency Meetings", false);
+            noVoteIsSelfVote = CustomOption.Create(5, Types.General, "No Vote Is Self Vote", false, blockSkippingInEmergencyMeetings);
+            shieldFirstKill = CustomOption.Create(8, Types.General, "Shield Last Game First Kill", false);
+            hidePlayerNames = CustomOption.Create(6, Types.General, "Hide Player Names", false);
+            hideOutOfSightNametags = CustomOption.Create(6006, Types.General, "Hide Obstructed Player Names", false);
+            hideVentAnimOnShadows = CustomOption.Create(822445, Types.General, "Hide Vent Animation Out Of Vision", false);
+            showButtonTarget = CustomOption.Create(9994, Types.General, "Show Button Target", true);
+            impostorSeeRoles = CustomOption.Create(9, Types.General, "Impostors Can See The Roles Of Their Team", false);
+            blockGameEnd = CustomOption.Create(9995, Types.General, "Block Game End If Power Crew Is Alive", false);
+            allowModGuess = CustomOption.Create(9043, Types.General, "Allow Guessing Some Modifiers", false);
+
+            transparentTasks = CustomOption.Create(814142, Types.General, "Tasks Are Transparent", false);
+            disableMedbayWalk = CustomOption.Create(8847, Types.General, "Disable MedBay Animations", false, null, false);
+            allowParallelMedBayScans = CustomOption.Create(7, Types.General, "Allow Parallel MedBay Scans", false);
+            finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(13, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
+            //preventTaskEnd = CustomOption.Create(43, Types.General, "Prevent Task End Game", false, null, true);
+
+            //Map options
+            randomGameStartPosition = CustomOption.Create(9041, Types.General, "Random Spawn Location", false);
+            randomGameStartToVents = CustomOption.Create(9042, Types.General, "Random Spawn To Vents", false, randomGameStartPosition);
+
+            enableBetterPolus = CustomOption.Create(7878, Types.General, "Enable Better Polus", false, null, false);
+            movePolusVents = CustomOption.Create(7879, Types.General, "Adjust Vents", false, enableBetterPolus, false);
+            movePolusVitals = CustomOption.Create(7880, Types.General, "Move Vitals To Labs", false, enableBetterPolus, false);
+            swapNavWifi = CustomOption.Create(7881, Types.General, "Swap Reboot And Chart Course", false, enableBetterPolus, false);
+            moveColdTemp = CustomOption.Create(7882, Types.General, "Move Cold Temp To Death Valley", false, enableBetterPolus, false);
+
+            enableCamoComms = CustomOption.Create(1105, Types.General, "Enable Camouflage Comms", false, null, false); 
+            restrictDevices = CustomOption.Create(1101, Types.General, "Restrict Map Information", new string[] { "Off", "Per Round", "Per Game" }, null, false);
+            //restrictAdmin = CustomOption.Create(1102, Types.General, "Restrict Admin Table", 30f, 0f, 600f, 5f, restrictDevices);
+            restrictCameras = CustomOption.Create(1103, Types.General, "Restrict Cameras", 30f, 0f, 600f, 5f, restrictDevices);
+            restrictVents = CustomOption.Create(1104, Types.General, "Restrict Vitals", 30f, 0f, 600f, 5f, restrictDevices);
+            disableCamsRound1 = CustomOption.Create(8834, Types.General, "No Cameras First Round", false, null, false);
+            camsNightVision = CustomOption.Create(11, Types.General, "Cams Switch To Night Vision If Lights Are Off", false, null, true);
+            camsNoNightVisionIfImpVision = CustomOption.Create(12, Types.General, "Impostor Vision Ignores Night Vision Cams", false, camsNightVision, false);
+
+            dynamicMap = CustomOption.Create(500, Types.General, "Play On A Random Map", false, null, true);
+            dynamicMapEnableSkeld = CustomOption.Create(501, Types.General, "Skeld", rates, dynamicMap, false);
+            dynamicMapEnableMira = CustomOption.Create(502, Types.General, "Mira", rates, dynamicMap, false);
+            dynamicMapEnablePolus = CustomOption.Create(503, Types.General, "Polus", rates, dynamicMap, false);
+            dynamicMapEnableAirShip = CustomOption.Create(504, Types.General, "Airship", rates, dynamicMap, false);
+            dynamicMapEnableFungle = CustomOption.Create(506, Types.General, "Fungle", rates, dynamicMap, false);
+            dynamicMapEnableSubmerged = CustomOption.Create(505, Types.General, "Submerged", rates, dynamicMap, false);
+            dynamicMapSeparateSettings = CustomOption.Create(509, Types.General, "Use Random Map Setting Presets", false, dynamicMap, false);
+
+            //-------------------------- Impostor Options 10000-19999 -------------------------- //
 
             modifierAssassin = CustomOption.Create(2000, Types.Impostor, cs(Color.red, "Assassin"), rates, null, true);
             modifierAssassinQuantity = CustomOption.Create(2001, Types.Impostor, cs(Color.red, "Assassin Quantity"), ratesModifier, modifierAssassin);
@@ -596,7 +666,8 @@ namespace TheOtherRoles
             //bomber2HotPotatoMode = CustomOption.Create(2526236, Types.Impostor, "Hot Potato Mode", false, bomber2SpawnRate);
 
             undertakerSpawnRate = CustomOption.Create(1201, Types.Impostor, cs(Undertaker.color, "Undertaker"), rates, null, true);
-            undertakerDragingDelaiAfterKill = CustomOption.Create(1202, Types.Impostor, "Draging Delay After Kill", 0f, 0f, 15, 1f, undertakerSpawnRate);                     
+            undertakerDragingDelaiAfterKill = CustomOption.Create(1202, Types.Impostor, "Draging Delay After Kill", 0f, 0f, 15, 1f, undertakerSpawnRate);
+            undertakerDragingAfterVelocity = CustomOption.Create(1204, Types.Impostor, "undertaker Drag Speed", 0.75f, 0.5f, 2f, 0.125f, undertakerSpawnRate);
             undertakerCanDragAndVent = CustomOption.Create(1203, Types.Impostor, "Can Vent While Dragging", true, undertakerSpawnRate);
 
             camouflagerSpawnRate = CustomOption.Create(30, Types.Impostor, cs(Camouflager.color, "Camouflager"), rates, null, true);
@@ -934,6 +1005,10 @@ namespace TheOtherRoles
             modifierTorchQuantity = CustomOption.Create(1054, Types.Modifier, cs(Color.yellow, "Torch Quantity"), ratesModifier, modifierTorch);
             modifierTorchVision = CustomOption.Create(1055, Types.Modifier, cs(Color.yellow, "Vision With Torch"), 1.5f, 1f, 3f, 0.125f, modifierTorch);
 
+            modifierFlash = CustomOption.Create(1210, Types.Modifier, cs(Color.yellow, "Flash"), rates, null, true);
+            modifierFlashQuantity = CustomOption.Create(1211, Types.Modifier, cs(Color.yellow, "Flash Quantity"), ratesModifier, modifierFlash);
+            modifierFlashSpeed = CustomOption.Create(1212, Types.Modifier, "Flash Speed", 1.25f, 1f, 3f, 0.125f, modifierFlash);
+
             modifierMultitasker = CustomOption.Create(10523233, Types.Modifier, cs(Color.yellow, "Multitasker"), rates, null, true);
             modifierMultitaskerQuantity = CustomOption.Create(10232354, Types.Modifier, cs(Color.yellow, "Multitasker Quantity"), ratesModifier, modifierMultitasker);
 
@@ -1044,48 +1119,6 @@ namespace TheOtherRoles
             propHuntSpeedboostDuration = CustomOption.Create(4018, Types.PropHunt, cs(Palette.CrewmateBlue, "Speedboost Duration"), 5f, 1f, 15f, 1f, propHuntSpeedboostEnabled);
             propHuntSpeedboostSpeed = CustomOption.Create(4019, Types.PropHunt, cs(Palette.CrewmateBlue, "Speedboost Ratio"), 2f, 1.25f, 5f, 0.25f, propHuntSpeedboostEnabled);
 
-
-
-            // Other options
-            maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true);
-            blockSkippingInEmergencyMeetings = CustomOption.Create(4, Types.General, "Block Skipping In Emergency Meetings", false);
-            noVoteIsSelfVote = CustomOption.Create(5, Types.General, "No Vote Is Self Vote", false, blockSkippingInEmergencyMeetings);
-            hidePlayerNames = CustomOption.Create(6, Types.General, "Hide Player Names", false);
-            allowParallelMedBayScans = CustomOption.Create(7, Types.General, "Allow Parallel MedBay Scans", false);
-            shieldFirstKill = CustomOption.Create(8, Types.General, "Shield Last Game First Kill", false);
-            hideOutOfSightNametags = CustomOption.Create(6006, Types.General, "Hide Obstructed Player Names", false);
-            hideVentAnimOnShadows = CustomOption.Create(822445, Types.General, "Hide Vent Animation Out Of Vision", false);
-            finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(13, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
-            camsNightVision = CustomOption.Create(11, Types.General, "Cams Switch To Night Vision If Lights Are Off", false, null, true);
-            camsNoNightVisionIfImpVision = CustomOption.Create(12, Types.General, "Impostor Vision Ignores Night Vision Cams", false, camsNightVision, false);
-            impostorSeeRoles = CustomOption.Create(9, Types.General, "Impostors Can See The Roles Of Their Team", false);
-            transparentTasks = CustomOption.Create(814142, Types.General, "Tasks Are Transparent", false);
-            dynamicMap = CustomOption.Create(500, Types.General, "Play On A Random Map", false, null, true);
-            dynamicMapEnableSkeld = CustomOption.Create(501, Types.General, "Skeld", rates, dynamicMap, false);
-            dynamicMapEnableMira = CustomOption.Create(502, Types.General, "Mira", rates, dynamicMap, false);
-            dynamicMapEnablePolus = CustomOption.Create(503, Types.General, "Polus", rates, dynamicMap, false);
-            dynamicMapEnableAirShip = CustomOption.Create(504, Types.General, "Airship", rates, dynamicMap, false);
-            dynamicMapEnableFungle = CustomOption.Create(506, Types.General, "Fungle", rates, dynamicMap, false);
-            dynamicMapEnableSubmerged = CustomOption.Create(505, Types.General, "Submerged", rates, dynamicMap, false);
-            dynamicMapSeparateSettings = CustomOption.Create(509, Types.General, "Use Random Map Setting Presets", false, dynamicMap, false);
-            enableBetterPolus = CustomOption.Create(7878, Types.General, "Enable Better Polus", false, null, false);
-            movePolusVents = CustomOption.Create(7879, Types.General, "Adjust Vents", false, enableBetterPolus, false);
-            movePolusVitals = CustomOption.Create(7880, Types.General, "Move Vitals To Labs", false, enableBetterPolus, false);
-			swapNavWifi = CustomOption.Create(7881, Types.General, "Swap Reboot And Chart Course", false, enableBetterPolus, false);
-			moveColdTemp = CustomOption.Create(7882, Types.General, "Move Cold Temp To Death Valley", false, enableBetterPolus, false);
-            enableCamoComms = CustomOption.Create(1105, Types.General, "Enable Camouflage Comms", false,  null, false);
-            disableMedbayWalk = CustomOption.Create(8847, Types.General, "Disable MedBay Animations", false, null, false);
-            restrictDevices = CustomOption.Create(1101, Types.General, "Restrict Map Information", new string[] {"Off", "Per Round", "Per Game"},  null, false);
-            //restrictAdmin = CustomOption.Create(1102, Types.General, "Restrict Admin Table", 30f, 0f, 600f, 5f, restrictDevices);
-            restrictCameras = CustomOption.Create(1103, Types.General, "Restrict Cameras", 30f, 0f, 600f, 5f, restrictDevices);
-            restrictVents = CustomOption.Create(1104, Types.General, "Restrict Vitals", 30f, 0f, 600f, 5f, restrictDevices);
-            disableCamsRound1 = CustomOption.Create(8834, Types.General, "No Cameras First Round", false, null, false);
-            showButtonTarget = CustomOption.Create(9994, Types.General, "Show Button Target", true);
-            blockGameEnd = CustomOption.Create(9995, Types.General, "Block Game End If Power Crew Is Alive", false);
-            randomGameStartPosition = CustomOption.Create(9041, Types.General, "Random Spawn Location", false);
-            allowModGuess = CustomOption.Create(9043, Types.General, "Allow Guessing Some Modifiers", false);
-
-            
 
             blockedRolePairings.Add((byte)RoleId.Vampire, new [] { (byte)RoleId.Warlock});
             blockedRolePairings.Add((byte)RoleId.Warlock, new [] { (byte)RoleId.Vampire});

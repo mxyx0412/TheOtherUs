@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using TheOtherRoles.Utilities;
+using UnityEngine;
 
 namespace TheOtherRoles
 {

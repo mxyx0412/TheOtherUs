@@ -1,18 +1,17 @@
-using HarmonyLib;
+using AmongUs.GameOptions;
+using Assets.CoreScripts;
 using Hazel;
+using Reactor.Utilities.Extensions;
+using Sentry.Internal.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static TheOtherRoles.TheOtherRoles;
-using static TheOtherRoles.GameHistory;
+using TheOtherRoles.CustomGameModes;
 using TheOtherRoles.Objects;
 using TheOtherRoles.Utilities;
 using UnityEngine;
-using TheOtherRoles.CustomGameModes;
-using AmongUs.GameOptions;
-using Assets.CoreScripts;
-using Sentry.Internal.Extensions;
-using Reactor.Utilities.Extensions;
+using static TheOtherRoles.GameHistory;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Patches
 {
@@ -1752,7 +1751,17 @@ namespace TheOtherRoles.Patches
                 shouldInvert && 
                 GameData.Instance && 
                 __instance.myPlayer.CanMove)  
-                __instance.body.velocity *= -1;
+                __instance.body.velocity *= -1; 
+            if (__instance.AmOwner &&
+                AmongUsClient.Instance &&
+                AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started &&
+                !CachedPlayer.LocalPlayer.Data.IsDead &&
+                GameData.Instance &&
+                __instance.myPlayer.CanMove &&
+                Flash.flash.Any(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
+            {
+                __instance.body.velocity *= Flash.speed;
+            }
         }
     }
 

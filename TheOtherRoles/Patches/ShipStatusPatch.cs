@@ -1,9 +1,8 @@
-using HarmonyLib;
-using TheOtherRoles.Utilities;
-using static TheOtherRoles.TheOtherRoles;
-using UnityEngine;
-using TheOtherRoles.CustomGameModes;
 using AmongUs.GameOptions;
+using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Patches
 {

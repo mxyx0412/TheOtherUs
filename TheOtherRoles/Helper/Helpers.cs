@@ -1,22 +1,21 @@
+using AmongUs.GameOptions;
+using Hazel;
+using Reactor.Utilities.Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
-using UnityEngine;
 using System.Linq;
-using static TheOtherRoles.TheOtherRoles;
-using TheOtherRoles.Modules;
-using HarmonyLib;
-using Hazel;
-using TheOtherRoles.Utilities;
+using System.Reflection;
 using System.Threading.Tasks;
 using TheOtherRoles.CustomGameModes;
-using Reactor.Utilities.Extensions;
-using AmongUs.GameOptions;
-using TheOtherRoles.Patches;
+using TheOtherRoles.Modules;
 using TheOtherRoles.Objects;
-using System.Collections;
+using TheOtherRoles.Patches;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Helper
 {

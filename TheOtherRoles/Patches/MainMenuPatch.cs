@@ -1,11 +1,10 @@
-﻿using System;
-using HarmonyLib;
+﻿using AmongUs.Data;
+using Assets.InnerNet;
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
-using UnityEngine.SceneManagement;
-using AmongUs.Data;
-using Assets.InnerNet;
 
 namespace TheOtherRoles.Modules
 {

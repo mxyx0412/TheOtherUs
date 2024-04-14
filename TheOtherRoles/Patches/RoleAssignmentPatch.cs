@@ -1,13 +1,12 @@
-﻿using HarmonyLib;
+﻿using AmongUs.GameOptions;
 using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using System;
-using AmongUs.GameOptions;
-using TheOtherRoles.Utilities;
-using static TheOtherRoles.TheOtherRoles;
 using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Patches
 {
@@ -157,7 +156,7 @@ namespace TheOtherRoles.Patches
             crewSettings.Add((byte)RoleId.Tracker, CustomOptionHolder.trackerSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Snitch, CustomOptionHolder.snitchSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Medium, CustomOptionHolder.mediumSpawnRate.getSelection());
-            crewSettings.Add((byte)RoleId.NiceGuesser, CustomOptionHolder.guesserSpawnRate.getSelection());
+            if (!isGuesserGamemode) crewSettings.Add((byte)RoleId.NiceGuesser, CustomOptionHolder.guesserSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Trapper, CustomOptionHolder.trapperSpawnRate.getSelection());
             if (impostors.Count > 1) {
                 // Only add Spy if more than 1 impostor as the spy role is otherwise useless
@@ -488,6 +487,7 @@ namespace TheOtherRoles.Patches
                 RoleId.AntiTeleport,
                 RoleId.Sunglasses,
                 RoleId.Torch,
+                RoleId.Flash,
                 RoleId.Multitasker,
                 RoleId.Vip,
                 RoleId.Invert,
@@ -805,6 +805,10 @@ namespace TheOtherRoles.Patches
                     selection = CustomOptionHolder.modifierTorch.getSelection();
                     if (multiplyQuantity) selection *= CustomOptionHolder.modifierTorchQuantity.getQuantity();
                     break;
+                case RoleId.Flash:
+                    selection = CustomOptionHolder.modifierFlash.getSelection();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierFlashQuantity.getQuantity();
+                    break;
                 case RoleId.Multitasker:
                     selection = CustomOptionHolder.modifierMultitasker.getSelection();
                     if (multiplyQuantity) selection *= CustomOptionHolder.modifierMultitaskerQuantity.getQuantity();
@@ -824,9 +828,12 @@ namespace TheOtherRoles.Patches
                 case RoleId.Shifter:
                     selection = CustomOptionHolder.modifierShifter.getSelection(); break;
                 case RoleId.EvilGuesser:
-                    selection = CustomOptionHolder.modifierAssassin.getSelection();
-                    if (!Cultist.isCultistGame){
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
+                    if (!isGuesserGamemode)
+                    {
+                        selection = CustomOptionHolder.modifierAssassin.getSelection();
+                        if (!Cultist.isCultistGame)
+                            if (multiplyQuantity)
+                                selection *= CustomOptionHolder.modifierAssassinQuantity.getQuantity();
                     }
                     break; 
             }

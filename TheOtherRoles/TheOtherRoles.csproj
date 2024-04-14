@@ -10,6 +10,7 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <PlatformTarget>x86</PlatformTarget>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<AmongUsLatest>F:\AmongUs\v2024.3.5</AmongUsLatest>
     </PropertyGroup>
 
     <ItemGroup>

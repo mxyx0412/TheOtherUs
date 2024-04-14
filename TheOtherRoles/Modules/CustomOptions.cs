@@ -1,19 +1,18 @@
-using System.Collections.Generic;
-using UnityEngine;
+using AmongUs.GameOptions;
+using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Unity.IL2CPP;
+using Hazel;
+using Reactor.Utilities.Extensions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HarmonyLib;
-using Hazel;
 using System.Text;
 using TheOtherRoles.Utilities;
-using static TheOtherRoles.TheOtherRoles;
+using UnityEngine;
 using static TheOtherRoles.CustomOption;
-using Reactor.Utilities.Extensions;
-using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP;
-using BepInEx;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles
 {

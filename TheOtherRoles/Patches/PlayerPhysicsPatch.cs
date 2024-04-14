@@ -1,6 +1,5 @@
-using HarmonyLib;
-using UnityEngine;
 using TheOtherRoles.Utilities;
+using UnityEngine;
 
 namespace TheOtherRoles.Patches
 {

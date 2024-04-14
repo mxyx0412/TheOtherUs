@@ -23,12 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
 using System;
 using TheOtherRoles.Utilities;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace TheOtherRoles.Patches
 {

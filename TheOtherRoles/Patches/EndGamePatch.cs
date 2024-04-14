@@ -1,13 +1,11 @@
-
-using HarmonyLib;
-using static TheOtherRoles.TheOtherRoles;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Patches
 {
@@ -34,7 +32,8 @@ namespace TheOtherRoles.Patches
         AdditionalLawyerBonusWin,
         AdditionalAlivePursuerWin,
         ProsecutorWin,
-        WerewolfWin
+        WerewolfWin,
+        EveryoneDied
     }
 
     static class AdditionalTempData {
@@ -115,6 +114,7 @@ namespace TheOtherRoles.Patches
             }
             foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
 
+            var everyoneDead = AdditionalTempData.playerRoles.All(x => !x.IsAlive);
             bool jesterWin = Jester.jester != null && gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
             bool werewolfWin = gameOverReason == (GameOverReason)CustomGameOverReason.WerewolfWin && ((Werewolf.werewolf != null && !Werewolf.werewolf.Data.IsDead));
             bool arsonistWin = Arsonist.arsonist != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
@@ -165,6 +165,13 @@ namespace TheOtherRoles.Patches
                 WinningPlayerData wpd = new WinningPlayerData(Lawyer.lawyer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.ProsecutorWin;
+            }
+
+            // Everyone Died
+            else if (everyoneDead)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                AdditionalTempData.winCondition = WinCondition.EveryoneDied;
             }
 
             // Lovers win conditions
@@ -345,6 +352,12 @@ namespace TheOtherRoles.Patches
                 textRenderer.text = "Mini died";
                 textRenderer.color = Mini.color;
             }
+            else if (AdditionalTempData.winCondition == WinCondition.EveryoneDied)
+            {
+                textRenderer.text = "Everyone Died";
+                textRenderer.color = Palette.DisabledGrey;
+                __instance.BackgroundBar.material.SetColor("_Color", Palette.DisabledGrey);
+            }
 
             foreach (WinCondition cond in AdditionalTempData.additionalWinConditions) {
                 if (cond == WinCondition.AdditionalLawyerBonusWin) {
@@ -476,7 +489,11 @@ namespace TheOtherRoles.Patches
 
         private static bool CheckAndEndGameForTaskWin(ShipStatus __instance) {
             if (HideNSeek.isHideNSeekGM && !HideNSeek.taskWinPossible || PropHunt.isPropHuntGM) return false;
-            if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks) {
+            if (GameData.Instance.TotalTasks > 0 
+                && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks
+                //&& !PreventTaskEnd.Enable
+                )
+            {
                 //__instance.enabled = false;
                 GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;

@@ -1,9 +1,8 @@
-using HarmonyLib;
 using Hazel;
 using System;
 using System.Linq;
-using UnityEngine;
 using TheOtherRoles.Utilities;
+using UnityEngine;
 
 namespace TheOtherRoles.Patches
 {

@@ -1,14 +1,13 @@
-using HarmonyLib;
 using Hazel;
+using Reactor.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using static TheOtherRoles.TheOtherRoles;
-using static TheOtherRoles.TORMapOptions;
 using TheOtherRoles.Objects;
-using System;
 using TheOtherRoles.Utilities;
 using UnityEngine;
-using Reactor.Utilities;
+using static TheOtherRoles.TheOtherRoles;
+using static TheOtherRoles.TORMapOptions;
 
 namespace TheOtherRoles.Patches
 {

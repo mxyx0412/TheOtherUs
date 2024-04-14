@@ -1,7 +1,7 @@
+using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Hazel;
 using TheOtherRoles.Patches;
 using TheOtherRoles.Utilities;
 
@@ -17,26 +17,20 @@ public static class HandshakeHelper
 
     public static readonly Dictionary<int, AgainInfo> PlayerAgainInfo = new();
 
-    public static void ShareGameMode()
-    {
-        FastRpcWriter.StartNewRpcWriter(CustomRPC.ShareGamemode)
-            .Write((byte)TORMapOptions.gameMode)
-            .RPCSend();
-    }
-    
     public static void shareGameVersion()
     {
         versionHandshake(Main.Version.Major, Main.Version.Minor,
             Main.Version.Build, Main.Version.Revision, AmongUsClient.Instance.ClientId);
 
-        var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshake)
-            .WritePacked(AmongUsClient.Instance.ClientId)
-            .Write(Main.Version.Major)
-            .Write(Main.Version.Minor)
-            .Write(Main.Version.Build)
-            .Write(AmongUsClient.Instance.AmHost ? GameStartManagerPatch.timer : -1f)
-            .Write((byte)(Main.Version.Revision < 0 ? 0xFF : Main.Version.Revision));
-        writer.RPCSend();
+        var writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId,
+            (byte)CustomRPC.VersionHandshake, SendOption.Reliable);
+        writer.WritePacked(AmongUsClient.Instance.ClientId);
+        writer.Write(Main.Version.Major);
+        writer.Write(Main.Version.Minor);
+        writer.Write(Main.Version.Build);
+        writer.Write(AmongUsClient.Instance.AmHost ? GameStartManagerPatch.timer : -1f);
+        writer.Write((byte)(Main.Version.Revision < 0 ? 0xFF : Main.Version.Revision));
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
     public static void versionHandshake(int major, int minor, int build, int revision, int clientId)
@@ -93,12 +87,13 @@ public static class HandshakeHelper
         var bytes = Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
         GameStartManagerPatch.playerVersions[clientId].guid = new Guid(bytes);
 
-        var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx)
-            .WritePacked(AmongUsClient.Instance.ClientId)
-            .Write((byte)ShareMode.Guid)
-            .Write(bytes.Length)
-            .Write(bytes);
-        writer.RPCSend();
+        var writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId,
+            (byte)CustomRPC.VersionHandshakeEx, SendOption.Reliable);
+        writer.WritePacked(AmongUsClient.Instance.ClientId);
+        writer.Write((byte)ShareMode.Guid);
+        writer.Write(bytes.Length);
+        writer.Write(bytes);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
     public static void againSend(int playerId, ShareMode mode)
@@ -113,62 +108,63 @@ public static class HandshakeHelper
             info.Start(mode);
         }
     }
-}
 
-public class AgainInfo
-{
-    public int playerId = -1;
-    public int MaxCount { get; set; } = 5;
-    public int Count { get; set; }
-    public int Time { get; set; }
-
-    public int MaxTime { get; set; } = 2;
-
-    public void Start(HandshakeHelper.ShareMode mode)
+    public class PlayerVersion(Version version)
     {
-        Send(mode);
-        Time = MaxTime;
+        public readonly Version version = version;
+        public int PlayerId { get; set; }
+        public Guid? guid { get; set; } = null;
+
+        public bool GuidMatches()
+        {
+            return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(guid);
+        }
     }
 
-    public void Update(HandshakeHelper.ShareMode mode)
+    public class AgainInfo
     {
-        if (Count == MaxCount) return;
-        if (Time < 0)
+        public int playerId = -1;
+        public int MaxCount { get; set; } = 5;
+        public int Count { get; set; }
+        public int Time { get; set; }
+
+        public int MaxTime { get; set; } = 2;
+
+        public void Start(ShareMode mode)
         {
             Send(mode);
             Time = MaxTime;
-            Count++;
         }
-        else
+
+        public void Update(ShareMode mode)
         {
-            Time--;
+            if (Count == MaxCount) return;
+            if (Time < 0)
+            {
+                Send(mode);
+                Time = MaxTime;
+                Count++;
+            }
+            else
+            {
+                Time--;
+            }
         }
-    }
 
-    public void Send(HandshakeHelper.ShareMode mode)
-    {
-            
-        Info($"again send mode:{mode} id:{playerId}");
+        public void Send(ShareMode mode)
+        {
 
-        if (AmongUsClient.Instance == null || CachedPlayer.LocalPlayer.PlayerControl == null) return;
-        
-        var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx, mode: RPCSendMode.SendToPlayer)
-            .WritePacked(AmongUsClient.Instance.ClientId)
-            .Write((byte)HandshakeHelper.ShareMode.Again)
-            .Write((byte)mode);
-        writer.RPCSend();
-    }
-}
+            Info($"again send mode:{mode} id:{playerId}");
 
-public class PlayerVersion(Version version)
-{
-    public Version version { get; private set; } = version;
-    
-    public int PlayerId { get; internal set; }
-    public Guid? guid { get; internal set; }
+            if (AmongUsClient.Instance == null || CachedPlayer.LocalPlayer.PlayerControl == null) return;
 
-    public bool GuidMatches() 
-    {
-        return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(this.guid);
+
+            var writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId,
+                (byte)CustomRPC.VersionHandshakeEx, SendOption.Reliable, playerId);
+            writer.WritePacked(AmongUsClient.Instance.ClientId);
+            writer.Write((byte)ShareMode.Again);
+            writer.Write((byte)mode);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
     }
 }

@@ -18,8 +18,10 @@ public class GameStartManagerPatch
 
     private static bool IsStart(GameStartManager __instance)
     {
+        var array = new Il2CppReferenceArray<Il2CppSystem.Object>(new Il2CppSystem.Object[]
+            { Mathf.CeilToInt(__instance.countDownTimer) });
         return __instance.GameStartText.text.Contains(
-            FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameStarting, [Mathf.CeilToInt(__instance.countDownTimer)]));
+            FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameStarting, array));
     }
     
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]

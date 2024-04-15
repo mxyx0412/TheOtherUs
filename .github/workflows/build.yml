@@ -55,7 +55,7 @@ jobs:
           path: ./Release/BepInEx/plugins/TheOtherUs.dll
           
       - name: Del Other Files
-        run: rm -rf ./Release/BepInEx/plugins/TheOtherRoles.deps.json ./Release/BepInEx/plugins/TheOtherRoles.pdb ./Release/changelog.txt ./Release/BepInEx/config/BepInEx.cfg
+        run: rm -rf ./Release/BepInEx/plugins/TheOtherUs.deps.json ./Release/BepInEx/plugins/TheOtherUs.pdb ./Release/changelog.txt ./Release/BepInEx/config/BepInEx.cfg
           
       - name: make
         run: mkdir ./Release/BepInEx/config

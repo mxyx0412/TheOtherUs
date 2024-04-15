@@ -214,7 +214,7 @@ public class AgainInfo
     {
         Info($"again send mode:{mode} id:{playerId}");
 
-        if (AmongUsClient.Instance == null || CachedPlayer.LocalPlayer.PlayerControl == null) return;
+        if (AmongUsClient.Instance == null || CachedPlayer.LocalPlayer == null) return;
 
         var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx, SendOption.Reliable,
                 RPCSendMode.SendToPlayer, playerId)

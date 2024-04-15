@@ -55,7 +55,7 @@ namespace TheOtherRoles.Modules
                             var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.ShareGamemode)
                                 .Write(gameMode);
                             writer.RPCSend();
-                            RPCProcedure.shareGameMode((byte)gameMode);
+                            RPCProcedure.shareGamemode((byte)gameMode);
                         } 
                         else 
                         {

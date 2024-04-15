@@ -18,8 +18,18 @@ public class GameStartManagerPatch
 
     private static bool IsStart(GameStartManager __instance)
     {
-        return __instance.GameStartText.text.StartsWith(
-            FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameStarting));
+        return __instance.GameStartText.text.Contains(
+            FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameStarting, [Mathf.CeilToInt(__instance.countDownTimer)]));
+    }
+    
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
+    public class AmongUsClientOnGameEndPatch
+    {
+        public static void Postfix(AmongUsClient __instance)
+        {
+            if (AmongUsClient.Instance.AmHost) 
+                HandshakeHelper.ShareGameMode();
+        }
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
@@ -51,6 +61,8 @@ public class GameStartManagerPatch
                     new Il2CppReferenceArray<Il2CppSystem.Object>(0)) + "\r\n" + code;
 
             // Send version as soon as CachedPlayer.LocalPlayer.PlayerControl exists
+            
+            if (AmongUsClient.Instance.AmHost) HandshakeHelper.ShareGameMode();
 
             if (CachedPlayer.LocalPlayer == null) return;
 
@@ -58,8 +70,6 @@ public class GameStartManagerPatch
 
             HandshakeHelper.shareGameVersion();
             HandshakeHelper.shareGameGUID();
-
-            if (AmongUsClient.Instance.AmHost) HandshakeHelper.ShareGameMode();
         }
     }
 

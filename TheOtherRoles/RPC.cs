@@ -286,15 +286,10 @@ namespace TheOtherRoles
                 }
             }
         }
-
-        public static void shareGameMode(byte mode)
-        {
-            gameMode = (CustomGamemodes)mode;
-        }
-
+        
         public static void shareGamemode(byte gm)
         {
-            TORMapOptions.gameMode = (CustomGamemodes)gm;
+            gameMode = (CustomGamemodes)gm;
         }
 
         public static void stopStart(byte playerId)

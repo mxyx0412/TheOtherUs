@@ -1311,7 +1311,7 @@ namespace TheOtherRoles.Helper
 
         public static async Task checkBeta()
         {
-            if (TheOtherRolesPlugin.betaDays > 0)
+            if (Main.betaDays > 0)
             {
                 Message($"Beta check");
                 var ticks = GetBuiltInTicks();

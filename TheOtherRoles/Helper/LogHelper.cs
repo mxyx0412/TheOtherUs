@@ -1,5 +1,16 @@
 ﻿using BepInEx.Logging;
 using System;
+using System.Text;
+using BepInEx;
+
+#if DEBUG
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Hazel;
+using InnerNet;
+#endif
+
 
 namespace TheOtherRoles.Helper;
 
@@ -93,6 +104,11 @@ internal static class LogHelper
     public static void LogObject(object @object)
     {
         FastLog(LogLevel.Error, @object);
+    }
+
+    public static void InitConsole()
+    {
+        System.Console.OutputEncoding = Encoding.UTF8;
     }
 }
 

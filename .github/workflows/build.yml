@@ -41,12 +41,6 @@ jobs:
       - name: path
         run: sudo chmod -R 777 ./Release
 
-      - name: download ExtraData
-        run: wget https://raw.githubusercontent.com/mxyx-club/ExtraData/main/ExtraData.zip
-
-      - name: unzip ExtraData
-        run: unzip ExtraData.zip -d ./Release/
-
       - name: download Reactor
         run: wget https://github.com/NuclearPowered/Reactor/releases/download/2.2.0/Reactor.dll -P ./Release/BepInEx/plugins
         

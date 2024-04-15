@@ -23,7 +23,7 @@ namespace TheOtherRoles
     [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
     public partial class TheOtherRolesPlugin : BasePlugin
     {
-        public const uint betaDays = 0; // amount of days for the build to be usable (0 for infinite!)
+        public static uint betaDays = 0; // amount of days for the build to be usable (0 for infinite!)
 
         public static readonly Version version = System.Version.Parse(Version);
         public Harmony Harmony { get; } = new(Id);
@@ -81,6 +81,7 @@ namespace TheOtherRoles
 
             if (ConsoleManager.ConsoleEnabled) System.Console.OutputEncoding = Encoding.UTF8;
             SetLogSource(Log);
+            InitConsole();
             Instance = this;
   
             _ = Helpers.checkBeta(); // Exit if running an expired beta
@@ -127,6 +128,7 @@ namespace TheOtherRoles
             MainMenuPatch.addSceneChangeCallbacks();
             _ = RoleInfo.loadReadme();
             AddToKillDistanceSetting.addKillDistance();
+            
             Info("Loading TOR completed!");
         }
 

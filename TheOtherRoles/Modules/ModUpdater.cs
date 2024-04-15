@@ -191,7 +191,7 @@ namespace TheOtherRoles.Modules
                 Error("couldnt show credits, popUp is null");
                 yield return null;
             }
-            var popUp = UnityEngine.Object.Instantiate(popUpTemplate);
+            var popUp = Instantiate(popUpTemplate);
 
             popUp.gameObject.SetActive(true);
 

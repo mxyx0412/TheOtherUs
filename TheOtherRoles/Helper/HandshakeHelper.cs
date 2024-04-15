@@ -56,7 +56,7 @@ public static class HandshakeHelper
             else
             {
                 var PV = playerVersions[client.Id];
-                var diff = Main.Version.CompareTo(PV.version);
+                var diff = Main.version.CompareTo(PV.version);
                 if (PV.guid == null)
                 {
                     againSend(client.Id, ShareMode.Guid);

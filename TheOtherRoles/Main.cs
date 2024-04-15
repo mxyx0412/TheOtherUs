@@ -6,13 +6,11 @@ using Hazel;
 using Reactor.Networking.Attributes;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using TheOtherRoles.Modules;
 using TheOtherRoles.Modules.CustomHats;
 using TheOtherRoles.Modules.Languages;
-using TheOtherRoles.Utilities;
 using UnityEngine;
 
 namespace TheOtherRoles
@@ -138,12 +136,9 @@ namespace TheOtherRoles
             DependentDownload.Instance.DownLoadDependentMap("https://raw.githubusercontent.com/SpexGH/TheOtherUs/LanguageAdd/LangLoadDependent/DependentMap.txt", "Excel");
             DependentDownload.Instance.DownLoadDependentMap("https://raw.githubusercontent.com/SpexGH/TheOtherUs/LanguageAdd/LangLoadDependent/DependentMap.txt", "Csv");
         }
-        
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize))]
-        [HarmonyPostfix]
-        private static void OnTranslationController_Initialized_Load(TranslationController __instance)
+
+        internal static void OnTranslationController_Initialized_Load()
         {
-            LanguageManager.Instance.CurrentLang = __instance.currentLanguage.languageID;
             TaskQueue.Instance.StartTask(LanguageManager.Instance.Load, "LoadLanguage");
             TaskQueue.Instance.StartTask(CustomOptionHolder.Load, "LoadOption");
         }

@@ -52,7 +52,7 @@ public class GameStartManagerPatch
 
             // Send version as soon as CachedPlayer.LocalPlayer.PlayerControl exists
 
-            if (CachedPlayer.LocalPlayer.PlayerControl == null) return;
+            if (CachedPlayer.LocalPlayer == null) return;
 
             HandshakeHelper.PlayerAgainInfo.Clear();
 

@@ -149,6 +149,14 @@ public class LanguageManager : ManagerBase<LanguageManager>
 internal static class LanguageExtension
 {
     
+    [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize))]
+    [HarmonyPostfix]
+    private static void OnTranslationController_Initialized_Load(TranslationController __instance)
+    {
+        LanguageManager.Instance.CurrentLang = __instance.currentLanguage.languageID;
+        Main.OnTranslationController_Initialized_Load();
+    }
+    
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.SetLanguage))]
     [HarmonyPrefix]
     private static void OnTranslationController_SetLanguage([HarmonyArgument(0)] TranslatedImageSet lang)

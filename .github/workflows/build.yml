@@ -44,6 +44,7 @@ jobs:
       - name: download Reactor
         run: wget https://github.com/NuclearPowered/Reactor/releases/download/2.2.0/Reactor.dll -P ./Release/BepInEx/plugins
         
+        
       - name: Build
         run: dotnet build TheOtherRoles/TheOtherRoles.csproj --configuration Release --output ./Release/BepInEx/plugins
 
@@ -54,8 +55,11 @@ jobs:
           path: ./Release/BepInEx/plugins/TheOtherRoles.dll
           
       - name: Del Other Files
-        run: rm -rf ./Release/BepInEx/plugins/TheOtherRoles.deps.json ./Release/BepInEx/plugins/TheOtherRoles.pdb ./Release/changelog.txt
+        run: rm -rf ./Release/BepInEx/plugins/TheOtherRoles.deps.json ./Release/BepInEx/plugins/TheOtherRoles.pdb ./Release/changelog.txt ./Release/BepInEx/config/BepInEx.cfg
           
+      - name: Move cfg
+        run: mv BepInEx.cfg ./Release/BepInEx/config/BepInEx.cfg
+      
       - name: Upload TheOtherUs
         uses: actions/upload-artifact@v4.3.1
         with:

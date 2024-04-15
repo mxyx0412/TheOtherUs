@@ -556,7 +556,7 @@ namespace TheOtherRoles
 
         public static string cs(Color c, string s)
         {
-            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
+            return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
         }
 
         private static byte ToByte(float f)
@@ -573,7 +573,7 @@ namespace TheOtherRoles
         public static void Load()
         {
 
-            CustomOption.vanillaSettings = TheOtherRolesPlugin.Instance.Config.Bind("Preset0", "VanillaOptions", "");
+            CustomOption.vanillaSettings = Main.Instance.Config.Bind("Preset0", "VanillaOptions", "");
 
             // Role Options
             presetSelection = CustomOption.Create(0, Types.General, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Preset"), presets, null, true);

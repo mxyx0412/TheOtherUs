@@ -1,21 +1,19 @@
-using HarmonyLib;
-using System;
-using Hazel;
-using UnityEngine;
-using System.Linq;
-using static TheOtherRoles.TheOtherRoles;
-using static TheOtherRoles.GameHistory;
-using static TheOtherRoles.TORMapOptions;
-using System.Collections.Generic;
-using TheOtherRoles.Players;
-using TheOtherRoles.Utilities;
-using TheOtherRoles.Objects;
-using TheOtherRoles.CustomGameModes;
-using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
+using Hazel;
 using PowerTools;
+using Reactor.Utilities.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.GameHistory;
+using static TheOtherRoles.TheOtherRoles;
+using static TheOtherRoles.TORMapOptions;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
     public static class VentCanUsePatch
@@ -563,7 +561,7 @@ namespace TheOtherRoles.Patches {
                         }
                         else
                         {
-                            Warn("Couldn't find counter for:" + counterArea.RoomType);
+                            Debug("Couldn't find counter for:" + counterArea.RoomType);
                         }
                     }
                     else

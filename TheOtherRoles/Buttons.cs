@@ -1,15 +1,13 @@
-using HarmonyLib;
 using Hazel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Objects;
+using TheOtherRoles.Patches;
+using TheOtherRoles.Utilities;
 using UnityEngine;
 using static TheOtherRoles.TheOtherRoles;
-using TheOtherRoles.Objects;
-using System.Linq;
-using System.Collections.Generic;
-using TheOtherRoles.Players;
-using TheOtherRoles.Utilities;
-using TheOtherRoles.CustomGameModes;
-using TheOtherRoles.Patches;
 
 namespace TheOtherRoles
 {
@@ -1404,7 +1402,7 @@ namespace TheOtherRoles
                 CustomButton.ButtonPositions.upperRowLeft, //brb
                 __instance,
                 KeyCode.V,
-                buttonText:"Mine"
+                buttonText: "Mine"
             );
 
             bomber2BombButton = new CustomButton(

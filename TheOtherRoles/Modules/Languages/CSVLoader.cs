@@ -10,13 +10,13 @@ public class CsvLoader : LanguageLoaderBase
     {
         Filter = [".csv", ".Csv"];
     }
-    
+
     public override void Load(LanguageManager _manager, Stream stream, string FileName)
     {
         var options = new CsvOptions
         {
             HeaderMode = HeaderMode.HeaderPresent,
-            AllowNewLineInEnclosedFieldValues = false,
+            AllowNewLineInEnclosedFieldValues = false
         };
         foreach (var line in CsvReader.ReadFromStream(stream, options))
         {
@@ -24,9 +24,7 @@ public class CsvLoader : LanguageLoaderBase
             try
             {
                 for (var i = 1; i < line.ColumnCount; i++)
-                {
-                    _manager.AddToMap(line.Headers[i].PareIndexToLangId(), line.Values[0], line.Values[i]);
-                }
+                    _manager.AddToMap(line.Headers[i].PareIndexToLangId(), line.Values[0], line.Values[i], nameof(CsvLoader));
             }
             catch (Exception ex)
             {

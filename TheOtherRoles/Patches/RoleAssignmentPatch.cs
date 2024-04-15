@@ -1,16 +1,15 @@
-﻿using HarmonyLib;
+﻿using AmongUs.GameOptions;
 using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using System;
-using AmongUs.GameOptions;
-using TheOtherRoles.Players;
-using TheOtherRoles.Utilities;
-using static TheOtherRoles.TheOtherRoles;
 using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch(typeof(RoleOptionsCollectionV07), nameof(RoleOptionsCollectionV07.GetNumPerGame))]
     class RoleOptionsDataGetNumPerGamePatch{
         public static void Postfix(ref int __result) {

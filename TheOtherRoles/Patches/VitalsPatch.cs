@@ -1,13 +1,10 @@
-using HarmonyLib;
 using Hazel;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using TheOtherRoles.Utilities;
 using UnityEngine;
-using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.GameHistory;
-using System.Reflection;
-using TheOtherRoles.Players;
 
 namespace TheOtherRoles.Patches
 {
@@ -102,7 +99,6 @@ namespace TheOtherRoles.Patches
 
             private static void Postfix(VitalsMinigame __instance)
             {
-
                 // Hacker show time since death
                 if (Hacker.hacker != null && Hacker.hacker == CachedPlayer.LocalPlayer.PlayerControl &&
                     Hacker.hackerTimer > 0)

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
     class Garlic {
         public static List<Garlic> garlics = new List<Garlic>();
 

@@ -9,7 +9,7 @@ public class JsonLoader : LanguageLoaderBase
     {
         Filter = [".json", ".Json"];
     }
-    
+
     public override void Load(LanguageManager _manager, Stream stream, string FileName)
     {
         var jsonDocument = JsonDocument.Parse(stream);
@@ -20,8 +20,8 @@ public class JsonLoader : LanguageLoaderBase
             {
                 var langId = obj.Name.PareIndexToLangId();
                 var value = obj.Value.ToString();
-                
-                _manager.AddToMap(langId, key, value);
+
+                _manager.AddToMap(langId, key, value, nameof(JsonLoader));
             }
         }
     }

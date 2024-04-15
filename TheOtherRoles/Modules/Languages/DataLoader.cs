@@ -5,15 +5,15 @@ namespace TheOtherRoles.Modules.Languages;
 
 public class DataLoader : LanguageLoaderBase
 {
-
     public DataLoader()
     {
         Filter = [".dat", ".data"];
     }
-    
+
     public override void Load(LanguageManager _manager, Stream stream, string fileName)
     {
-        TextHelper.StartRead(stream, (text, index) => Read(text, index, _manager, fileName.PareNameToLangId()), out var allText);
+        TextHelper.StartRead(stream, (text, index) => Read(text, index, _manager, fileName.PareNameToLangId()),
+            out var allText);
     }
 
     private void Read(string text, int index, LanguageManager currentManager, SupportedLangs lang)
@@ -27,7 +27,7 @@ public class DataLoader : LanguageLoaderBase
             Info($"DataLoader {index} count < 2");
             return;
         }
-        
-        currentManager.AddToMap(lang, texts[0], texts[1]);
+
+        currentManager.AddToMap(lang, texts[0], texts[1], nameof(DataLoader));
     }
 }

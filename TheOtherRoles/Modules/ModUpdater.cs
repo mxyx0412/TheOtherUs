@@ -1,28 +1,27 @@
-﻿using System;
+﻿using AmongUs.Data;
+using Assets.InnerNet;
+using BepInEx;
+using BepInEx.Unity.IL2CPP.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BepInEx;
-using BepInEx.Unity.IL2CPP.Utils;
+using Twitch;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using AmongUs.Data;
-using Assets.InnerNet;
-using Twitch;
+using UnityEngine.UI;
 
-namespace TheOtherRoles.Modules {
-    public class ModUpdater : MonoBehaviour {
+namespace TheOtherRoles.Modules
+{
+    public class ModUpdater(IntPtr ptr) : MonoBehaviour(ptr)
+    {
         public const string RepositoryOwner = "SpexGH";
         public const string RepositoryName = "TheOtherUs";
         public static ModUpdater Instance { get; private set; }
-
-        public ModUpdater(IntPtr ptr) : base(ptr) { }
 
         private bool _busy;
         private bool showPopUp = true;
@@ -54,7 +53,7 @@ namespace TheOtherRoles.Modules {
             _busy = true;
             var www = new UnityWebRequest();
             www.SetMethod(UnityWebRequest.UnityWebRequestMethod.Get);
-            www.SetUrl($"https://api.github.com/repos/{RepositoryOwner}/{RepositoryName}/releases/latest");
+            www.SetUrl($"https://api.github.com/repos/{RepositoryOwner}/{RepositoryName}/releases/latest".GithubUrl());
             www.downloadHandler = new DownloadHandlerBuffer();
             var operation = www.SendWebRequest();
 
@@ -135,7 +134,7 @@ namespace TheOtherRoles.Modules {
 
         [HideFromIl2Cpp]
         private static bool FilterLatestRelease(GithubRelease release) {
-            return release.IsNewer(TheOtherRolesPlugin.Version) && release.Assets.Any(FilterPluginAsset);
+            return release.IsNewer(Main.version) && release.Assets.Any(FilterPluginAsset);
         }
 
         [HideFromIl2Cpp]
@@ -153,7 +152,7 @@ namespace TheOtherRoles.Modules {
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             if (_busy || scene.name != "MainMenu") return;
             var latestRelease = Releases.FirstOrDefault();
-            if (latestRelease == null || latestRelease.Version <= TheOtherRolesPlugin.Version)
+            if (latestRelease == null || latestRelease.Version <= Main.version)
                 return;
 
             var template = GameObject.Find("ExitGameButton");
@@ -187,16 +186,16 @@ namespace TheOtherRoles.Modules {
         [HideFromIl2Cpp]
         public IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "TOU Update", string title = "", string date = "") {
             var mgr = FindObjectOfType<MainMenuManager>(true);
-            var popUpTemplate = FindObjectOfType<AnnouncementPopUp>(true);
+            var popUpTemplate = UnityEngine.Object.FindObjectOfType<AnnouncementPopUp>(true);
             if (popUpTemplate == null) {
                 Error("couldnt show credits, popUp is null");
                 yield return null;
             }
-            var popUp = Instantiate(popUpTemplate);
+            var popUp = UnityEngine.Object.Instantiate(popUpTemplate);
 
             popUp.gameObject.SetActive(true);
 
-            Announcement creditsAnnouncement = new() {
+            Assets.InnerNet.Announcement creditsAnnouncement = new() {
                 Id = "touAnnouncement",
                 Language = 0,
                 Number = 6969,
@@ -204,7 +203,7 @@ namespace TheOtherRoles.Modules {
                 ShortTitle = shortTitle,
                 SubTitle = "",
                 PinState = false,
-                Date = date == "" ? DateTime.Now.Date.ToString(CultureInfo.CurrentCulture) : date,
+                Date = date == "" ? DateTime.Now.Date.ToString() : date,
                 Text = announcement,
             };
             mgr.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => {

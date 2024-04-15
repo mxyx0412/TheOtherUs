@@ -1,11 +1,5 @@
+﻿using BepInEx.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using BepInEx.Logging;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 
 namespace TheOtherRoles.Helper;
 
@@ -111,7 +105,7 @@ internal static class LogListener
         .Where(n => n.IsSubclassOf(typeof(InnerNetObject)))
         .Select(x => x.GetMethod(nameof(InnerNetObject.HandleRpc), AccessTools.allDeclared))
         .Where(m => m != null);
-    
+
     [HarmonyPostfix]
     internal static void OnRpc(InnerNetObject __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
     {

@@ -1,7 +1,4 @@
-﻿using HarmonyLib;
-using TheOtherRoles;
-
-namespace TheOtherRoles.Modules.CustomHats.Patches;
+﻿namespace TheOtherRoles.Modules.CustomHats.Patches;
 
 [HarmonyPatch(typeof(CosmeticsCache))]
 internal static class CosmeticsCachePatches

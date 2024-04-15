@@ -1,17 +1,13 @@
+using BepInEx;
+using BepInEx.Unity.IL2CPP.Utils;
 using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using BepInEx;
-using BepInEx.Unity.IL2CPP;
-using BepInEx.Unity.IL2CPP.Utils;
-using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Networking;
 

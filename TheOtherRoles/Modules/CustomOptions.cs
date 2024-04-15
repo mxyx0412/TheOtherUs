@@ -1,24 +1,21 @@
-using System.Collections.Generic;
-using UnityEngine;
+using AmongUs.GameOptions;
+using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Unity.IL2CPP;
+using Hazel;
+using Reactor.Utilities.Extensions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HarmonyLib;
-using Hazel;
-using System.Reflection;
 using System.Text;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
-using static TheOtherRoles.TheOtherRoles;
+using UnityEngine;
 using static TheOtherRoles.CustomOption;
-using Reactor.Utilities.Extensions;
-using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP;
-using BepInEx;
-using static ShipStatus;
+using static TheOtherRoles.TheOtherRoles;
 
-namespace TheOtherRoles {
+namespace TheOtherRoles
+{
     public class CustomOption {
         public enum CustomOptionType {
             General,
@@ -234,7 +231,7 @@ namespace TheOtherRoles {
 
         // Copy to or paste from clipboard (as string)
         public static void copyToClipboard() {
-            GUIUtility.systemCopyBuffer = $"{TheOtherRolesPlugin.VersionString}!{Convert.ToBase64String(serializeOptions())}!{vanillaSettings.Value}";
+            GUIUtility.systemCopyBuffer = $"{Main.Version}!{Convert.ToBase64String(serializeOptions())}!{vanillaSettings.Value}";
         }
 
         public static bool pasteFromClipboard() {

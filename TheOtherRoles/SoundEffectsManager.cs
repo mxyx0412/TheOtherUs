@@ -1,10 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using System.Collections.Generic;
-using System.Text;
+using System.Reflection;
+using TheOtherRoles.Utilities;
 using UnityEngine;
-using System.Linq;
 
 namespace TheOtherRoles
 {
@@ -60,7 +58,7 @@ namespace TheOtherRoles
                         source.Stop();
                     }
                     float distance, volume;
-                    distance = Vector2.Distance(position, Players.CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition());
+                    distance = Vector2.Distance(position, CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition());
                     if (distance < range)
                         volume = (1f - distance / range);
                     else

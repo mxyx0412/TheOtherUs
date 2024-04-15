@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AmongUs.Data.Legacy;
+using BepInEx;
 using HarmonyLib;
 
 namespace TheOtherRoles.Modules.Languages;
@@ -11,45 +13,82 @@ namespace TheOtherRoles.Modules.Languages;
 #nullable enable
 public class LanguageManager : ManagerBase<LanguageManager>
 {
-    private static readonly HashSet<LanguageLoaderBase> DefLoaders = 
+    private const string ResourcePath = "TheOtherRoles.Resources.Languages.";
+
+    private static readonly HashSet<LanguageLoaderBase> DefLoaders =
     [
         new DataLoader(),
         new JsonLoader(),
         new CsvLoader(),
         new ExcelLoader()
     ];
-    private static readonly HashSet<string> DefLanguageFile = 
+
+    private static readonly HashSet<string> DefLanguageFile =
     [
-        "Strings.csv"
+        "Strings.csv",
+        "strings.xlsx"
     ];
 
-    private readonly List<LanguageLoaderBase> _AllLoader = [];
-    private readonly Dictionary<SupportedLangs, Dictionary<string, string>> StringMap = [];
-    internal SupportedLangs? CurrentLang;
-    private bool Loaded;
-    private const string ResourcePath = "TheOtherRoles.Resources.Languages.";
     private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
-    
+
+    private readonly List<LanguageLoaderBase> _AllLoader = [];
+    internal SupportedLangs? CurrentLang;
+    private Dictionary<SupportedLangs, Dictionary<string, string>> StringMap = null!;
+    private bool Loaded;
+
     public LanguageManager()
     {
         _AllLoader.AddRange(DefLoaders);
+        InitDic();
     }
 
-    public LanguageLoaderBase? GetLoader(string extensionName) =>
-        _AllLoader.FirstOrDefault(n => n.Filter.Contains(extensionName));
+    public void InitDic()
+    {
+        Info("init stringMap");
+        StringMap = new Dictionary<SupportedLangs, Dictionary<string, string>>();
+        foreach (var lang in TextHelper.LangNameDictionary.Keys)
+        {
+            StringMap[lang] = new Dictionary<string, string>();
+        }
+    }
+
+    public LanguageLoaderBase? GetLoader(string extensionName)
+    {
+        return _AllLoader.FirstOrDefault(n => n.Filter.Contains(extensionName));
+    }
 
     private bool TryGetResourceFile(string Path, out Stream? stream)
     {
         stream = null;
         if (!_assembly.GetManifestResourceNames().Contains(Path))
             return false;
-        
+
         stream = _assembly.GetManifestResourceStream(Path);
 
         return true;
     }
 
-    private void Load()
+    internal void LoadCustomLanguage()
+    {
+        var path = Path.Combine(Paths.GameRootPath, "CustomLanguages");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+            return;
+        }
+
+        var dir = new DirectoryInfo(path);
+        foreach (var file in dir.GetFiles())
+        {
+            var Loader = GetLoader(file.Extension);
+            if (Loader == null) continue;
+            var stream = file.OpenRead();
+            Loader.Load(this, stream, file.Name);
+            stream.Close();
+        }
+    }
+
+    internal void Load()
     {
         foreach (var FileName in DefLanguageFile)
         {
@@ -57,7 +96,11 @@ public class LanguageManager : ManagerBase<LanguageManager>
             var Loader = GetLoader(extension);
             if (Loader == null || !TryGetResourceFile(ResourcePath + FileName, out var stream)) continue;
             Loader.Load(this, stream, FileName);
+            stream?.Close();
         }
+
+        LoadCustomLanguage();
+        Loaded = true;
     }
 
     public void AddLoader(LanguageLoaderBase _loader)
@@ -65,26 +108,19 @@ public class LanguageManager : ManagerBase<LanguageManager>
         _AllLoader.Add(_loader);
     }
 
-    internal void LoadLanguage(string path,bool formResource = true)
-    {
-    }
-
-    internal void ReLoadLanguage()
-    {
-    }
-
     internal void LoadLanguage()
     {
-        if (Loaded)
-            return;
-
+        if (Loaded) return;
         CurrentLang ??= (SupportedLangs)LegacySaveManager.LastLanguage;
-
-        Task.Run(Load);
-        Loaded = true;
+        Info($"Current Lang {CurrentLang}");
+        Load();
     }
 
-    internal void AddToMap(SupportedLangs lang,string key, string value) => StringMap[lang][key] = value;
+    internal void AddToMap(SupportedLangs lang, string key, string value, string loaderName)
+    {
+        Info($"AddToMap Lang:{lang} Key:{key} Value:{value} Loader:{loaderName}");
+        StringMap[lang][key] = value;
+    }
 
     internal string GetString(string Key)
     {
@@ -93,33 +129,26 @@ public class LanguageManager : ManagerBase<LanguageManager>
 
         if (CurrentLang == null)
             goto NullString;
-        
+
         var lang = (SupportedLangs)CurrentLang;
-        if (!StringMap.ContainsKey(lang))
-            goto NullString;
-        
         var langMap = StringMap[lang];
         if (!langMap.ContainsKey(Key))
             goto NullString;
 
-        return langMap[Key];
-        
+        var str = langMap[Key];
+        Info($"获取成功 Key:{Key} Value:{str} Language:{CurrentLang}");
+        return str;
+
         NullString:
-        return $"null {Key}";
+        Info($"获取失败 Key{Key} Language{CurrentLang}");
+        return $"'{Key}'";
     }
 }
 
 [Harmony]
 internal static class LanguageExtension
 {
-    [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize))]
-    [HarmonyPostfix]
-    private static void OnTranslationController_Initialize(TranslationController __instance)
-    {
-        LanguageManager.Instance.CurrentLang = __instance.currentLanguage.languageID;
-        LanguageManager.Instance.LoadLanguage();
-    }
-
+    
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.SetLanguage))]
     [HarmonyPrefix]
     private static void OnTranslationController_SetLanguage([HarmonyArgument(0)] TranslatedImageSet lang)

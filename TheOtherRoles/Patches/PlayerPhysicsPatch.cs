@@ -18,7 +18,7 @@ namespace TheOtherRoles.Patches
             if(Undertaker.deadBodyDraged != null )
             {
                 if (playerPhysics.AmOwner && GameData.Instance && playerPhysics.myPlayer.CanMove)
-                    playerPhysics.body.velocity /= 2;
+                    playerPhysics.body.velocity *= Undertaker.velocity;
             }
         }
     }

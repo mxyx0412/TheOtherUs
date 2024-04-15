@@ -58,7 +58,7 @@ jobs:
         run: rm -rf ./Release/BepInEx/plugins/TheOtherRoles.deps.json ./Release/BepInEx/plugins/TheOtherRoles.pdb ./Release/changelog.txt ./Release/BepInEx/config/BepInEx.cfg
           
       - name: Move cfg
-        run: mv BepInEx.cfg ./Release/BepInEx/config/BepInEx.cfg
+        run: mv BepInEx.cfg ./Release/BepInEx/config
       
       - name: Upload TheOtherUs
         uses: actions/upload-artifact@v4.3.1

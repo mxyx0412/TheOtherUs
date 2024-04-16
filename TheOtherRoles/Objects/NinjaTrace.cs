@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using TheOtherRoles.Utilities;
 using UnityEngine;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
     class NinjaTrace {
         public static List<NinjaTrace> traces = new List<NinjaTrace>();
 

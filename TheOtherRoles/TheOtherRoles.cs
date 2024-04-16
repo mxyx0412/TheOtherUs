@@ -1,15 +1,14 @@
-using System.Linq;
-using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using TheOtherRoles.Objects;
-using TheOtherRoles.Players;
-using TheOtherRoles.Utilities;
-using TheOtherRoles.CustomGameModes;
-using static TheOtherRoles.TheOtherRoles;
 using AmongUs.Data;
 using Hazel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherRoles.CustomGameModes;
+using TheOtherRoles.Objects;
+using TheOtherRoles.Utilities;
+using TMPro;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles
 {
@@ -19,6 +18,7 @@ namespace TheOtherRoles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
 
         public static void clearAndReloadRoles() {
+            ResetButtonCooldown.clearAndReload();
             Jester.clearAndReload();
             Mayor.clearAndReload();
             Portalmaker.clearAndReload();
@@ -77,6 +77,8 @@ namespace TheOtherRoles
             Miner.clearAndReload();
             Trapper.clearAndReload();
             Bomber.clearAndReload();
+            //Guesser.clearAndReload();
+            //Swooper.clearAndReload();
 
             // Modifier
             Bait.clearAndReload();
@@ -85,9 +87,9 @@ namespace TheOtherRoles
             Tiebreaker.clearAndReload();
             Sunglasses.clearAndReload();
             Torch.clearAndReload();
-            Flash.clearAndReload();
             Blind.clearAndReload();
             Watcher.clearAndReload();
+            Flash.clearAndReload();
             Radar.clearAndReload();
             Tunneler.clearAndReload();
             Multitasker.clearAndReload();
@@ -105,6 +107,7 @@ namespace TheOtherRoles
             PropHunt.clearAndReload();
 
         }
+        /*
         public static class PreventTaskEnd
         {
             public static bool Enable = false;
@@ -113,7 +116,7 @@ namespace TheOtherRoles
                 Enable = CustomOptionHolder.preventTaskEnd.getBool();
             }
         }
-        
+        */
         public static class ResetButtonCooldown
         {
             public static float killCooldown;
@@ -239,8 +242,8 @@ namespace TheOtherRoles
             public static bool chatTarget2 = true;
             public static bool isCultistGame = false;
             public static bool needsFollower = true;
-     //      public static PlayerControl currentFollower;
-                public static Sprite buttonSprite;
+            //public static PlayerControl currentFollower;
+            public static Sprite buttonSprite;
 
 
             public static Sprite getSidekickButtonSprite() {
@@ -258,7 +261,7 @@ namespace TheOtherRoles
             localArrows = new List<Arrow>();
                 cultist = null;
                 currentTarget = null;
-    //            currentFollower = null;
+                //currentFollower = null;
                 needsFollower = true;
                 chatTarget = true;
                 chatTarget2 = true;
@@ -1098,7 +1101,7 @@ namespace TheOtherRoles
             garlicButton = CustomOptionHolder.vampireGarlicButton.getBool();
         }
     }
-
+    /*
     public static class Snitch {
         public static PlayerControl snitch;
         public static Color color = new Color32(184, 251, 79, byte.MaxValue);
@@ -1131,6 +1134,58 @@ namespace TheOtherRoles
             needsUpdate = true;
             mode = (Mode) CustomOptionHolder.snitchMode.getSelection();
             targets = (Targets) CustomOptionHolder.snitchTargets.getSelection();
+        }
+    }
+    */
+
+    public static class Snitch
+    {
+        public static PlayerControl snitch;
+        public static Color color = new Color32(184, 251, 79, byte.MaxValue);
+
+        public static List<Arrow> localArrows = new List<Arrow>();
+        public static int taskCountForReveal = 1;
+        public static bool seeInMeeting = false;
+        public static bool canSeeRoles = false;
+        //public static bool includeTeamJackal = false;
+        //public static bool includeNeutralTeam = false;
+        public static bool teamNeutraUseDifferentArrowColor = true;
+        public static bool needsUpdate = true;
+
+        public enum includeNeutralTeam
+        {
+            NoIncNeutral = 0,
+            KillNeutral = 1,
+            EvilNeutral = 2,
+            AllNeutral = 3
+        }
+
+        public static includeNeutralTeam Team = includeNeutralTeam.KillNeutral;
+        public static TextMeshPro text;
+        public static bool isRevealed;
+
+
+        public static void clearAndReload()
+        {
+            if (localArrows != null)
+            {
+                foreach (Arrow arrow in localArrows)
+                    if (arrow?.arrow != null)
+                        UnityEngine.Object.Destroy(arrow.arrow);
+            }
+            localArrows = new List<Arrow>();
+            taskCountForReveal = Mathf.RoundToInt(CustomOptionHolder.snitchLeftTasksForReveal.getFloat());
+            seeInMeeting = CustomOptionHolder.snitchSeeMeeting.getBool();
+            isRevealed = false;
+            if (text != null) UnityEngine.Object.Destroy(text);
+            text = null;
+            needsUpdate = true;
+
+            canSeeRoles = CustomOptionHolder.snitchCanSeeRoles.getBool();
+            //includeNeutralTeam = CustomOptionHolder.snitchIncludeNeutralTeam.getBool();
+            Team = (includeNeutralTeam)CustomOptionHolder.snitchIncludeNeutralTeam.getSelection();
+            teamNeutraUseDifferentArrowColor = CustomOptionHolder.snitchTeamNeutraUseDifferentArrowColor.getBool();
+            snitch = null;
         }
     }
 
@@ -1222,6 +1277,7 @@ namespace TheOtherRoles
         public static bool hasImpostorVision = false;
         public static bool killFakeImpostor = false;
         public static bool wasTeamRed;
+        public static bool ImpostorCanFindSidekick;
         public static bool canSabotage = false;
         public static bool wasImpostor;
         public static bool wasSpy;
@@ -1267,6 +1323,7 @@ namespace TheOtherRoles
             canCreateSidekickFromImpostor = CustomOptionHolder.jackalCanCreateSidekickFromImpostor.getBool();
             killFakeImpostor = CustomOptionHolder.jackalKillFakeImpostor.getBool();
             swoopCooldown = CustomOptionHolder.swooperCooldown.getFloat();
+            ImpostorCanFindSidekick = CustomOptionHolder.jackalImpostorCanFindSidekick.getBool();
             duration = CustomOptionHolder.swooperDuration.getFloat();
             formerJackals.Clear();
             hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.getBool();
@@ -1461,7 +1518,9 @@ namespace TheOtherRoles
         public static bool isDraging = false;
         public static DeadBody deadBodyDraged = null;
         public static bool canDragAndVent = false;
-        
+
+        public static float velocity = 1;
+            
         private static Sprite buttonSprite;
         public static Sprite getButtonSprite()
         {
@@ -1476,6 +1535,7 @@ namespace TheOtherRoles
             isDraging = false;
             canDragAndVent = CustomOptionHolder.undertakerCanDragAndVent.getBool();
             deadBodyDraged = null;
+            velocity = CustomOptionHolder.undertakerDragingAfterVelocity.getFloat();
             dragingDelaiAfterKill = CustomOptionHolder.undertakerDragingDelaiAfterKill.getFloat();
         }
     }
@@ -2602,6 +2662,7 @@ namespace TheOtherRoles
             vision = CustomOptionHolder.modifierTorchVision.getFloat();
         }
     }
+
     public static class Flash
     {
         public static List<PlayerControl> flash = new();
@@ -2613,6 +2674,7 @@ namespace TheOtherRoles
             speed = CustomOptionHolder.modifierFlashSpeed.getFloat();
         }
     }
+
     public static class Multitasker {
         public static List<PlayerControl> multitasker = new List<PlayerControl>();
 

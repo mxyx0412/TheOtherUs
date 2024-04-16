@@ -2,11 +2,11 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using UnityEngine;
 
-namespace TheOtherRoles.Objects {
+namespace TheOtherRoles.Objects
+{
     class Trap {
         public static List<Trap> traps = new List<Trap>();
         public static Dictionary<byte, Trap> trapPlayerIdMap = new Dictionary<byte, Trap>();

@@ -1,11 +1,16 @@
+﻿using BepInEx.Logging;
 using System;
+using System.Text;
+using BepInEx;
+
+#if DEBUG
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BepInEx.Logging;
-using HarmonyLib;
 using Hazel;
 using InnerNet;
+#endif
+
 
 namespace TheOtherRoles.Helper;
 
@@ -100,6 +105,11 @@ internal static class LogHelper
     {
         FastLog(LogLevel.Error, @object);
     }
+
+    public static void InitConsole()
+    {
+        System.Console.OutputEncoding = Encoding.UTF8;
+    }
 }
 
 #if DEBUG
@@ -111,7 +121,7 @@ internal static class LogListener
         .Where(n => n.IsSubclassOf(typeof(InnerNetObject)))
         .Select(x => x.GetMethod(nameof(InnerNetObject.HandleRpc), AccessTools.allDeclared))
         .Where(m => m != null);
-    
+
     [HarmonyPostfix]
     internal static void OnRpc(InnerNetObject __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
     {

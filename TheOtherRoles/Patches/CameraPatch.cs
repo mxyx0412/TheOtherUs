@@ -1,11 +1,11 @@
-using HarmonyLib;
 using Hazel;
 using System;
 using System.Linq;
+using TheOtherRoles.Utilities;
 using UnityEngine;
-using TheOtherRoles.Players;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
 
     [Harmony]
     public class CameraPatch

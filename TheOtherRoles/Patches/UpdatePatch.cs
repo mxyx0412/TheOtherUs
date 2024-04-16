@@ -1,16 +1,15 @@
-using HarmonyLib;
+using AmongUs.GameOptions;
 using System;
-using UnityEngine;
-using static TheOtherRoles.TheOtherRoles;
-using TheOtherRoles.Objects;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherRoles.Players;
-using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
-using AmongUs.GameOptions;
+using TheOtherRoles.Objects;
+using TheOtherRoles.Utilities;
+using UnityEngine;
+using static TheOtherRoles.TheOtherRoles;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     class HudManagerUpdatePatch
     {
@@ -87,12 +86,25 @@ namespace TheOtherRoles.Patches {
                 setPlayerNameColor(Mayor.mayor, Mayor.color);
             else if (Engineer.engineer != null && Engineer.engineer == localPlayer)
                 setPlayerNameColor(Engineer.engineer, Engineer.color);
-            else */
+            else if (Sheriff.sheriff != null && Sheriff.sheriff == localPlayer) {
+                setPlayerNameColor(Sheriff.sheriff, Sheriff.color);
+                if (Deputy.deputy != null && Deputy.knowsSheriff) {
+                    setPlayerNameColor(Deputy.deputy, Deputy.color);
+                }
+            } else if (Deputy.deputy != null && Deputy.deputy == localPlayer) {
+                setPlayerNameColor(Deputy.deputy, Deputy.color);
+                if (Sheriff.sheriff != null && Deputy.knowsSheriff) {
+                    setPlayerNameColor(Sheriff.sheriff, Sheriff.color);
+                }
+            }*/
+
             if (Sheriff.sheriff != null && Sheriff.sheriff == localPlayer)
             {
                 setPlayerNameColor(Sheriff.sheriff, Sheriff.color);
                 if (Deputy.deputy != null && Deputy.knowsSheriff) setPlayerNameColor(Deputy.deputy, Sheriff.color);
-            } /*else if (Portalmaker.portalmaker != null && Portalmaker.portalmaker == localPlayer)
+            }
+
+            /*else if (Portalmaker.portalmaker != null && Portalmaker.portalmaker == localPlayer)
                 setPlayerNameColor(Portalmaker.portalmaker, Portalmaker.color);
             else if (Lighter.lighter != null && Lighter.lighter == localPlayer)
                 setPlayerNameColor(Lighter.lighter, Lighter.color);
@@ -114,13 +126,16 @@ namespace TheOtherRoles.Patches {
                 setPlayerNameColor(Tracker.tracker, Tracker.color);
             else if (Snitch.snitch != null && Snitch.snitch == localPlayer)
                 setPlayerNameColor(Snitch.snitch, Snitch.color);*/
-            else if (Jackal.jackal != null && Jackal.jackal == localPlayer) {
+            else if (Jackal.jackal != null && Jackal.jackal == localPlayer)
+            {
                 // Jackal can see his sidekick
                 setPlayerNameColor(Jackal.jackal, Jackal.color);
-                if (Sidekick.sidekick != null) {
+                if (Sidekick.sidekick != null)
+                {
                     setPlayerNameColor(Sidekick.sidekick, Jackal.color);
                 }
-                if (Jackal.fakeSidekick != null) {
+                if (Jackal.fakeSidekick != null)
+                {
                     setPlayerNameColor(Jackal.fakeSidekick, Jackal.color);
                 }
             }
@@ -145,6 +160,50 @@ namespace TheOtherRoles.Patches {
             } else if (Pursuer.pursuer != null && Pursuer.pursuer == localPlayer) {
                 setPlayerNameColor(Pursuer.pursuer, Pursuer.color);
             }*/
+
+            if (Snitch.snitch != null)
+            {
+                var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
+                int numberOfTasks = playerTotal - playerCompleted;
+                var snitchIsDead = Snitch.snitch.Data.IsDead;
+
+                bool forImp = localPlayer.Data.Role.IsImpostor;
+                bool forKillerTeam = Snitch.Team == Snitch.includeNeutralTeam.KillNeutral && Helpers.isKiller(localPlayer);
+                bool forEvilTeam = Snitch.Team == Snitch.includeNeutralTeam.EvilNeutral && Helpers.isEvil(localPlayer);
+                bool forNeutraTeam = Snitch.Team == Snitch.includeNeutralTeam.AllNeutral && Helpers.isNeutral(localPlayer);
+                if (numberOfTasks <= Snitch.taskCountForReveal)
+                {
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        if (forImp || forKillerTeam || forEvilTeam || forNeutraTeam)
+                        {
+                            setPlayerNameColor(Snitch.snitch, Snitch.color);
+                        }
+                    }
+                }
+                if (numberOfTasks == 0 && Snitch.seeInMeeting && !snitchIsDead)
+                {
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        bool TargetsImp = p.Data.Role.IsImpostor;
+                        bool TargetsKillerTeam = Snitch.Team == Snitch.includeNeutralTeam.KillNeutral && Helpers.isKiller(p);
+                        bool TargetsEvilTeam = Snitch.Team == Snitch.includeNeutralTeam.EvilNeutral && Helpers.isEvil(p);
+                        bool TargetsNeutraTeam = Snitch.Team == Snitch.includeNeutralTeam.AllNeutral && Helpers.isNeutral(p);
+                        var targetsRole = RoleInfo.getRoleInfoForPlayer(p, false).FirstOrDefault();
+                        if (localPlayer == Snitch.snitch && (TargetsImp || TargetsKillerTeam || TargetsEvilTeam || TargetsNeutraTeam))
+                        {
+                            if (Snitch.teamNeutraUseDifferentArrowColor)
+                            {
+                                setPlayerNameColor(p, targetsRole.color);
+                            }
+                            else
+                            {
+                                setPlayerNameColor(p, Palette.ImpostorRed);
+                            }
+                        }
+                    }
+                }
+            }
 
             // No else if here, as a Lover of team Jackal needs the colors
             if (Sidekick.sidekick != null && Sidekick.sidekick == localPlayer) {

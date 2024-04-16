@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.UI.Button;
-using Object = UnityEngine.Object;
-using TheOtherRoles.Patches;
-using UnityEngine.SceneManagement;
-using TheOtherRoles.Utilities;
-using AmongUs.Data;
+﻿using AmongUs.Data;
 using Assets.InnerNet;
-using System.Linq;
+using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
-namespace TheOtherRoles.Modules {
+namespace TheOtherRoles.Modules
+{
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class MainMenuPatch {
         private static bool horseButtonState = TORMapOptions.enableHorseMode;

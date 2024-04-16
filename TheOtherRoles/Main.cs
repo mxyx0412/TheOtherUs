@@ -1,40 +1,29 @@
-﻿global using Il2CppInterop.Runtime;
-global using Il2CppInterop.Runtime.Attributes;
-global using Il2CppInterop.Runtime.InteropTypes;
-global using Il2CppInterop.Runtime.InteropTypes.Arrays;
-global using Il2CppInterop.Runtime.Injection;
-
+﻿using AmongUs.Data;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
-using HarmonyLib;
 using Hazel;
+using Reactor.Networking.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using UnityEngine;
+using System.Text;
 using TheOtherRoles.Modules;
-using TheOtherRoles.Players;
-using TheOtherRoles.Utilities;
-using Reactor.Networking.Attributes;
-using AmongUs.Data;
 using TheOtherRoles.Modules.CustomHats;
+using TheOtherRoles.Modules.Languages;
+using UnityEngine;
 
 namespace TheOtherRoles
 {
-    [BepInPlugin(Id, ModName, VersionString)]
+    [BepInAutoPlugin("me.spex.theotherus")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
     [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
-    public class TheOtherRolesPlugin : BasePlugin
+    public partial class TheOtherRolesPlugin : BasePlugin
     {
-        public const string Id = "me.spex.theotherus";
-        public const string VersionString = "1.3.6";
-        public const string ModName = "TheOtherUs";
-        public static uint betaDays = 0;  // amount of days for the build to be usable (0 for infinite!)
+        public static uint betaDays = 0; // amount of days for the build to be usable (0 for infinite!)
 
-        public static Version Version = Version.Parse(VersionString);
-         
+        public static readonly Version version = System.Version.Parse(Version);
         public Harmony Harmony { get; } = new(Id);
         public static Main Instance;
 
@@ -67,11 +56,11 @@ namespace TheOtherRoles
             var regions = new[] {
                 new StaticHttpRegionInfo("Custom", StringNames.NoTranslation, Ip.Value, new Il2CppReferenceArray<ServerInfo>(new ServerInfo[1] { new ServerInfo("Custom", Ip.Value, Port.Value, false) })).CastFast<IRegionInfo>()
             };
-            
+
             var currentRegion = serverManager.CurrentRegion;
             Info($"Adding {regions.Length} regions");
-            foreach (IRegionInfo region in regions) {
-                if (region == null) 
+            foreach (var region in regions) {
+                if (region == null)
                     Error("Could not add region");
                 else {
                     if (currentRegion != null && region.Name.Equals(currentRegion.Name, StringComparison.OrdinalIgnoreCase)) 
@@ -87,7 +76,10 @@ namespace TheOtherRoles
         }
 
         public override void Load() {
+
+            if (ConsoleManager.ConsoleEnabled) System.Console.OutputEncoding = Encoding.UTF8;
             SetLogSource(Log);
+            InitConsole();
             Instance = this;
   
             _ = Helpers.checkBeta(); // Exit if running an expired beta
@@ -115,7 +107,7 @@ namespace TheOtherRoles
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", "false");
             Harmony.PatchAll();
             
-            CustomOptionHolder.Load();
+            TaskQueue.Instance.StartTask(DownLoad, "DownLoadDependent");
             CustomColors.Load();
             CustomHatManager.LoadHats();
             if (ToggleCursor.Value) {
@@ -134,9 +126,24 @@ namespace TheOtherRoles
             MainMenuPatch.addSceneChangeCallbacks();
             _ = RoleInfo.loadReadme();
             AddToKillDistanceSetting.addKillDistance();
+            
             Info("Loading TOR completed!");
         }
+
+        private static void DownLoad()
+        {
+            DependentDownload.Instance.HasFileNames.AddRange(DependentDownload.DllDir.GetFiles().Where(n => n.Extension == ".dll").Select(n => n.Name));
+            DependentDownload.Instance.DownLoadDependentMap("https://raw.githubusercontent.com/SpexGH/TheOtherUs/LanguageAdd/LangLoadDependent/DependentMap.txt", "Excel");
+            DependentDownload.Instance.DownLoadDependentMap("https://raw.githubusercontent.com/SpexGH/TheOtherUs/LanguageAdd/LangLoadDependent/DependentMap.txt", "Csv");
+        }
+
+        internal static void OnTranslationController_Initialized_Load()
+        {
+            TaskQueue.Instance.StartTask(LanguageManager.Instance.Load, "LoadLanguage");
+            TaskQueue.Instance.StartTask(CustomOptionHolder.Load, "LoadOption");
+        }
     }
+    
 
     // Deactivate bans, since I always leave my local testing game and ban myself
     [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
@@ -147,7 +154,6 @@ namespace TheOtherRoles
             __result = false;
         }
     }
-    
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
     public static class ChatControllerAwakePatch {
         private static void Prefix() {

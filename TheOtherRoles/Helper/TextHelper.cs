@@ -9,6 +9,26 @@ namespace TheOtherRoles.Helper;
 
 public static class TextHelper
 {
+    public static readonly Dictionary<SupportedLangs, string> LangNameDictionary = new()
+    {
+        { SupportedLangs.English, "English" },
+        { SupportedLangs.Latam, "Latam" },
+        { SupportedLangs.Brazilian, "Brazilian" },
+        { SupportedLangs.Portuguese, "Portuguese" },
+        { SupportedLangs.Korean, "Korean" },
+        { SupportedLangs.Russian, "Russian" },
+        { SupportedLangs.Dutch, "Dutch" },
+        { SupportedLangs.Filipino, "Filipino" },
+        { SupportedLangs.French, "French" },
+        { SupportedLangs.German, "German" },
+        { SupportedLangs.Italian, "Italian" },
+        { SupportedLangs.Japanese, "Japanese" },
+        { SupportedLangs.Spanish, "Spanish" },
+        { SupportedLangs.SChinese, "SChinese" },
+        { SupportedLangs.TChinese, "TChinese" },
+        { SupportedLangs.Irish, "Irish" }
+    };
+
     public static string ColorString(this string s, Color c)
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
@@ -19,11 +39,10 @@ public static class TextHelper
         f = Mathf.Clamp01(f);
         return (byte)(f * 255);
     }
-    
-    
 
-    #nullable enable
-    internal static void StartRead(Stream stream, Action<string, int> OnRead, out string AllText)
+
+#nullable enable
+    internal static void StartRead(this Stream stream, Action<string, int> OnRead, out string AllText)
     {
         var index = 1;
         var stringBuilder = new StringBuilder();
@@ -37,37 +56,32 @@ public static class TextHelper
 
         AllText = stringBuilder.ToString();
     }
-    #nullable disable
+#nullable disable
 
-    public static readonly Dictionary<SupportedLangs, string> LangNameDictionary = new()
+    public static SupportedLangs PareNameToLangId(this string text)
     {
-        {SupportedLangs.English, "English"},
-        {SupportedLangs.Latam, "Latam"},
-        {SupportedLangs.Brazilian, "Brazilian"},
-        {SupportedLangs.Portuguese,"Portuguese"},
-        {SupportedLangs.Korean, "Korean"},
-        {SupportedLangs.Russian, "Russian"},
-        {SupportedLangs.Dutch, "Dutch"},
-        {SupportedLangs.Filipino, "Filipino"},
-        {SupportedLangs.French, "French"},
-        {SupportedLangs.German, "German"},
-        {SupportedLangs.Italian, "Italian"},
-        {SupportedLangs.Japanese, "Japanese"},
-        {SupportedLangs.Spanish, "Spanish"},
-        {SupportedLangs.SChinese, "SChinese"},
-        {SupportedLangs.TChinese, "TChinese"},
-        {SupportedLangs.Irish, "Irish"}
-    };
+        return LangNameDictionary.First(n => n.Value == text).Key;
+    }
 
-    public static SupportedLangs PareNameToLangId(this string text) => LangNameDictionary.First(n => n.Value == text).Key;
-    
-    public static SupportedLangs PareIndexToLangId(this string text) => (SupportedLangs)int.Parse(text);
-    
-    public static string PareString(this SupportedLangs lang) => LangNameDictionary[lang];
+    public static SupportedLangs PareIndexToLangId(this string text)
+    {
+        return (SupportedLangs)int.Parse(text);
+    }
 
-    public static int GetIndex(this SupportedLangs lang) => (int)lang;
+    public static string PareString(this SupportedLangs lang)
+    {
+        return LangNameDictionary[lang];
+    }
 
-    public static string[] SplitText(this string text) => text.Split(':');
+    public static int GetIndex(this SupportedLangs lang)
+    {
+        return (int)lang;
+    }
+
+    public static string[] SplitText(this string text)
+    {
+        return text.Split(':');
+    }
 
     public static string SplitText(params string[] texts)
     {
@@ -78,7 +92,7 @@ public static class TextHelper
             builder.Append(text);
             if (index != texts.Length)
                 builder.Append(':');
-                    
+
             index++;
         }
 
@@ -91,7 +105,6 @@ public static class TextHelper
         var co = false;
         foreach (var c in text)
         {
-            
             switch (c)
             {
                 case '<':

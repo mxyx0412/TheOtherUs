@@ -5,19 +5,19 @@ using System.Reflection;
 using Hazel;
 using InnerNet;
 using TheOtherRoles.Patches;
-using TheOtherRoles.Players;
 
 namespace TheOtherRoles.Helper;
 
 public static class HandshakeHelper
 {
-    public static readonly Dictionary<int, PlayerVersion> playerVersions = new();
-    
     public enum ShareMode
     {
         Guid = 0,
         Again = 1
     }
+
+    public static readonly Dictionary<int, PlayerVersion> playerVersions = new();
+    public static bool CurrentMismatch;
 
     public static readonly Dictionary<int, AgainInfo> PlayerAgainInfo = new();
 
@@ -28,75 +28,84 @@ public static class HandshakeHelper
             .RPCSend();
     }
 
-    #nullable enable
+#nullable enable
     public static bool GetVersionHandshake(out ClientData[]? players, out string message)
     {
         players = null;
         message = string.Empty;
 #if DEBUG
+        CurrentMismatch = false;
         return false;
 #endif
-        var versionMismatch = false;
-        foreach (var client in AmongUsClient.Instance.allClients.ToArray().Where(data => data.Id != AmongUsClient.Instance.ClientId)) {
-                if (client.Character == null) continue;
-                var dummyComponent = client.Character.GetComponent<DummyBehaviour>();
-                if (dummyComponent != null && dummyComponent.enabled)
+        var versionMismatch = true;
+        foreach (var client in AmongUsClient.Instance.allClients.ToArray()
+                     .Where(data => data.Id != AmongUsClient.Instance.ClientId))
+        {
+            if (client.Character == null) continue;
+            var dummyComponent = client.Character.GetComponent<DummyBehaviour>();
+            if (dummyComponent != null && dummyComponent.enabled)
+                continue;
+
+            if (!playerVersions.ContainsKey(client.Id))
+            {
+                againSend(client.Id, ShareMode.Again);
+                versionMismatch = true;
+                message +=
+                    $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of The Other Us\n</color>";
+            }
+            else
+            {
+                var PV = playerVersions[client.Id];
+                var diff = Main.version.CompareTo(PV.version);
+                if (PV.guid == null)
+                {
+                    againSend(client.Id, ShareMode.Guid);
                     continue;
-                
-                if (!playerVersions.ContainsKey(client.Id))  
+                }
+
+                switch (diff)
                 {
-                    againSend(client.Id, ShareMode.Again);
-                    versionMismatch = true;
-                    message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of The Other Us\n</color>";
-                } 
-                else 
-                {
-                    var PV = playerVersions[client.Id];
-                    var diff = Main.Version.CompareTo(PV.version);
-                    if (PV.guid == null)
+                    case > 0:
+                        versionMismatch = true;
+                        message +=
+                            $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                        break;
+                    case < 0:
+                        versionMismatch = true;
+                        message +=
+                            $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                        break;
+                    default:
                     {
-                        againSend(client.Id, ShareMode.Guid);
-                        continue;
-                    }
-                    
-                    switch (diff)
-                    {
-                        case > 0:
-                            versionMismatch = false;
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
-                            break;
-                        case < 0:
-                            versionMismatch = false;
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of The Other Us (v{playerVersions[client.Id].version.ToString()})\n</color>";
-                            break;
-                        default:
-                        {
-                            versionMismatch = PV.GuidMatches();
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOU v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
-                            break;
-                        }
+                        versionMismatch = !PV.GuidMatches();
+                        message +=
+                            $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOU v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
+                        break;
                     }
                 }
+            }
         }
+
+        CurrentMismatch = versionMismatch;
         return versionMismatch;
     }
-    #nullable disable
-    
+#nullable disable
+
     public static void shareGameVersion()
     {
         var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshake)
             .WritePacked(AmongUsClient.Instance.ClientId)
-            .Write(Main.Version.Major)
-            .Write(Main.Version.Minor)
-            .Write(Main.Version.Build)
+            .Write(Main.version.Major)
+            .Write(Main.version.Minor)
+            .Write(Main.version.Build)
             .Write(AmongUsClient.Instance.AmHost ? GameStartManagerPatch.timer : -1f)
-            .Write((byte)(Main.Version.Revision < 0 ? 0xFF : Main.Version.Revision));
+            .Write(Main.version.Revision);
         writer.RPCSend();
     }
 
     public static void versionHandshake(int major, int minor, int build, int revision, int clientId)
     {
-        var ver = revision < 0 ? new Version(major, minor, build) : new Version(major, minor, build, revision);
+        var ver = revision == -1 ? new Version(major, minor, build) : new Version(major, minor, build, revision);
         playerVersions[clientId] = new PlayerVersion(ver)
         {
             PlayerId = clientId
@@ -105,6 +114,8 @@ public static class HandshakeHelper
 
     public static void VersionHandshakeEx(MessageReader reader)
     {
+        if (CachedPlayer.LocalPlayer == null) return;
+
         var clientId = reader.ReadPackedInt32();
         switch ((ShareMode)reader.ReadByte())
         {
@@ -146,7 +157,6 @@ public static class HandshakeHelper
     {
         var clientId = AmongUsClient.Instance.ClientId;
         var bytes = Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
-        playerVersions[clientId].guid = new Guid(bytes);
 
         var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx)
             .WritePacked(AmongUsClient.Instance.ClientId)
@@ -202,13 +212,13 @@ public class AgainInfo
 
     public void Send(HandshakeHelper.ShareMode mode)
     {
-            
         Info($"again send mode:{mode} id:{playerId}");
 
-        if (AmongUsClient.Instance == null || CachedPlayer.LocalPlayer.PlayerControl == null) return;
-        
-        var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx, mode: RPCSendMode.SendToPlayer)
-            .WritePacked(AmongUsClient.Instance.ClientId)
+        if (AmongUsClient.Instance == null || CachedPlayer.LocalPlayer == null) return;
+
+        var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.VersionHandshakeEx, SendOption.Reliable,
+                RPCSendMode.SendToPlayer, playerId)
+            .WritePacked(playerId)
             .Write((byte)HandshakeHelper.ShareMode.Again)
             .Write((byte)mode);
         writer.RPCSend();
@@ -217,13 +227,13 @@ public class AgainInfo
 
 public class PlayerVersion(Version version)
 {
-    public Version version { get; private set; } = version;
-    
+    public Version version { get; } = version;
+
     public int PlayerId { get; internal set; }
     public Guid? guid { get; internal set; }
 
-    public bool GuidMatches() 
+    public bool GuidMatches()
     {
-        return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(this.guid);
+        return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(guid);
     }
 }

@@ -1,20 +1,18 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using TheOtherRoles;
 using TheOtherRoles.CustomGameModes;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TMPro;
 using UnityEngine;
 
-namespace TheOtherRoles.Patches {
+namespace TheOtherRoles.Patches
+{
     [HarmonyPatch]
     public static class CredentialsPatch {
         public static string fullCredentialsVersion = 
-$@"<size=130%><color=#ff351f>TheOtherUs</color></size> v{TheOtherRolesPlugin.Version.ToString() + (TheOtherRolesPlugin.betaDays>0 ? "-BETA": "")}";
+$@"<size=130%><color=#ff351f>TheOtherUs</color></size> v{TheOtherRolesPlugin.Version.ToString()}";
 public static string fullCredentials =
 $@"<size=60%>Modified by <color=#FCCE03FF>Spex</color>
 Based on TheOtherRoles";
@@ -25,13 +23,13 @@ $@"Modified by <color=#FCCE03FF>Spex</color>, based on TheOtherRoles by <color=#
 Design by <color=#FCCE03FF>Bavari</color>";
 
         public static string contributorsCredentials =
-$@"<size=60%> <color=#FCCE03FF>Special thanks to Smeggy, Scoom, Xer, Mr_Fluuff, and <color=#00ffff>Fangkuai<color=#FCCE03FF></color></size>";
+$@"<size=60%> <color=#FCCE03FF>Special thanks to Smeggy, Scoom, Xer, Mr_Fluuff, Fangkuai, and mxyx-club</color></size>";
 
         [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
         internal static class PingTrackerPatch
         {
             public static GameObject modStamp;
-
+            
             static void Postfix(PingTracker __instance){
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) {
@@ -41,20 +39,34 @@ $@"<size=60%> <color=#FCCE03FF>Special thanks to Smeggy, Scoom, Xer, Mr_Fluuff, 
                     else if (PropHunt.isPropHuntGM) gameModeText = "Prop Hunt";
                     if (gameModeText != "") gameModeText = Helpers.cs(Color.yellow, gameModeText) + "\n";
                     __instance.text.text = $"<size=130%><color=#ff351f>TheOtherUs</color></size> v{TheOtherRolesPlugin.Version.ToString() + (TheOtherRolesPlugin.betaDays > 0 ? "-BETA" : "")}\n{gameModeText}" + __instance.text.text;
-                    if (CachedPlayer.LocalPlayer.Data.IsDead || (!(CachedPlayer.LocalPlayer.PlayerControl == null) && (CachedPlayer.LocalPlayer.PlayerControl == Lovers.lover1 || CachedPlayer.LocalPlayer.PlayerControl == Lovers.lover2))) {
-                        __instance.transform.localPosition = new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                    } else {
-                        __instance.transform.localPosition = new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
+                    if (CachedPlayer.LocalPlayer.Data.IsDead || (!(CachedPlayer.LocalPlayer.PlayerControl == null) && (CachedPlayer.LocalPlayer.PlayerControl == Lovers.lover1 || CachedPlayer.LocalPlayer.PlayerControl == Lovers.lover2)))
+                    {
+                        var transform = __instance.transform;
+                        var localPosition = transform.localPosition;
+                        localPosition = new Vector3(3.45f, localPosition.y, localPosition.z);
+                        transform.localPosition = localPosition;
+                    } else
+                    {
+                        var transform = __instance.transform;
+                        var localPosition = transform.localPosition;
+                        localPosition = new Vector3(4.2f, localPosition.y, localPosition.z);
+                        transform.localPosition = localPosition;
                     }
                 } else {
-                    string gameModeText = $"";
-                    if (TORMapOptions.gameMode == CustomGamemodes.HideNSeek) gameModeText = $"Hide 'N Seek";
-                    else if (TORMapOptions.gameMode == CustomGamemodes.Guesser) gameModeText = $"Guesser";
-                    else if (TORMapOptions.gameMode == CustomGamemodes.PropHunt) gameModeText = $"Prop Hunt";
+                    var gameModeText = TORMapOptions.gameMode switch
+                    {
+                        CustomGamemodes.HideNSeek => "Hide 'N Seek",
+                        CustomGamemodes.Guesser => "Guesser",
+                        CustomGamemodes.PropHunt => "Prop Hunt",
+                        _ => string.Empty
+                    };
                     if (gameModeText != "") gameModeText = Helpers.cs(Color.yellow, gameModeText) + "\n";
 
                     __instance.text.text = $"{fullCredentialsVersion}\n  {gameModeText + fullCredentials}\n {__instance.text.text}";
-                    __instance.transform.localPosition = new Vector3(3.5f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
+                    var transform = __instance.transform;
+                    var localPosition = transform.localPosition;
+                    localPosition = new Vector3(3.5f, localPosition.y, localPosition.z);
+                    transform.localPosition = localPosition;
                 }
             }
         }
@@ -82,12 +94,11 @@ $@"<size=60%> <color=#FCCE03FF>Special thanks to Smeggy, Scoom, Xer, Mr_Fluuff, 
 
                 instance = __instance;
                 loadSprites();
-                // renderer.sprite = TORMapOptions.enableHorseMode ? horseBannerSprite : bannerSprite;
                 renderer.sprite = EventUtility.isEnabled ? banner2Sprite : bannerSprite;
                 var credentialObject = new GameObject("credentialsTOR");
                 var credentials = credentialObject.AddComponent<TextMeshPro>();
-                credentials.SetText($"v{TheOtherRolesPlugin.Version.ToString() + (TheOtherRolesPlugin.betaDays > 0 ? "-BETA" : "")}\n<size=30f%>\n</size>{mainMenuCredentials}\n<size=30%>\n</size>{contributorsCredentials}");
-                credentials.alignment = TMPro.TextAlignmentOptions.Center;
+                credentials.SetText($"v{Main.Version}\n<size=30f%>\n</size>{mainMenuCredentials}\n<size=30%>\n</size>{contributorsCredentials}");
+                credentials.alignment = TextAlignmentOptions.Center;
                 credentials.fontSize *= 0.05f;
 
                 credentials.transform.SetParent(torLogo.transform);
@@ -164,7 +175,7 @@ $@"<size=60%> <color=#FCCE03FF>Special thanks to Smeggy, Scoom, Xer, Mr_Fluuff, 
                 HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync("https://raw.githubusercontent.com/TheOtherRolesAU/MOTD/main/motd.txt");
                 response.EnsureSuccessStatusCode();
-                var motds = await response.Content.ReadAsStringAsync();
+                string motds = await response.Content.ReadAsStringAsync();
                 foreach(string line in motds.Split("\n", StringSplitOptions.RemoveEmptyEntries)) {
                         MOTD.motds.Add(line);
                 }

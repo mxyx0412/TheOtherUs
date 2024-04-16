@@ -1,25 +1,32 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using Hazel;
-using TheOtherRoles.Players;
+using InnerNet;
 using UnityEngine;
 
 namespace TheOtherRoles.Helper;
 
-internal class FastRpcWriter(MessageWriter writer)
+#nullable enable
+internal class FastRpcWriter
 {
-     private byte CallId;
+    private readonly RPCSendMode _rpcSendMode;
+    private byte CallId;
 
     private int msgCount;
 
     private SendOption Option;
 
-    private RPCSendMode _rpcSendMode;
-
     private int SendTargetId;
 
     private uint targetObjectId;
-    
-    private FastRpcWriter(SendOption option, RPCSendMode mode = RPCSendMode.SendToAll, int TargetId = -1, uint ObjectId = 255) : this(MessageWriter.Get(option))
+
+    private MessageWriter? writer;
+
+    private FastRpcWriter(SendOption option, RPCSendMode mode = RPCSendMode.SendToAll, int TargetId = -1,
+        uint ObjectId = 255)
     {
         Option = option;
         _rpcSendMode = mode;
@@ -27,26 +34,28 @@ internal class FastRpcWriter(MessageWriter writer)
         SetTargetObjectId(ObjectId);
     }
 
-    private static FastRpcWriter StartNew(SendOption option = SendOption.Reliable, RPCSendMode mode = RPCSendMode.SendToAll, int TargetId = -1, uint targetObjectId = 255)
+    private static FastRpcWriter StartNew(SendOption option = SendOption.Reliable,
+        RPCSendMode mode = RPCSendMode.SendToAll, int TargetId = -1, uint targetObjectId = 255)
     {
         var writer = new FastRpcWriter(option, mode, TargetId, targetObjectId);
         writer.CreateWriter();
         return writer;
     }
-    
-    internal static FastRpcWriter StartNewRpcWriter(CustomRPC rpc, SendOption option = SendOption.Reliable, RPCSendMode mode = RPCSendMode.SendToAll, int TargetId = -1, uint targetObjectId = 255)
+
+    internal static FastRpcWriter StartNewRpcWriter(CustomRPC rpc, SendOption option = SendOption.Reliable,
+        RPCSendMode mode = RPCSendMode.SendToAll, int TargetId = -1, uint targetObjectId = 255)
     {
         var writer = StartNew(option, mode, TargetId, targetObjectId);
         writer.SetRpcCallId(rpc);
 
         writer.CreateWriter();
-        
+
         if (mode == RPCSendMode.SendToAll)
             writer.StartDataAllMessage();
 
         if (mode == RPCSendMode.SendToPlayer)
             writer.StartDataToPlayerMessage();
-        
+
         writer.StartRPCMessage();
         return writer;
     }
@@ -82,16 +91,16 @@ internal class FastRpcWriter(MessageWriter writer)
 
     public FastRpcWriter SetTargetObjectId(uint id)
     {
-        if (targetObjectId == 255)
+        if (id == 255)
         {
-            targetObjectId = CachedPlayer.LocalPlayer.PlayerControl.NetId;
+            targetObjectId = PlayerControl.LocalPlayer.NetId;
             return this;
         }
 
         targetObjectId = id;
         return this;
     }
-    
+
     public FastRpcWriter SetRpcCallId(CustomRPC id)
     {
         CallId = (byte)id;
@@ -108,7 +117,7 @@ internal class FastRpcWriter(MessageWriter writer)
     {
         if (id == -1)
             return this;
-        
+
         SendTargetId = id;
         return this;
     }
@@ -149,20 +158,20 @@ internal class FastRpcWriter(MessageWriter writer)
         writer?.Write(value);
         return this;
     }
-    
+
     public FastRpcWriter Write(byte[] value)
     {
         writer?.Write(value);
         return this;
     }
-    
+
     public FastRpcWriter Write(Vector2 value)
     {
         writer?.Write(value.x);
         writer?.Write(value.y);
         return this;
     }
-    
+
     public FastRpcWriter Write(Vector3 value)
     {
         writer?.Write(value.x);
@@ -180,34 +189,33 @@ internal class FastRpcWriter(MessageWriter writer)
         return this;
     }
 
-    public FastRpcWriter Write(params object[] objects)
+    public FastRpcWriter Write(params object[]? objects)
     {
         if (objects == null) return this;
-        
+
         foreach (var obj in objects)
-        {
             switch (obj)
             {
                 case byte _byte:
-                    writer.Write(_byte);
+                    Write(_byte);
                     break;
                 case string _string:
-                    writer.Write(_string);
+                    Write(_string);
                     break;
                 case float _float:
-                    writer.Write(_float);
+                    Write(_float);
                     break;
                 case int _int:
-                    writer.Write(_int);
+                    Write(_int);
                     break;
                 case bool _bool:
-                    writer.Write(_bool);
+                    Write(_bool);
                     break;
                 case byte[] _bytes:
-                    writer.Write(_bytes);
+                    Write(_bytes);
                     break;
             }
-        }
+
         return this;
     }
 
@@ -259,7 +267,7 @@ internal class FastRpcWriter(MessageWriter writer)
 
     public void EndAllMessage()
     {
-        while (msgCount > 0) 
+        while (msgCount > 0)
             EndMessage();
     }
 
@@ -284,7 +292,7 @@ public static class FastRPCExtension
         var y = reader.ReadSingle();
         return new Vector2(x, y);
     }
-    
+
     public static Vector3 ReadVector3(this MessageReader reader)
     {
         var x = reader.ReadSingle();
@@ -307,4 +315,100 @@ internal enum RPCSendMode
 {
     SendToAll = 5,
     SendToPlayer = 6
+}
+
+[Harmony]
+[MeansImplicitUse]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+internal class RPCListener(CustomRPC rpc) : Attribute
+{
+    private static readonly List<RPCListener> _allListeners = [];
+    public Action<MessageReader> OnRPC = null!;
+    private readonly CustomRPC RPCId = rpc;
+
+    public static void Register(Assembly assembly)
+    {
+        var types = assembly.GetTypes().SelectMany(n => n.GetMethods(BindingFlags.Static))
+            .Where(n => n.IsDefined(typeof(RPCListener)));
+        types.Do(n =>
+        {
+            var listener = n.GetCustomAttribute<RPCListener>();
+            if (listener == null) return;
+            var arg = n.GetGenericArguments();
+            if (arg.Length != 1 || arg[0] != typeof(MessageReader)) return;
+            listener.OnRPC = reader => n.Invoke(null, [reader]);
+            _allListeners.Add(listener);
+        });
+    }
+
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleGameDataInner))]
+    [HarmonyPrefix]
+    private static void InnerNet_ReaderPath([HarmonyArgument(0)] MessageReader reader)
+    {
+        if (_allListeners.Count <= 0) return;
+        var HandleReader = MessageReader.Get(reader);
+        HandleReader.Position = 0;
+        var tag = reader.Tag;
+        if (tag != 2)
+            return;
+        try
+        {
+            HandleReader.ReadPackedUInt32();
+            var callId = HandleReader.ReadByte();
+            _allListeners.Where(n => (byte)n.RPCId == callId).Do(n => n.OnRPC(HandleReader));
+        }
+        catch (Exception e)
+        {
+            Exception(e);
+        }
+
+        finally
+        {
+            HandleReader.Recycle();
+        }
+    }
+}
+
+[MeansImplicitUse]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+internal class RPCMethod(CustomRPC rpc) : Attribute
+{
+    public static readonly List<RPCMethod> _AllRPCMethod =
+        [];
+
+    private readonly CustomRPC RPC = rpc;
+
+    private Type[] _types = [];
+
+    public Action<object[]>? Start;
+
+    private int count => _types.Length;
+
+    public static void Register(Assembly assembly)
+    {
+        var types = assembly.GetTypes().SelectMany(n => n.GetMethods(BindingFlags.Static))
+            .Where(n => n.IsDefined(typeof(RPCMethod)));
+        types.Do(n =>
+        {
+            var method = n.GetCustomAttribute<RPCMethod>();
+            if (method == null) return;
+            method.Start = objs => n.Invoke(null, objs);
+            method._types = n.GetGenericArguments();
+            _AllRPCMethod.Add(method);
+        });
+    }
+
+    public bool Match(object[] objects)
+    {
+        if (objects.Length != count) return false;
+        for (var i = 0; i < count; i++)
+            if (objects[i].GetType() != _types[i])
+                return false;
+        return true;
+    }
+
+    public static void StartRPCMethod(CustomRPC rpc, params object[] objects)
+    {
+        _AllRPCMethod.Where(n => n.RPC == rpc && n.Match(objects)).Do(n => n.Start?.Invoke(objects));
+    }
 }

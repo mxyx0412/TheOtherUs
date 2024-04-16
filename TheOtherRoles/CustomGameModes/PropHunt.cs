@@ -1,19 +1,16 @@
-﻿using AmongUs.Data;
-using AmongUs.GameOptions;
-using HarmonyLib;
+﻿using AmongUs.GameOptions;
 using Hazel;
-using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherRoles.Patches;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TMPro;
 using UnityEngine;
 
-namespace TheOtherRoles.CustomGameModes {
+namespace TheOtherRoles.CustomGameModes
+{
     [HarmonyPatch]
     class PropHunt {
         public static bool isPropHuntGM = false;
@@ -131,7 +128,7 @@ namespace TheOtherRoles.CustomGameModes {
             Message($"after debug");
             whitelistedObjects = allNames.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).ToList();
             Message($"after split");
-            
+
             Message($"Last element: {whitelistedObjects.Last()}");
         }
 

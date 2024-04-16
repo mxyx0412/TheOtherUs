@@ -1,13 +1,12 @@
+using Hazel;
 using System;
-using HarmonyLib;
 using System.Linq;
-using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using UnityEngine;
-using Hazel;
 using static TheOtherRoles.TheOtherRoles;
 
-namespace TheOtherRoles.Modules {
+namespace TheOtherRoles.Modules
+{
     [HarmonyPatch]
     public static class ChatCommands {
         public static bool isLover(this PlayerControl player) => !(player == null) && (player == Lovers.lover1 || player == Lovers.lover2);
@@ -56,7 +55,7 @@ namespace TheOtherRoles.Modules {
                             var writer = FastRpcWriter.StartNewRpcWriter(CustomRPC.ShareGamemode)
                                 .Write(gameMode);
                             writer.RPCSend();
-                            RPCProcedure.shareGameMode((byte)gameMode);
+                            RPCProcedure.shareGamemode((byte)gameMode);
                         } 
                         else 
                         {
